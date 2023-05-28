@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "259036118618",
+    "project_id": "ilayki-db",
+    "storage_bucket": "ilayki-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259036118618:android:6aac3fb13324da3f506263",
+        "android_client_info": {
+          "package_name": "com.example.ilayki"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXNmMNTccAiGV6f0j-PQb6u6a_uGy3NwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

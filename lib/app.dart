@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ilayki/widgets/main_drawer.dart';
+
+import '../screens/basket_page.dart';
+import '../screens/home_page.dart';
+import '../screens/profile_page.dart';
+import '../screens/updates_page.dart';
+
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  /* Defining currentIndex as state of the app */
+  int currentScreenIndex = 0;
+
+  /* Defining the screens for the app*/
+  final List<Widget> screens = [
+    const MyHomePage(),
+    const UpdatesPage(),
+    const BasketPage(),
+    const ProfilePage(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    //* Initializing Screen Utils Package and providing width and height of
+    //* development device (honor play), returning the wrapper
+    return ScreenUtilInit(
+      designSize: const Size(1080, 2340),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      //* The following builder method returns the child on which we can use screen utils package
+      builder: (context, child) => Scaffold(
+        /* App Bar */
+        appBar: AppBar(
+          title: const Text("Ilayki"),
+          centerTitle: true,
+          foregroundColor: const Color.fromARGB(255, 236, 201, 171),
+          shadowColor: const Color.fromARGB(255, 244, 217, 185),
+        ),
+
+        /* Drawer */
+        drawer: const MainDrawer(),
+
+        /* Body */
+        body: screens[currentScreenIndex],
+
+        /* Bottom Navbar */
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentScreenIndex,
+          onTap: (index) => setState(() => currentScreenIndex = index),
+          unselectedItemColor: const Color.fromARGB(255, 236, 201, 171),
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          type: BottomNavigationBarType.fixed,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              label: "Home",
+              icon: Icon(Icons.cookie),
+            ),
+            BottomNavigationBarItem(
+              label: "Updates",
+              icon: Icon(Icons.notifications),
+            ),
+            BottomNavigationBarItem(
+              label: "Basket",
+              icon: Icon(Icons.shopping_basket),
+            ),
+            BottomNavigationBarItem(
+              label: "Profile",
+              icon: Icon(Icons.person),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
