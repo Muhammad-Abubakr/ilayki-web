@@ -76,9 +76,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    "Delete",
+                    "Tip: Swipe from Right to Left to Delete",
                     style: TextStyle(
-                      fontSize: 48.sp,
+                      fontSize: 36.sp,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
@@ -94,7 +95,15 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const AddMenuItemScreen()),
         ),
-        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.r),
+          side: BorderSide(
+            color: Theme.of(context).primaryColor,
+            width: 1,
+            strokeAlign: BorderSide.strokeAlignInside,
+          ),
+        ),
+        elevation: 4,
         child: const Icon(Icons.add),
       ),
     );

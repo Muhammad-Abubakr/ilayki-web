@@ -9,7 +9,7 @@ class UserItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.separated(
-        itemBuilder: (_, idx) => const ItemWidget(),
+        itemBuilder: (_, idx) => ItemWidget(index: idx),
         separatorBuilder: (_, idx) => const Divider(),
         itemCount: 100,
       ),
