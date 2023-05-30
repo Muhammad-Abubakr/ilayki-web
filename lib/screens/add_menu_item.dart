@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 class AddMenuItemScreen extends StatefulWidget {
@@ -25,7 +27,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Menu Item"),
+        title: Text(AppLocalizations.of(context)!.addMenuItem),
       ),
 
       /* Body of the Screen containing the form which contains two textfields and an Image Container */
@@ -38,9 +40,9 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
             TextField(
               controller: _itemNameController,
               maxLength: 32,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.edit),
-                label: Text("Item Name"),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.edit),
+                label: Text(AppLocalizations.of(context)!.itemName),
               ),
             ),
             SizedBox(height: 20.sp),
@@ -50,9 +52,9 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
               controller: _itemPriceController,
               maxLength: 6,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.money),
-                label: Text("Price"),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.money),
+                label: Text(AppLocalizations.of(context)!.price),
               ),
             ),
             SizedBox(height: 20.sp),
@@ -62,9 +64,9 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
               controller: _itemDescController,
               maxLength: 256,
               maxLines: 6,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.description),
-                label: Text("Description"),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.description),
+                label: Text(AppLocalizations.of(context)!.description),
               ),
             ),
 
@@ -72,7 +74,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 64.0.sp),
               child: Text(
-                "Add an Image",
+                AppLocalizations.of(context)!.addAnImage,
                 style: TextStyle(fontSize: 64.sp),
               ),
             ),
@@ -97,8 +99,8 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                 height: 128.spMax,
                 /* Picture Update */
                 child: _xFile == null
-                    ? const Text(
-                        "Tap here to add a Picture",
+                    ? Text(
+                        AppLocalizations.of(context)!.tapHereToAddPicture,
                         textAlign: TextAlign.center,
                       )
                     : ClipRRect(
@@ -144,7 +146,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                 Navigator.of(context).pop();
               },
               icon: const Icon(Icons.camera),
-              label: const Text("Use Camera"),
+              label: const Text("Camera"),
             ),
             const VerticalDivider(),
             TextButton.icon(
@@ -153,7 +155,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                 Navigator.of(context).pop();
               },
               icon: const Icon(Icons.photo_album),
-              label: const Text("Use Gallery"),
+              label: const Text("Gallery"),
             )
           ],
         ),
@@ -169,10 +171,10 @@ two sources: Camera or Gallery */
       ScaffoldMessenger.of(context).showMaterialBanner(
         MaterialBanner(
           margin: const EdgeInsets.only(bottom: 16.0),
-          content: const Text("Operation Cancelled By the User"),
+          content: Text(AppLocalizations.of(context)!.operationCancelled),
           actions: [
             ElevatedButton(
-              child: const Text("Dismiss"),
+              child: Text(AppLocalizations.of(context)!.dismiss),
               onPressed: () => ScaffoldMessenger.of(context).clearMaterialBanners(),
             )
           ],
@@ -188,9 +190,9 @@ two sources: Camera or Gallery */
   void _noImagePickedOrCaptured() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text("No image picked or captured"),
+        content: Text(AppLocalizations.of(context)!.noImageSelected),
         action: SnackBarAction(
-          label: "Dismiss",
+          label: AppLocalizations.of(context)!.dismiss,
           onPressed: () => ScaffoldMessenger.of(context).clearSnackBars(),
         ),
       ),

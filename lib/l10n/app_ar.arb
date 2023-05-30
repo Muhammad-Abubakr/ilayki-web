@@ -1,0 +1,89 @@
+{
+    "language": "العربية",
+    "home": "الرئيسية",
+    "@home": {
+        "description" : "الانتقال إلى شاشة الرئيسية"
+    },
+    "updates": "التحديثات",
+    "@updates": {
+        "description" : "الانتقال إلى شاشة التحديثات"
+    },
+    "alerts": "التنبيهات",
+    "@alerts": {
+        "description" : "الانتقال إلى شاشة التنبيهات"
+    },
+    "chat": "الدردشة",
+    "@chat": {
+        "description" : "الانتقال إلى شاشة الدردشة"
+    },    
+    "basket": "السلة",
+    "@basket": {
+        "description" : "الانتقال إلى شاشة السلة"
+    },
+    "profile": "الملف الشخصي",
+    "@profile": {
+        "description" : "الانتقال إلى شاشة الملف الشخصي"
+    },
+    "orders" : "الطلبات",
+    "@orders": {
+        "description" : "الانتقال إلى شاشة الطلبات"
+    },
+    "sales" : "المبيعات",
+    "@sales": {
+        "description" : "الانتقال إلى شاشة المبيعات"
+    },
+    "aboutUs" : "معلومات عنا",
+    "@orders": {
+        "description" : "الانتقال إلى شاشة معلومات عنا"
+    },
+    "contactUs" : "اتصل بنا",
+    "@contactUS": {
+        "description" : "الانتقال إلى شاشة اتصل بنا"
+    },
+    "menu" : "القائمة",
+    "@menu": {
+        "description" : "إليك القائمة على صفحة الملف الشخصي لعناصرك."
+    },
+    "tipProfilePage": "تلميح: اسحب من اليمين إلى اليسار للحذف",
+    "@tipProfilePage": {
+        "description" : "اسحب العناصر من اليمين إلى اليسار على صفحة الملف الشخصي للحذف."
+    },
+    "addMenuItem" : "إضافة عنصر قائمة",
+    "@addMenuItem": {
+        "description" : "إضافة عنصر قائمة."
+    },
+    "itemName" : "اسم العنصر",
+    "@itemName": {
+        "description" : "إضافة اسم العنصر."
+    },
+    "price" : "السعر",
+    "@price": {
+        "description"
+
+ : "إضافة سعر عنصر القائمة."
+    },
+    "description" : "الوصف",
+    "@description": {
+        "description" : "إضافة وصف لعنصر القائمة."
+    },
+    "addAnImage" : "إضافة صورة",
+    "@addAnImage": {
+        "description" : "إضافة صورة لعنصر القائمة."
+    },
+    "tapHereToAddPicture" : "اضغط هنا لإضافة صورة",
+    "@tapHereToAddPicture": {
+        "description" : "اضغط هنا لإضافة صورة لعنصر القائمة."
+    },
+    "operationCancelled" : "تم إلغاء العملية من قبل المستخدم",
+    "@operationCancelled": {
+        "description" : "يعرض رسالة Material Banner هذا النص عند عدم تحديد مصدر صورة."
+    },
+    "noImageSelected" : "لم يتم اختيار صورة أو التقاطها",
+    "@noImageSelected": {
+        "description" : "يعرض SnackBar هذا النص عند عدم اختيار صورة من image_picker."
+    },
+    "dismiss" : "إغلاق",
+    "@dismiss": {
+        "description" : "إغلاق شيء ما."
+    }
+}

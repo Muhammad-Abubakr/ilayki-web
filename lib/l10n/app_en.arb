@@ -1,0 +1,90 @@
+{
+    "language": "English",
+    "@language" :{
+        "description" : "This is the default language of the Application."
+    },
+    "home": "Home",
+    "@home": {
+        "description" : "Go to Home screen"
+    },
+    "updates": "Updates",
+    "@updates": {
+        "description" : "Go to Updates screen"
+    },
+    "alerts": "Alerts",
+    "@alerts": {
+        "description" : "Go to Alerts screen"
+    },
+    "chat": "Chat",
+    "@chat": {
+        "description" : "Go to Chat screen"
+    },    
+    "basket": "Basket",
+    "@basket": {
+        "description" : "Go to Basket screen"
+    },
+    "profile": "Profile",
+    "@profile": {
+        "description" : "Go to Profile screen"
+    },
+    "orders" : "Orders",
+    "@orders": {
+        "description" : "Go to Orders screen"
+    },
+    "sales" : "Sales",
+    "@sales": {
+        "description" : "Go to Sales screen"
+    },
+    "aboutUs" : "About Us",
+    "@orders": {
+        "description" : "Go to About Us screen"
+    },
+    "contactUs" : "Contact Us",
+    "@contactUS": {
+        "description" : "Go to Contact Us screen"
+    },
+    "menu" : "Menu",
+    "@menu": {
+        "description" : "Following is the menu on Profile Page for your items."
+    },
+    "tipProfilePage": "Tip: Swipe from Right to Left to Delete",
+    "@tipProfilePage": {
+        "description" : "Swipe the items from Right to Left on Profile Page to Delete."
+    },
+    "addMenuItem" : "Add Menu Item",
+    "@addMenuItem": {
+        "description" : "Add a Menu Item."
+    },
+    "itemName" : "Item Name",
+    "@itemName": {
+        "description" : "Add an Item name."
+    },
+    "price" : "Price",
+    "@price": {
+        "description" : "Add a Menu Item price."
+    },
+    "description" : "Description",
+    "@description": {
+        "description" : "Add a Menu Item description."
+    },
+    "addAnImage" : "Add an Image",
+    "@addAnImage": {
+        "description" : "Add an image for the menu item."
+    },
+    "tapHereToAddPicture" : "Tap here to add a Picture",
+    "@tapHereToAddPicture": {
+        "description" : "tap here to add an image for the menu item."
+    },
+    "operationCancelled" : "Operation Cancelled By the User",
+    "@operationCancelled": {
+        "description" : "Material Banner shows this text when no image source selected."
+    },
+    "noImageSelected" : "No Image Picked or Captured",
+    "@noImageSelected": {
+        "description" : "SnackBar shows this text when no image selected from image_picker."
+    },
+    "dismiss" : "Dismiss",
+    "@dismiss": {
+        "description" : "Dismiss something."
+    }
+}

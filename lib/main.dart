@@ -1,6 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ilayki/blocs/localization/cubit/localization_cubit.dart';
+import 'package:ilayki/l10n/l10n.dart';
+
 import './firebase_options.dart';
 
 import 'app.dart';
@@ -14,7 +20,12 @@ void main() {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     // Intializing Flutter App
-    runApp(const MyApp());
+    runApp(
+      BlocProvider<LocalizationCubit>(
+        create: (context) => LocalizationCubit(),
+        child: const MyApp(),
+      ),
+    );
   })();
 }
 
@@ -24,8 +35,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Watching the locale state of the application
+    final locale = context.watch<LocalizationCubit>().state.locale;
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Ilayki',
+      // Locales Supported in the Application
+      locale: Locale(locale),
+      supportedLocales: L10n.all,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         fontFamily: "KaushanScript",
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 246, 246),

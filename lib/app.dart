@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ilayki/blocs/localization/cubit/localization_cubit.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../screens/basket_page.dart';
 import '../screens/home_page.dart';
@@ -28,6 +32,14 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    // Localization cubit
+    final LocalizationCubit cubit = context.watch<LocalizationCubit>();
+
+    /* Locales Dropdown */
+    final SupportedLocales dropdownValue = SupportedLocales.values.firstWhere(
+      (element) => describeEnum(element) == cubit.state.locale,
+    );
+
     //* Initializing Screen Utils Package and providing width and height of
     //* development device (honor play), returning the wrapper
     return ScreenUtilInit(
@@ -42,6 +54,42 @@ class _AppState extends State<App> {
           centerTitle: true,
           foregroundColor: const Color.fromARGB(255, 236, 201, 171),
           shadowColor: const Color.fromARGB(255, 244, 217, 185),
+
+          // Locales
+          actions: [
+            DropdownButton(
+              onChanged: (value) {
+                if (value != null) cubit.updateLocale(value);
+              },
+              value: dropdownValue,
+              items: [
+                DropdownMenuItem(
+                  value: SupportedLocales.en,
+                  child: Image.asset(
+                    'lib/assets/flags/us.png',
+                    fit: BoxFit.scaleDown,
+                    height: 18.spMax,
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: SupportedLocales.ar,
+                  child: Image.asset(
+                    'lib/assets/flags/sa.png',
+                    fit: BoxFit.scaleDown,
+                    height: 18.spMax,
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: SupportedLocales.fr,
+                  child: Image.asset(
+                    'lib/assets/flags/fr.png',
+                    fit: BoxFit.scaleDown,
+                    height: 18.spMax,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
 
         /* Drawer */
@@ -57,22 +105,22 @@ class _AppState extends State<App> {
           unselectedItemColor: const Color.fromARGB(255, 236, 201, 171),
           selectedItemColor: Theme.of(context).colorScheme.primary,
           type: BottomNavigationBarType.fixed,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.cookie),
+              label: AppLocalizations.of(context)!.home,
+              icon: const Icon(Icons.cookie),
             ),
             BottomNavigationBarItem(
-              label: "Updates",
-              icon: Icon(Icons.notifications),
+              label: AppLocalizations.of(context)!.updates,
+              icon: const Icon(Icons.notifications),
             ),
             BottomNavigationBarItem(
-              label: "Basket",
-              icon: Icon(Icons.shopping_basket),
+              label: AppLocalizations.of(context)!.basket,
+              icon: const Icon(Icons.shopping_basket),
             ),
             BottomNavigationBarItem(
-              label: "Profile",
-              icon: Icon(Icons.person),
+              label: AppLocalizations.of(context)!.profile,
+              icon: const Icon(Icons.person),
             ),
           ],
         ),

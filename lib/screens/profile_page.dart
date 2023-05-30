@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:ilayki/screens/add_menu_item.dart';
 import 'package:ilayki/widgets/user_items.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,16 +72,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Menu",
+                    AppLocalizations.of(context)!.menu,
                     style: TextStyle(
                       fontSize: 48.sp,
                     ),
                   ),
-                  Text(
-                    "Tip: Swipe from Right to Left to Delete",
-                    style: TextStyle(
-                      fontSize: 36.sp,
-                      color: Colors.grey,
+                  SizedBox(
+                    width: 600.w,
+                    child: Text(
+                      AppLocalizations.of(context)!.tipProfilePage,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: 36.sp,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ],
@@ -125,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.of(context).pop();
               },
               icon: const Icon(Icons.camera),
-              label: const Text("Use Camera"),
+              label: const Text("Camera"),
             ),
             const VerticalDivider(),
             TextButton.icon(
@@ -134,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.of(context).pop();
               },
               icon: const Icon(Icons.photo_album),
-              label: const Text("Use Gallery"),
+              label: const Text("Gallery"),
             )
           ],
         ),
@@ -150,10 +159,10 @@ two sources: Camera or Gallery */
       ScaffoldMessenger.of(context).showMaterialBanner(
         MaterialBanner(
           margin: const EdgeInsets.only(bottom: 16.0),
-          content: const Text("Operation Cancelled By the User"),
+          content: Text(AppLocalizations.of(context)!.operationCancelled),
           actions: [
             ElevatedButton(
-              child: const Text("Dismiss"),
+              child: Text(AppLocalizations.of(context)!.dismiss),
               onPressed: () => ScaffoldMessenger.of(context).clearMaterialBanners(),
             )
           ],
@@ -169,9 +178,9 @@ two sources: Camera or Gallery */
   void _noImagePickedOrCaptured() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text("No image picked or captured"),
+        content: Text(AppLocalizations.of(context)!.noImageSelected),
         action: SnackBarAction(
-          label: "Dismiss",
+          label: AppLocalizations.of(context)!.dismiss,
           onPressed: () => ScaffoldMessenger.of(context).clearSnackBars(),
         ),
       ),

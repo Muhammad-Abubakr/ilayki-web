@@ -1,0 +1,87 @@
+{
+    "language": "Français",
+    "home": "Accueil",
+    "@home": {
+        "description" : "Aller à l'écran d'accueil"
+    },
+    "updates": "Mises à jour",
+    "@updates": {
+        "description" : "Aller à l'écran des mises à jour"
+    },
+    "alerts": "Alertes",
+    "@alerts": {
+        "description" : "Aller à l'écran des alertes"
+    },
+    "chat": "Discussion",
+    "@chat": {
+        "description" : "Aller à l'écran des discussions"
+    },    
+    "basket": "Panier",
+    "@basket": {
+        "description" : "Aller à l'écran du panier"
+    },
+    "profile": "Profil",
+    "@profile": {
+        "description" : "Aller à l'écran du profil"
+    },
+    "orders" : "Commandes",
+    "@orders": {
+        "description" : "Aller à l'écran des commandes"
+    },
+    "sales" : "Ventes",
+    "@sales": {
+        "description" : "Aller à l'écran des ventes"
+    },
+    "aboutUs" : "À propos de nous",
+    "@orders": {
+        "description" : "Aller à l'écran À propos de nous"
+    },
+    "contactUs" : "Contactez-nous",
+    "@contactUS": {
+        "description" : "Aller à l'écran Contactez-nous"
+    },
+    "menu" : "Menu",
+    "@menu": {
+        "description" : "Voici le menu sur la page du profil pour vos articles."
+    },
+    "tipProfilePage": "Astuce : Balayez de droite à gauche pour supprimer",
+    "@tipProfilePage": {
+        "description" : "Balayez les articles de droite à gauche sur la page du profil pour les supprimer."
+    },
+    "addMenuItem" : "Ajouter un élément de menu",
+    "@addMenuItem": {
+        "description" : "Ajouter un élément de menu."
+    },
+    "itemName" : "Nom de l'élément",
+    "@itemName": {
+        "description" : "Ajouter un nom d'élément."
+    },
+    "price" : "Prix",
+    "@price": {
+        "description" : "Ajouter un prix d'élément de menu."
+    },
+    "description" : "Description",
+    "@description": {
+        "description" : "Ajouter une description d'élément de menu."
+    },
+    "addAnImage" : "Ajouter une image",
+    "@addAnImage": {
+        "description" : "Ajouter une image pour l'élément de menu."
+    },
+    "tapHereToAddPicture" : "Appuyez ici pour ajouter une image",
+    "@tapHereToAddPicture": {
+        "description" : "Appuyez ici pour ajouter une image pour l'élément de menu."
+    },
+    "operationCancelled" : "Opération annulée par l'utilisateur",
+    "@operationCancelled": {
+        "description" : "Le message Material Banner affiche ce texte lorsque aucune source d'image n'est sélectionnée."
+    },
+    "noImageSelected" : "Aucune image sélectionnée ou capturée",
+    "@noImageSelected": {
+        "description" : "Le SnackBar affiche ce texte lorsqu'aucune image n'est sélectionnée avec image_picker."
+    },
+    "dismiss" : "Fermer",
+    "@dismiss": {
+        "description" : "Fermer quelque chose."
+    }
+}

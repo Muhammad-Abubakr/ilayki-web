@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../screens/orders_screen.dart';
 import '../screens/sales_screen.dart';
@@ -38,14 +39,16 @@ class MainDrawer extends StatelessWidget {
               /* Menu Items */
               //? Navigate to Order Screen
               ListTile(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const OrdersScreen(),
-                  ),
-                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const OrdersScreen(),
+                    ),
+                  );
+                },
                 splashColor: Colors.white30,
                 leading: Text(
-                  "Orders",
+                  AppLocalizations.of(context)!.orders,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 72.sp,
@@ -57,14 +60,16 @@ class MainDrawer extends StatelessWidget {
 
               // ? Navigate to Sales Screen (keeps record)
               ListTile(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const SalesScreen(),
-                  ),
-                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SalesScreen(),
+                    ),
+                  );
+                },
                 splashColor: Colors.white30,
                 leading: Text(
-                  "Sales",
+                  AppLocalizations.of(context)!.sales,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 72.sp,
@@ -79,7 +84,7 @@ class MainDrawer extends StatelessWidget {
                 onTap: () => {},
                 splashColor: Colors.white30,
                 leading: Text(
-                  "About US",
+                  AppLocalizations.of(context)!.aboutUs,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 72.sp,
@@ -94,7 +99,7 @@ class MainDrawer extends StatelessWidget {
                 onTap: () => {},
                 splashColor: Colors.white30,
                 leading: Text(
-                  "Contact US",
+                  AppLocalizations.of(context)!.contactUs,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 72.sp,
