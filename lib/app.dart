@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ilayki/blocs/localization/cubit/localization_cubit.dart';
+import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -57,18 +57,23 @@ class _AppState extends State<App> {
 
           // Locales
           actions: [
+            /* Dropdown Button for changing the locale for the application */
             DropdownButton(
+              iconSize: 16.spMax,
+              elevation: 1,
+              value: dropdownValue,
+
+              // Update the cubit state with the locale selected by the user
               onChanged: (value) {
                 if (value != null) cubit.updateLocale(value);
               },
-              value: dropdownValue,
               items: [
                 DropdownMenuItem(
                   value: SupportedLocales.en,
                   child: Image.asset(
                     'lib/assets/flags/us.png',
                     fit: BoxFit.scaleDown,
-                    height: 18.spMax,
+                    height: 16.spMax,
                   ),
                 ),
                 DropdownMenuItem(
@@ -76,7 +81,7 @@ class _AppState extends State<App> {
                   child: Image.asset(
                     'lib/assets/flags/sa.png',
                     fit: BoxFit.scaleDown,
-                    height: 18.spMax,
+                    height: 16.spMax,
                   ),
                 ),
                 DropdownMenuItem(
@@ -84,7 +89,7 @@ class _AppState extends State<App> {
                   child: Image.asset(
                     'lib/assets/flags/fr.png',
                     fit: BoxFit.scaleDown,
-                    height: 18.spMax,
+                    height: 16.spMax,
                   ),
                 ),
               ],
