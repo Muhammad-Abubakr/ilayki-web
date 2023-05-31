@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ilayki/services/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -34,9 +37,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     // CLIENT
     on<UserSignInAnonymously>(_signInUserAnonHandler);
+    on<UserSignInWithGoogle>(_signInWithGoogle);
     on<RegisterUserWithEmailAndPassword>(_registerUserWithEmailAndPassHandler);
     on<UserSignInWithEmailAndPassword>(_signInUserWithEmailAndPassHandler);
     on<UserSignOut>(_signOutUserHandler);
+    on<UserPfpUpdate>(_userPfpUpdateHandler);
   }
 
   /* 
@@ -45,7 +50,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _subscriptionHandler(_UserUpdateEvent event, Emitter<UserState> emit) {
     // updates the Bloc about the change in user state from the firebase subscription
     if (kDebugMode) {
-      print(state.user);
+      print(event.user);
     }
 
     // If the user has signed out
@@ -87,7 +92,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       // ii).
     } on FirebaseAuthException catch (error) {
-      emit(UserUpdate(user: state.user, state: UserStates.idle));
       emit(UserUpdate(state: UserStates.error, error: error));
     }
   }
@@ -111,7 +115,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       // ii.
     } on FirebaseAuthException catch (e) {
-      emit(UserUpdate(user: state.user, state: UserStates.idle));
       emit(UserUpdate(state: UserStates.error, error: e));
     }
   }
@@ -145,15 +148,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       User? user = await _auth.registerWithEmailAndPassword(event.email, event.password);
 
       if (user != null) {
-        emit(UserUpdate(user: state.user, state: UserStates.idle));
+        emit(UserUpdate(user: state.user, state: UserStates.registered));
 
-        // signing in autonomously
-        add(UserSignInWithEmailAndPassword(email: user.email!, password: event.password));
+        /* Update Display Name and PhotoURL */
+        /* Firebase Realtime database */
+        final storage = FirebaseStorage.instance.ref();
+
+        /* Storing the image */
+        // Getting the reference
+        final imageRef = storage.child('pfps/${user.uid}');
+
+        imageRef.putFile(File(event.xFile.path));
+
+        /* Updating the user */
+        await user.updateDisplayName(event.displayName);
+        await user.updatePhotoURL(await imageRef.getDownloadURL());
       }
 
       // Incase of error while registering on Signing in
     } on FirebaseAuthException catch (e) {
-      emit(UserUpdate(user: state.user, state: UserStates.idle));
       emit(UserUpdate(state: UserStates.error, error: e));
     }
   }
@@ -185,8 +198,68 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       // ii. Incase of error while registering on Signing in
     } on FirebaseAuthException catch (e) {
-      emit(UserUpdate(user: state.user, state: UserStates.idle));
       emit(UserUpdate(state: UserStates.error, error: e));
+    }
+  }
+
+  /* 
+    # User Sign-In With Google handler
+
+    Handlers FirebaseAuthException:
+    * User-Disabled
+      ? thrown if the relevant authentication method is not enabled
+   */
+  FutureOr<void> _signInWithGoogle(UserSignInWithGoogle event, Emitter<UserState> emit) async {
+    try {
+      emit(UserUpdate(user: state.user, state: UserStates.processing));
+      // i).
+      await _auth.signInWithGoogle();
+
+      // ii).
+    } on FirebaseAuthException catch (error) {
+      emit(UserUpdate(state: UserStates.error, error: error));
+    }
+  }
+
+  /* 
+    # Updates User photoURL in Firebase User instance
+
+    i). Replaces the photo file in the storage path for the user
+    ii). Updates the photo url in the user instance of firebase
+    iii). catches errors incase any
+   */
+  FutureOr<void> _userPfpUpdateHandler(UserPfpUpdate event, Emitter<UserState> emit) async {
+    try {
+      // i).
+
+      /* Update  PhotoURL */
+      /* Firebase Storage Instance Reference (root) */
+      final storage = FirebaseStorage.instance.ref();
+
+      /* Storing the image */
+      // Getting the reference (child) to the user uid
+      final imageRef = storage.child('pfps/${state.user?.uid}');
+
+      /// updating the photoURL
+      // deleting
+      try {
+        await imageRef.delete();
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+      // updating
+      final imageSnapshot = await imageRef.putFile(File(event.xFile.path));
+
+      /* Updating the user */
+      await state.user?.updatePhotoURL(await imageSnapshot.ref.getDownloadURL());
+
+      // emit the user state, that the user is updated
+      emit(UserUpdate(user: FirebaseAuth.instance.currentUser, state: UserStates.updated));
+      // ii).
+    } on FirebaseAuthException catch (error) {
+      emit(UserUpdate(state: UserStates.error, error: error));
     }
   }
 }

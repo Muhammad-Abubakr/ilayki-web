@@ -46,6 +46,7 @@ dependencies:
   image_cropper: ^4.0.1
   intl: ^0.18.0
   firebase_storage: ^11.2.1
+  firebase_database: ^10.2.2
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
     - lib/assets/flags/sa.png
     - lib/assets/flags/fr.png
     - lib/assets/flags/us.png
+    - lib/assets/icons/google_G_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

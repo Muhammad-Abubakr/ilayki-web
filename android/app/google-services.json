@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "259036118618",
+    "firebase_url": "https://ilayki-db-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "ilayki-db",
     "storage_bucket": "ilayki-db.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.ilayki"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "259036118618-43kkshcfstue2u6c3edkv2i6dbf461kr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ilayki",
+            "certificate_hash": "db58677a20ede6de92ce87256261fd73c76bd0bf"
+          }
+        },
+        {
+          "client_id": "259036118618-v0csnjg13mjamvrbi803vj4qnrho3h8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCXNmMNTccAiGV6f0j-PQb6u6a_uGy3NwE"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259036118618-v0csnjg13mjamvrbi803vj4qnrho3h8o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "259036118618-vt5vtstennof3joam1f25496j3sivftl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ilayki"
+              }
+            }
+          ]
         }
       }
     }

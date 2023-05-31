@@ -86,5 +86,65 @@
     "dismiss" : "Dismiss",
     "@dismiss": {
         "description" : "Dismiss something."
+    },
+    "continueWithGoogle" : "Continue with Google",
+    "@continueWithGoogle": {
+        "description" : "Continue Signing in Google."
+    },
+    "email" : "Email",
+    "@email": {
+        "description" : "Enter the user email."
+    },
+    "password" : "Password",
+    "@password": {
+        "description" : "Enter the user password."
+    },
+    "signIn" : "Sign In",
+    "@signIn": {
+        "description" : "Sign in using the email and password."
+    },
+    "orElse" : "Or Else",
+    "@orElse": {
+        "description" : "or else sign in with following method."
+    },
+    "emailValidation": "Email field cannot be empty.",
+    "@emailValidation": {
+        "description" : "User must provide an email in the email field."
+    },
+    "passwordValidation": "Enter your Password.",
+    "@passwordValidation": {
+        "description" : "The User must enter their password."
+    },
+    "welcome": "Welcome",
+    "@welcome": {
+        "description" : "Greetings."
+    },
+    "store": "Store",
+    "@store": {
+        "description" : "Store name."
+    },
+    "notRegistered" : "Don't have an Account ?",
+    "@notRegistered" : {
+        "description" : "If the user is not registered."
+    },
+    "registerHere" : "Register Here",
+    "@registerHere" : {
+        "description" : "Register here button."
+    },
+    "register" : "Register",
+    "@register" : {
+        "description" : "Register."
+    },
+    "confirmPassword" : "Confirm Password",
+    "@confirmPassword" : {
+        "description" : "The passwords don't match"
+    },
+    "passNotMatch" : "Passwords don't match. Try again",
+    "@passNotMatch" : {
+        "description" : "The passwords don't match"
+    },
+    "displayName" : "Display Name",
+    "@displayName" : {
+        "description" : "This display name will be displayed on the store front."
     }
 }

@@ -85,5 +85,65 @@
     "dismiss" : "إغلاق",
     "@dismiss": {
         "description" : "إغلاق شيء ما."
+    },
+    "continueWithGoogle" : "متابعة باستخدام جوجل",
+    "@continueWithGoogle": {
+        "description" : "متابعة تسجيل الدخول باستخدام جوجل."
+    },
+    "email" : "البريد الإلكتروني",
+    "@email": {
+        "description" : "أدخل عنوان البريد الإلكتروني للمستخدم."
+    },
+    "password" : "كلمة المرور",
+    "@password": {
+        "description" : "أدخل كلمة مرور المستخدم."
+    },
+    "signIn" : "تسجيل الدخول",
+    "@signIn": {
+        "description" : "تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور."
+    },
+    "orElse" : "أو بدلاً من ذلك",
+    "@orElse": {
+        "description" : "أو بدلاً من ذلك قم بتسجيل الدخول باستخدام الطريقة التالية."
+    },
+    "emailValidation": "يجب ألا يكون حقل البريد الإلكتروني فارغًا.",
+    "@emailValidation": {
+        "description" : "يجب على المستخدم تقديم بريد إلكتروني في حقل البريد الإلكتروني."
+    },
+    "passwordValidation": "أدخل كلمة المرور الخاصة بك.",
+    "@passwordValidation": {
+        "description" : "يجب على المستخدم إدخال كلمة المرور الخاصة به."
+    },
+    "welcome": "أهلاً بك",
+    "@welcome": {
+    "description" : "تحية."
+    },
+    "store": "متجر",
+    "@store": {
+        "description" : "اسم المتجر."
+    },
+    "notRegistered" : "ليس لديك حساب؟",
+    "@notRegistered" : {
+        "description" : "إذا لم يكن المستخدم مسجلاً."
+    },
+    "registerHere" : "سجّل هنا",
+    "@registerHere" : {
+        "description" : "زر للتسجيل هنا."
+    },
+    "register" : "تسجيل",
+    "@register" : {
+        "description" : "تسجيل."
+    },
+    "confirmPassword" : "تأكيد كلمة المرور",
+    "@confirmPassword" : {
+        "description" : "كلمات المرور غير متطابقة."
+    },
+    "passNotMatch" : "كلمات المرور غير متطابقة. يرجى المحاولة مرة أخرى",
+    "@passNotMatch" : {
+        "description" : "كلمات المرور غير متطابقة."
+    },
+    "displayName" : "اسم العرض",
+    "@displayName" : {
+        "description" : "سيتم عرض هذا الاسم على واجهة المتجر."
     }
 }

@@ -4,10 +4,11 @@ part of 'user_bloc.dart';
    This helps in implementing features like loading widgets, error dialogs etc.
  */
 enum UserStates {
-  idle,
+  updated,
   signedOut,
   signedIn,
   processing,
+  registered,
   error,
 }
 
@@ -24,7 +25,7 @@ abstract class UserState {
   // Constructor for UserState,
   // takes in one Named Parameter: user of type FirebaseAuth.User
   const UserState({required this.user, required this.state, this.error});
- }
+}
 
 /* Initial State of the User Bloc */
 class UserInitial extends UserState {

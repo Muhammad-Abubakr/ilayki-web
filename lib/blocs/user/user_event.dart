@@ -19,16 +19,23 @@ abstract class UserEvent {}
     2. password : String
 */
 class RegisterUserWithEmailAndPassword extends UserEvent {
+  final String displayName;
   final String email;
   final String password;
+  final XFile xFile;
 
-  RegisterUserWithEmailAndPassword({required this.email, required this.password});
+  RegisterUserWithEmailAndPassword({
+    required this.displayName,
+    required this.email,
+    required this.password,
+    required this.xFile,
+  });
 }
 
 /* When the user tries to sign in with email and password this event is fired 
    takes two named argument:
     1. email : String
-    1. password : String
+    2. password : String
 */
 class UserSignInWithEmailAndPassword extends UserEvent {
   final String email;
@@ -36,6 +43,21 @@ class UserSignInWithEmailAndPassword extends UserEvent {
 
   UserSignInWithEmailAndPassword({required this.email, required this.password});
 }
+
+/* When the user wants to change their Profile Picture, this event is fired 
+   takes one named argument:
+    1. xFile : XFile
+*/
+class UserPfpUpdate extends UserEvent {
+  final XFile xFile;
+
+  UserPfpUpdate({required this.xFile});
+}
+
+/* When the user tries to sign in with Google this event is fired 
+   takes no arguments
+*/
+class UserSignInWithGoogle extends UserEvent {}
 
 /* When the user tries to sign in anonymously this event is fired 
    takes no arguments

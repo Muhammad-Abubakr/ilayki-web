@@ -1,8 +1,13 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -14,6 +19,11 @@ class AddMenuItemScreen extends StatefulWidget {
 }
 
 class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
+  /* Firebase Realtime database */
+  final database = FirebaseDatabase.instance.ref();
+  final storage = FirebaseStorage.instance.ref();
+
+  /* Image Picker */
   XFile? _xFile;
   ImageSource? _imageSource;
   final _imagePicker = ImagePicker();
@@ -25,9 +35,56 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /* Getting the UID of the user to store it's created items*/
+    final user = context.watch<UserBloc>().state.user;
+
+    /* Storing the Item */
+    // late final Item item = Item(
+    //   name: _itemNameController.text,
+    //   price: double.parse(_itemPriceController.text),
+    //   description: _itemDescController.text,
+    //   image: '', // arrives ones we upload the picture to the storage
+    // );
+    final itemRef = database.child('items/${user!.uid}');
+
+    /* Storing the image */
+    // Getting the reference
+    late final imageRef = storage.child('items/${user.uid}/${_xFile!.name}');
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.addMenuItem),
+        actions: [
+          /* Action Call to Save item */
+          TextButton.icon(
+            icon: const Icon(Icons.save),
+            label: const Text("Save"),
+            onPressed: () async {
+              try {
+                /// for image of the item
+                await imageRef.putFile(File(_xFile!.path));
+
+                /// for item as a whole
+                /* first get a ref to set the new item */
+                final newItemRef = itemRef.push();
+
+                /* Set the new item on the newly create ref */
+                await newItemRef.set({
+                  "name": _itemNameController.text,
+                  "price": double.parse(_itemPriceController.text),
+                  "description": _itemDescController.text,
+                  "image":
+                      'items/${user.uid}/${_xFile!.name}', // arrives ones we upload the picture to the storage
+                });
+
+                /* On Exception */
+              } on FirebaseException catch (e) {
+                print(
+                    'Error Occured while talking to FirebaseStorage or FirebaseDatabase: $e');
+              }
+            },
+          ),
+        ],
       ),
 
       /* Body of the Screen containing the form which contains two textfields and an Image Container */

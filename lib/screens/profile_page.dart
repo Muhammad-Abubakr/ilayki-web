@@ -1,12 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ilayki/app.dart';
 
 import 'package:ilayki/screens/add_menu_item.dart';
 import 'package:ilayki/widgets/user_items.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../blocs/user/user_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -16,53 +20,62 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  XFile? _xFile;
   ImageSource? _imageSource;
   final _imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
+    final user = context.read<UserBloc>().state.user;
+
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(right: 0.1.sw, left: 0.1.sw, top: 20),
+        padding: EdgeInsets.only(right: 0.1.sw, left: 0.1.sw, top: 64.h),
         child: SizedBox(
           height: 1.sh,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GestureDetector(
-                // Handler for picking image
-                onTap: () => _pickImage(),
+              BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  return GestureDetector(
+                    // Handler for picking image
+                    onTap: () => _pickImage(),
 
-                // Ternary Operation: image present ? show : show placeholder icon;
-                child: _xFile == null
-                    ? CircleAvatar(
-                        radius: 196.r,
-                        child: Icon(
-                          Icons.person,
-                          size: 196.r,
-                        ),
-                      )
-                    : CircleAvatar(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        radius: 224.r,
-                        child: CircleAvatar(
-                          radius: 196.r,
-                          backgroundImage: Image(
-                            image: FileImage(File(_xFile!.path)),
-                            fit: BoxFit.fill,
-                          ).image,
-                        ),
-                      ),
+                    // Ternary Operation: image present ? show : show placeholder icon;
+                    child: user!.photoURL == null
+                        ? CircleAvatar(
+                            radius: 196.r,
+                            child: Icon(
+                              Icons.person,
+                              size: 196.r,
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            radius: 204.r,
+                            child: CircleAvatar(
+                              radius: 196.r,
+                              // If the photo url of the user in not null ? show the email pfp
+                              backgroundImage: Image.network(user.photoURL!).image,
+                            ),
+                          ),
+                  );
+                },
               ),
               /* User Title */
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
                 child: Text(
-                  "User Title",
+                  // If the display name of the user is null? show placeholder name
+                  user!.displayName == null || user.displayName!.isEmpty
+                      ? AppLocalizations.of(context)!.store
+                      // else show real name
+                      : user.displayName!,
+                  // name styling / configuration
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 72.sp,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -156,6 +169,8 @@ without providing the _imageSource value by tapping on either of the
 two sources: Camera or Gallery */
   bool _validateImageSource() {
     if (_imageSource == null) {
+      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+
       ScaffoldMessenger.of(context).showMaterialBanner(
         MaterialBanner(
           margin: const EdgeInsets.only(bottom: 16.0),
@@ -176,6 +191,8 @@ two sources: Camera or Gallery */
 
 /* Shows a SnackBar that displays that No image was picked or Captured by the User */
   void _noImagePickedOrCaptured() {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalizations.of(context)!.noImageSelected),
@@ -197,9 +214,8 @@ two sources: Camera or Gallery */
       /* Else Pick the Image File */
       _imagePicker.pickImage(source: _imageSource!).then((value) {
         if (value != null) {
-          setState(() {
-            _xFile = value;
-          });
+          /* Update the User Profile Picture */
+          context.read<UserBloc>().add(UserPfpUpdate(xFile: value));
         } else {
           /* Show the SnackBar telling the user that no image was selected */
           _noImagePickedOrCaptured();

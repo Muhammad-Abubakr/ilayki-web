@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+/* Service Handler - Handles all calls between FirebaseAuth and Application */
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -17,6 +18,13 @@ class AuthService {
   Future<User?> signInWithEmailAndPassword(String email, String password) async {
     UserCredential cred =
         await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+    return cred.user;
+  }
+
+  /* Sign in with Email and Password */
+  Future<User?> signInWithGoogle() async {
+    UserCredential cred = await _auth.signInWithProvider(GoogleAuthProvider());
 
     return cred.user;
   }

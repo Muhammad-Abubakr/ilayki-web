@@ -83,5 +83,65 @@
     "dismiss" : "Fermer",
     "@dismiss": {
         "description" : "Fermer quelque chose."
+    },
+    "continueWithGoogle" : "Continuer avec Google",
+    "@continueWithGoogle": {
+        "description" : "Continuer la connexion avec Google."
+    },
+    "email" : "Email",
+    "@email": {
+        "description" : "Saisir l'adresse email de l'utilisateur."
+    },
+    "password" : "Mot de passe",
+    "@password": {
+        "description" : "Saisir le mot de passe de l'utilisateur."
+    },
+    "signIn" : "Se connecter",
+    "@signIn": {
+        "description" : "Se connecter en utilisant l'email et le mot de passe."
+    },
+    "orElse" : "Ou sinon",
+    "@orElse": {
+        "description" : "ou sinon connectez-vous avec la méthode suivante."
+    },
+    "emailValidation": "Le champ Email ne peut pas être vide.",
+    "@emailValidation": {
+        "description" : "L'utilisateur doit fournir une adresse email dans le champ email."
+    },
+    "passwordValidation": "Entrez votre mot de passe.",
+    "@passwordValidation": {
+        "description" : "L'utilisateur doit entrer son mot de passe."
+    },
+    "welcome": "Bienvenue",
+    "@welcome": {
+    "description" : "Salutations."
+    },
+    "store": "Magasin",
+    "@store": {
+        "description" : "Nom du magasin."
+    },
+    "notRegistered" : "Vous n'avez pas de compte ?",
+    "@notRegistered" : {
+        "description" : "Si l'utilisateur n'est pas inscrit."
+    },
+    "registerHere" : "Inscrivez-vous ici",
+    "@registerHere" : {
+        "description" : "Bouton pour s'inscrire ici."
+    },
+    "register" : "S'inscrire",
+    "@register" : {
+        "description" : "S'inscrire."
+    },
+    "confirmPassword" : "Confirmer le mot de passe",
+    "@confirmPassword" : {
+        "description" : "Les mots de passe ne correspondent pas."
+    },
+    "passNotMatch" : "Les mots de passe ne correspondent pas. Veuillez réessayer.",
+    "@passNotMatch" : {
+        "description" : "Les mots de passe ne correspondent pas."
+    },
+    "displayName" : "Nom d'affichage",
+    "@displayName" : {
+        "description" : "Ce nom d'affichage sera affiché sur la devanture du magasin."
     }
 }
