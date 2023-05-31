@@ -8,7 +8,6 @@ import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/l10n/l10n.dart';
 import 'package:ilayki/screens/login_screen.dart';
-import 'package:ilayki/screens/profile_page.dart';
 import 'package:ilayki/screens/register_screen.dart';
 
 import './firebase_options.dart';
