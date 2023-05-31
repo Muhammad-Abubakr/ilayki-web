@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:ilayki/screens/add_menu_item.dart';
-import 'package:ilayki/widgets/user_items.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../blocs/items/items_bloc.dart';
 import '../blocs/user/user_bloc.dart';
+import '../widgets/item_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -24,107 +25,125 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final user = context.read<UserBloc>().state.user;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(right: 0.1.sw, left: 0.1.sw, top: 64.h),
-        child: SizedBox(
-          height: 1.sh,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              BlocBuilder<UserBloc, UserState>(
-                builder: (context, state) {
-                  return GestureDetector(
-                    // Handler for picking image
-                    onTap: () => _pickImage(),
-
-                    // Ternary Operation: image present ? show : show placeholder icon;
-                    child: user!.photoURL == null
-                        ? CircleAvatar(
-                            radius: 196.r,
-                            child: Icon(
-                              Icons.person,
-                              size: 196.r,
-                            ),
-                          )
-                        : CircleAvatar(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            radius: 204.r,
-                            child: CircleAvatar(
-                              radius: 196.r,
-                              // If the photo url of the user in not null ? show the email pfp
-                              backgroundImage: Image.network(user.photoURL!).image,
-                            ),
-                          ),
-                  );
-                },
-              ),
-              /* User Title */
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
-                child: Text(
-                  // If the display name of the user is null? show placeholder name
-                  user!.displayName == null || user.displayName!.isEmpty
-                      ? AppLocalizations.of(context)!.store
-                      // else show real name
-                      : user.displayName!,
-                  // name styling / configuration
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 72.sp,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-
-              /* User Menu Label */
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<ItemsBloc, ItemsState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: SingleChildScrollView(
+            padding: EdgeInsets.only(right: 0.1.sw, left: 0.1.sw, top: 64.h),
+            child: SizedBox(
+              height: 1.sh,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.menu,
-                    style: TextStyle(
-                      fontSize: 48.sp,
-                    ),
+                  BlocBuilder<UserBloc, UserState>(
+                    builder: (context, state) {
+                      return GestureDetector(
+                        // Handler for picking image
+                        onTap: () => _pickImage(),
+
+                        // Ternary Operation: image present ? show : show placeholder icon;
+                        child: user!.photoURL == null
+                            ? CircleAvatar(
+                                radius: 196.r,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 196.r,
+                                ),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                radius: 204.r,
+                                child: CircleAvatar(
+                                  radius: 196.r,
+                                  // If the photo url of the user in not null ? show the email pfp
+                                  backgroundImage: Image.network(user.photoURL!).image,
+                                ),
+                              ),
+                      );
+                    },
                   ),
-                  SizedBox(
-                    width: 600.w,
+                  /* User Title */
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
                     child: Text(
-                      AppLocalizations.of(context)!.tipProfilePage,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                      textAlign: TextAlign.right,
+                      // If the display name of the user is null? show placeholder name
+                      user!.displayName == null || user.displayName!.isEmpty
+                          ? AppLocalizations.of(context)!.store
+                          // else show real name
+                          : user.displayName!,
+                      // name styling / configuration
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 36.sp,
-                        color: Colors.grey,
+                        fontSize: 72.sp,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),
+
+                  /* User Menu Label */
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.menu,
+                        style: TextStyle(
+                          fontSize: 48.sp,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 600.w,
+                        child: Text(
+                          AppLocalizations.of(context)!.tipProfilePage,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 36.sp,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  /* User Menu List */
+                  if (state.items.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(top: 200.h),
+                      child: const Text("Add something to show here."),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (_, idx) => ItemWidget(
+                          item: state.items[idx],
+                        ),
+                        separatorBuilder: (_, idx) => const Divider(),
+                        itemCount: state.items.length,
+                      ),
+                    ),
                 ],
               ),
-              const Divider(),
-              /* User Menu List */
-              const UserItems(),
-            ],
+            ),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const AddMenuItemScreen()),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.r),
-          side: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 1,
-            strokeAlign: BorderSide.strokeAlignInside,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const AddMenuItemScreen()),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.r),
+              side: BorderSide(
+                color: Theme.of(context).primaryColor,
+                width: 1,
+                strokeAlign: BorderSide.strokeAlignInside,
+              ),
+            ),
+            elevation: 4,
+            child: const Icon(Icons.add),
           ),
-        ),
-        elevation: 4,
-        child: const Icon(Icons.add),
-      ),
+        );
+      },
     );
   }
 

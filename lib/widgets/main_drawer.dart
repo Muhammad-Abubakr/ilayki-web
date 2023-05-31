@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/screens/login_screen.dart';
 
@@ -17,6 +18,10 @@ class MainDrawer extends StatelessWidget {
       listener: (context, state) {
         switch (state.state) {
           case UserStates.signedOut:
+            /* This seems like a good point to unsubscribe to items stream */
+            context.read<ItemsBloc>().add(const DeactivateItemsListener());
+
+            /* pop to login */
             Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
             break;
           default:

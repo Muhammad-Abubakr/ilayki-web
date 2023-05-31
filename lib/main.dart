@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/l10n/l10n.dart';
@@ -28,6 +29,7 @@ void main() {
         providers: [
           BlocProvider<LocalizationCubit>(create: (context) => LocalizationCubit()),
           BlocProvider<UserBloc>(create: (context) => UserBloc()),
+          BlocProvider<ItemsBloc>(create: (context) => ItemsBloc()),
         ],
         child: const MyApp(),
       ),

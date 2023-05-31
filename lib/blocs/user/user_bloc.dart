@@ -13,6 +13,8 @@ part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   /* ================================ Fields ================================ */
+  /* Firebase Storage Instance Reference (root) */
+  final storage = FirebaseStorage.instance.ref();
   /* linking to our service cursor `AuthService` we created under /lib/srevices/auth.dart
   this will be used to call all the intermediary service calls to FirebaseAuth */
   late final AuthService _auth;
@@ -151,8 +153,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(UserUpdate(user: state.user, state: UserStates.registered));
 
         /* Update Display Name and PhotoURL */
-        /* Firebase Realtime database */
-        final storage = FirebaseStorage.instance.ref();
 
         /* Storing the image */
         // Getting the reference
@@ -233,8 +233,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // i).
 
       /* Update  PhotoURL */
-      /* Firebase Storage Instance Reference (root) */
-      final storage = FirebaseStorage.instance.ref();
 
       /* Storing the image */
       // Getting the reference (child) to the user uid

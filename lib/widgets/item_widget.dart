@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ilayki/blocs/items/items_bloc.dart';
+import 'package:ilayki/blocs/user/user_bloc.dart';
 
-class ItemWidget extends StatefulWidget {
-  final int index;
-  const ItemWidget({super.key, required this.index});
+import '../models/item.dart';
 
-  @override
-  State<ItemWidget> createState() => _ItemWidgetState();
-}
+class ItemWidget extends StatelessWidget {
+  final Item item;
 
-class _ItemWidgetState extends State<ItemWidget> {
+  const ItemWidget({super.key, required this.item});
+
   @override
   Widget build(BuildContext context) {
+    Future<bool?> deleteItem(DismissDirection direction) {
+      return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.read<ItemsBloc>().add(
+                      ItemsDeleteEvent(
+                        userUID: context.read<UserBloc>().state.user!.uid,
+                        itemFID: item.id,
+                      ),
+                    );
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('confirm'),
+            ),
+          ],
+          title: const Text("Confirm Dismissle"),
+          content: const Text('Do you really want to remove this item?'),
+        ),
+      );
+    }
+
     /* Wrapping in dismissable for deletion */
     return Dismissible(
       direction: DismissDirection.endToStart,
       background: _buildDismissibleBackground(),
-      confirmDismiss: _deleteItem,
-      key: Key('${widget.index}'),
+      confirmDismiss: deleteItem,
+      key: UniqueKey(),
       child: Padding(
         padding: EdgeInsets.only(right: 8.0.w),
         /* Item */
@@ -29,6 +58,10 @@ class _ItemWidgetState extends State<ItemWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(24.r)),
                 color: Theme.of(context).primaryColor,
+                image: DecorationImage(
+                  image: Image.network(item.image).image,
+                  fit: BoxFit.cover,
+                ),
               ),
               width: 64.spMax,
               height: 64.spMax,
@@ -37,7 +70,7 @@ class _ItemWidgetState extends State<ItemWidget> {
               children: [
                 /* Item Name */
                 Text(
-                  "Item Name",
+                  item.name,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                   ),
@@ -49,8 +82,8 @@ class _ItemWidgetState extends State<ItemWidget> {
                 /* Item Description */
                 SizedBox(
                   width: 296.w,
-                  child: const Text(
-                    "Item description",
+                  child: Text(
+                    item.description,
                     softWrap: true,
                     textAlign: TextAlign.center,
                     maxLines: 2,
@@ -60,7 +93,7 @@ class _ItemWidgetState extends State<ItemWidget> {
               ],
             ),
             /* Price Text */
-            const Text('\$99.99'),
+            Text('\$${item.price}'),
           ],
         ),
       ),
@@ -70,36 +103,16 @@ class _ItemWidgetState extends State<ItemWidget> {
     );
   }
 
-  Future<bool?> _deleteItem(DismissDirection direction) {
-    return showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('confirm'),
-          ),
-        ],
-        title: const Text("Confirm Dismissle"),
-        content: const Text('Do you really want to remove this item?'),
+// Generator Method
+  Widget _buildDismissibleBackground() {
+    return Container(
+      padding: EdgeInsets.only(right: 24.spMax),
+      alignment: Alignment.centerRight,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24.r),
+        color: Colors.redAccent,
       ),
+      child: const Icon(Icons.delete_sweep, color: Colors.white),
     );
   }
-}
-
-// Generator Method
-Widget _buildDismissibleBackground() {
-  return Container(
-    padding: EdgeInsets.only(right: 24.spMax),
-    alignment: Alignment.centerRight,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(24.r),
-      color: Colors.redAccent,
-    ),
-    child: const Icon(Icons.delete_sweep, color: Colors.white),
-  );
 }

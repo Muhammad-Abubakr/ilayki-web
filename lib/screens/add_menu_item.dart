@@ -39,12 +39,6 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
     final user = context.watch<UserBloc>().state.user;
 
     /* Storing the Item */
-    // late final Item item = Item(
-    //   name: _itemNameController.text,
-    //   price: double.parse(_itemPriceController.text),
-    //   description: _itemDescController.text,
-    //   image: '', // arrives ones we upload the picture to the storage
-    // );
     final itemRef = database.child('items/${user!.uid}');
 
     /* Storing the image */
@@ -59,28 +53,56 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
           TextButton.icon(
             icon: const Icon(Icons.save),
             label: const Text("Save"),
-            onPressed: () async {
-              try {
-                /// for image of the item
-                await imageRef.putFile(File(_xFile!.path));
+            onPressed: () {
+              /* Basic validation */
+              if (_itemNameController.text.isEmpty ||
+                  _itemDescController.text.isEmpty ||
+                  _itemPriceController.text.isEmpty ||
+                  _xFile == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      "Fill all the fields and pick an Item Image.",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              } else {
+                // if basic valids pass
+                try {
+                  (() async {
+                    /// for image of the item
+                    await imageRef.putFile(File(_xFile!.path));
 
-                /// for item as a whole
-                /* first get a ref to set the new item */
-                final newItemRef = itemRef.push();
+                    /// for item as a whole
+                    /* first get a ref to set the new item */
+                    final newItemRef = itemRef.push();
 
-                /* Set the new item on the newly create ref */
-                await newItemRef.set({
-                  "name": _itemNameController.text,
-                  "price": double.parse(_itemPriceController.text),
-                  "description": _itemDescController.text,
-                  "image":
-                      'items/${user.uid}/${_xFile!.name}', // arrives ones we upload the picture to the storage
-                });
+                    /* Set the new item on the newly create ref */
+                    await newItemRef.set({
+                      "name": _itemNameController.text,
+                      "price": double.parse(_itemPriceController.text),
+                      "description": _itemDescController.text,
+                      "image": await imageRef
+                          .getDownloadURL(), // arrives ones we upload the picture to the storage
+                    });
+                  })();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Item has been successfully added.",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                  // Pop the add new item
+                  Navigator.of(context).pop();
 
-                /* On Exception */
-              } on FirebaseException catch (e) {
-                print(
-                    'Error Occured while talking to FirebaseStorage or FirebaseDatabase: $e');
+                  /* On Exception */
+                } on FirebaseException catch (e) {
+                  print(
+                      'Error Occured while talking to FirebaseStorage or FirebaseDatabase: $e');
+                }
               }
             },
           ),
