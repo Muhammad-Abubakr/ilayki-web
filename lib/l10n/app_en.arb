@@ -146,5 +146,33 @@
     "displayName" : "Display Name",
     "@displayName" : {
         "description" : "This display name will be displayed on the store front."
+    },
+    "addSomethingToShowHere" : "Add something to show here",
+    "@addSomethingToShowHere" : {
+        "description" : "Add something to show here."
+    },
+    "nothingToShowHereForTheMoment" : "Nothing here for the moment : )",
+    "@nothingToShowHereForTheMoment" : {
+        "description" : "Nothing here for the moment : )"
+    },
+    "allCaughtUp" : "All Caught Up !",
+    "@allCaughtUp" : {
+        "description" : "All caught up for now for notifications."
+    },
+    "userSuccessfullyRegistered"  : "User Successfully Registered. Please Login!",
+    "@userSuccessfullyRegistered" : {
+        "description"  : "User Successfully Registered. Please Login!"
+    },
+    "tapOnTheImageAgainToChange" : "Tip: Tap on the Image again to change",
+    "@tapOnTheImageAgainToChange" : {
+        "description" : "Tap on the image again to change it and select another."
+    },
+    "fillAllFieldsAndImage" : "Please fill all the fields and select an Image!",
+    "@fillAllFieldsAndImage" : {
+        "description" : "Please fill all the fields and select an Image!"
+    },
+    "itemAddedSuccessfully" : "Item has been successfully added",
+    "@itemAddedSuccessfully" : {
+        "description" : "The Item has been added to database successfully."
     }
 }

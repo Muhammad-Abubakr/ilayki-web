@@ -111,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (state.items.isEmpty)
                     Padding(
                       padding: EdgeInsets.only(top: 200.h),
-                      child: const Text("Add something to show here."),
+                      child: Text(AppLocalizations.of(context)!.addSomethingToShowHere),
                     )
                   else
                     Expanded(

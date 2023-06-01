@@ -62,9 +62,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             break;
           case UserStates.registered:
             Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
-                'User successfully registered. Please Login',
+                AppLocalizations.of(context)!.userSuccessfullyRegistered,
                 textAlign: TextAlign.center,
               ),
             ));
@@ -184,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 64.0.sp),
                       child: Text(
-                        "Tip: Tap on the Image again to change",
+                        AppLocalizations.of(context)!.tapOnTheImageAgainToChange,
                         style: TextStyle(
                           fontSize: 48.sp,
                           color: Colors.grey,
@@ -203,9 +203,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           _xFile == null) {
                         /* else show the snackbar saying passwords dont match */
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
-                              "Please fill all the fields and select a Profile Image!",
+                              AppLocalizations.of(context)!.fillAllFieldsAndImage,
                               textAlign: TextAlign.center,
                             ),
                           ),

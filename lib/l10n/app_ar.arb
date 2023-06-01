@@ -145,5 +145,33 @@
     "displayName" : "اسم العرض",
     "@displayName" : {
         "description" : "سيتم عرض هذا الاسم على واجهة المتجر."
+    },
+    "addSomethingToShowHere" : "أضف شيئًا لعرضه هنا",
+    "@addSomethingToShowHere" : {
+        "description" : "أضف شيئًا لعرضه هنا."
+    },
+    "nothingToShowHereForTheMoment" : "لا يوجد شيء هنا في الوقت الحالي : )",
+    "@nothingToShowHereForTheMoment" : {
+        "description" : "لا يوجد شيء هنا في الوقت الحالي : )"
+    },
+    "allCaughtUp" : "كل شيء مستوفٍ!",
+    "@allCaughtUp" : {
+        "description" : "كل الأمور مستوفاة حتى الآن بالنسبة للإشعارات."
+    },
+    "userSuccessfullyRegistered" : "تم تسجيل المستخدم بنجاح. الرجاء تسجيل الدخول!",
+    "@userSuccessfullyRegistered" : {
+        "description" : "تم تسجيل المستخدم بنجاح. الرجاء تسجيل الدخول!"
+    },
+    "tapOnTheImageAgainToChange" : "نصيحة: انقر مرة أخرى على الصورة لتغييرها",
+    "@tapOnTheImageAgainToChange" : {
+        "description" : "انقر مرة أخرى على الصورة لتغييرها واختيار صورة أخرى."
+    },
+    "fillAllFieldsAndImage" : "يرجى ملء جميع الحقول واختيار صورة!",
+    "@fillAllFieldsAndImage" : {
+        "description" : "يرجى ملء جميع الحقول واختيار صورة!"
+    },
+    "itemAddedSuccessfully" : "تمت إضافة العنصر بنجاح",
+    "@itemAddedSuccessfully" : {
+        "description" : "تمت إضافة العنصر إلى قاعدة البيانات بنجاح."
     }
 }

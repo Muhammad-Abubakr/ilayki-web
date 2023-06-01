@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Ilyaki',
+                  'Ilayki',
                   style: Theme.of(context).textTheme.displayLarge!.copyWith(
                         color: Theme.of(context).primaryColor,
                       ),
@@ -177,46 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Text(AppLocalizations.of(context)!.signIn),
                 ),
-                // const Divider(height: 60),
-                // Text(
-                //   AppLocalizations.of(context)!.orElse,
-                //   style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                //         color: Colors.black54,
-                //       ),
-                // ),
-                // const SizedBox(height: 20),
-                // ElevatedButton(
-                //   onPressed: () => context.read<UserBloc>().add(UserSignInWithGoogle()),
-                //   style: ButtonStyle(
-                //     shadowColor: MaterialStateProperty.all(Colors.white),
-                //     backgroundColor:
-                //         MaterialStateProperty.all(const Color.fromARGB(255, 244, 217, 185)),
-                //     padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 6)),
-                //     fixedSize: MaterialStateProperty.all(const Size.fromWidth(200)),
-                //     shape: MaterialStateProperty.all(
-                //         RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                //   ),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       Text(
-                //         AppLocalizations.of(context)!.continueWithGoogle,
-                //         style: const TextStyle(fontWeight: FontWeight.bold),
-                //       ),
-                //       CircleAvatar(
-                //         radius: 14,
-                //         backgroundColor: Colors.white,
-                //         child: Image(
-                //           isAntiAlias: true,
-                //           image: Image.asset("lib/assets/icons/google_G_logo.png").image,
-                //           fit: BoxFit.scaleDown,
-                //           height: 20,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),

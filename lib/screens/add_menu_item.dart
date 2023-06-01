@@ -60,9 +60,9 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                   _itemPriceController.text.isEmpty ||
                   _xFile == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
+                  SnackBar(
                     content: Text(
-                      "Fill all the fields and pick an Item Image.",
+                      AppLocalizations.of(context)!.fillAllFieldsAndImage,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -88,9 +88,9 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                     });
                   })();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text(
-                        "Item has been successfully added.",
+                        AppLocalizations.of(context)!.itemAddedSuccessfully,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -196,7 +196,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 64.0.sp),
                 child: Text(
-                  "Tip: Tap on the Image again to change",
+                  AppLocalizations.of(context)!.tapOnTheImageAgainToChange,
                   style: TextStyle(
                     fontSize: 48.sp,
                     color: Colors.grey,

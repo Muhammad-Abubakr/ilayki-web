@@ -143,5 +143,33 @@
     "displayName" : "Nom d'affichage",
     "@displayName" : {
         "description" : "Ce nom d'affichage sera affiché sur la devanture du magasin."
+    },
+    "addSomethingToShowHere" : "Ajouter quelque chose à afficher ici",
+    "@addSomethingToShowHere" : {
+        "description" : "Ajouter quelque chose à afficher ici."
+    },
+    "nothingToShowHereForTheMoment" : "Rien à afficher pour le moment : )",
+    "@nothingToShowHereForTheMoment" : {
+        "description" : "Rien à afficher pour le moment : )"
+    },
+    "allCaughtUp" : "Tout est à jour !",
+    "@allCaughtUp" : {
+        "description" : "Tout est à jour pour le moment pour les notifications."
+    },
+    "userSuccessfullyRegistered" : "Utilisateur enregistré avec succès. Veuillez vous connecter !",
+    "@userSuccessfullyRegistered" : {
+        "description" : "Utilisateur enregistré avec succès. Veuillez vous connecter !"
+    },
+    "tapOnTheImageAgainToChange" : "Astuce : Appuyez à nouveau sur l'image pour la modifier",
+    "@tapOnTheImageAgainToChange" : {
+        "description" : "Appuyez à nouveau sur l'image pour la modifier et sélectionner une autre."
+    },
+    "fillAllFieldsAndImage" : "Veuillez remplir tous les champs et sélectionner une image !",
+    "@fillAllFieldsAndImage" : {
+        "description" : "Veuillez remplir tous les champs et sélectionner une image !"
+    },
+    "itemAddedSuccessfully" : "L'article a été ajouté avec succès",
+    "@itemAddedSuccessfully" : {
+        "description" : "L'article a été ajouté à la base de données avec succès."
     }
 }

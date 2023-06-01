@@ -1,9 +1,12 @@
 part of 'items_bloc.dart';
 
-abstract class ItemsState {
+abstract class ItemsState extends Equatable {
   final List<Item> items;
 
   const ItemsState({required this.items});
+
+  @override
+  List<Object> get props => [items];
 }
 
 class ItemsInitial extends ItemsState {
