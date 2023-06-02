@@ -173,5 +173,41 @@
     "itemAddedSuccessfully" : "تمت إضافة العنصر بنجاح",
     "@itemAddedSuccessfully" : {
         "description" : "تمت إضافة العنصر إلى قاعدة البيانات بنجاح."
+    },
+    "updationSuccessfull" : "تم التحديث بنجاح",
+    "@updationSuccessfull" : {
+        "description" : "تم تحديث العنصر بنجاح."
+    },
+    "confirmationDialog" : "مربع حوار التأكيد",
+    "@confirmationDialog" : {
+        "description" : "مربع حوار التأكيد المعروض للمستخدم."
+    },
+    "confirmationContent" : "هل ترغب حقًا في الخروج من التطبيق؟",
+    "@confirmationContent" : {
+        "description" : "محتوى التأكيد."
+    },
+    "cancel" : "إلغاء",
+    "@cancel" : {
+        "description" : "إلغاء."
+    },
+    "exit" : "خروج",
+    "@exit" : {
+        "description" : "خروج."
+    },
+    "save" : "حفظ",
+    "@save" : {
+        "description" : "حفظ شيء ما (نص الزر)."
+    },
+    "confirm" : "تأكيد",
+    "@confirm" : {
+        "description" : "تأكيد شيء ما (نص الزر)."
+    },
+    "confirmRemoval" : "هل ترغب حقًا في إزالة هذا العنصر؟",
+    "@confirmRemoval" : {
+        "description" : "هل ترغب حقًا في إزالة هذا العنصر؟"
+    },
+    "notifications" : "الإشعارات",
+    "@notifications" : {
+        "description" : "الإشعارات (نص التبويب)."
     }
 }

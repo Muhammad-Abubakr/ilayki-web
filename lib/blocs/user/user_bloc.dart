@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ilayki/services/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../models/user.dart' as my_user;
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -15,6 +17,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   /* ================================ Fields ================================ */
   /* Firebase Storage Instance Reference (root) */
   final storage = FirebaseStorage.instance.ref();
+  /* Firebase Realtime database Instance Reference (root) */
+  final database = FirebaseDatabase.instance.ref();
   /* linking to our service cursor `AuthService` we created under /lib/srevices/auth.dart
   this will be used to call all the intermediary service calls to FirebaseAuth */
   late final AuthService _auth;
@@ -110,8 +114,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   */
   FutureOr<void> _signOutUserHandler(UserSignOut event, Emitter<UserState> emit) async {
     try {
-      emit(UserUpdate(user: state.user, state: UserStates.processing));
-
       // i.
       await _auth.logout();
 
@@ -158,16 +160,36 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         // Getting the reference
         final imageRef = storage.child('pfps/${user.uid}');
 
-        imageRef.putFile(File(event.xFile.path));
+        imageRef.putFile(File(event.xFile.path)).whenComplete(() async {
+          /* Updating the user */
+          await user.updateDisplayName(event.displayName);
+          await user.updatePhotoURL(await imageRef.getDownloadURL());
 
-        /* Updating the user */
-        await user.updateDisplayName(event.displayName);
-        await user.updatePhotoURL(await imageRef.getDownloadURL());
+          /* Add the User to users collection in realtime database */
+          final usersRef = database.child('users/${user.uid}');
+
+          /* Create user at the usersRef */
+          await usersRef.set(
+            my_user.User(
+              name: event.displayName,
+              photoURL: await imageRef.getDownloadURL(),
+              uid: user.uid,
+            ).toJson(),
+          );
+
+          /* At last check if the user has been logged in auto by firebase sdk */
+          // and sign out
+          add(UserSignOut());
+        });
       }
 
       // Incase of error while registering on Signing in
     } on FirebaseAuthException catch (e) {
       emit(UserUpdate(state: UserStates.error, error: e));
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -252,6 +274,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       /* Updating the user */
       await state.user?.updatePhotoURL(await imageSnapshot.ref.getDownloadURL());
+
+      /* Updating reference to user profile pic in the users collection in database */
+      // getting the reference
+      final userRef = database.child('users/${state.user?.uid}');
+
+      // parsing and updating the user modal
+      final user = my_user.User.fromJson((await userRef.get()).value.toString());
+      final updatedUser = user.copyWith(photoURL: await imageSnapshot.ref.getDownloadURL());
+
+      // setting the new model for the user in the database
+      userRef.set(updatedUser.toJson());
 
       // emit the user state, that the user is updated
       emit(UserUpdate(user: FirebaseAuth.instance.currentUser, state: UserStates.updated));

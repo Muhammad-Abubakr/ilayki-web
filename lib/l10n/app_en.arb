@@ -174,5 +174,41 @@
     "itemAddedSuccessfully" : "Item has been successfully added",
     "@itemAddedSuccessfully" : {
         "description" : "The Item has been added to database successfully."
+    },
+    "updationSuccessfull" : "Updation Successfull",
+    "@updationSuccessfull" : {
+        "description" : "The thing has been updated successfully."
+    },
+    "confirmationDialog" : "Confirmation Dialog",
+    "@confirmationDialog" : {
+        "description" : "Confirmation Dialog presented to user."
+    },
+    "confirmationContent" : "Do you really want to exit the application?",
+    "@confirmationContent" : {
+        "description" : "confirmation content."
+    },
+    "cancel" : "Cancel",
+    "@cancel" : {
+        "description" : "Cancel."
+    },
+    "exit" : "Exit",
+    "@exit" : {
+        "description" : "exit."
+    },
+    "save" : "Save",
+    "@save" : {
+        "description" : "Save something (button text)."
+    },
+    "confirm" : "Confirm",
+    "@confirm" : {
+        "description" : "Confirm something (button text)."
+    },
+    "confirmRemoval" : "Do you really want to remove this item?",
+    "@confirmRemoval" : {
+        "description" : "Do you really want to remove this item?"
+    },
+    "notifications" : "Notifications",
+    "@notifications" : {
+        "description" : "Notifications (Tab text)."
     }
 }

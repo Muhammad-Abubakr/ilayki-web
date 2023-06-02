@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/item.dart';
 
@@ -20,7 +21,7 @@ class ItemWidget extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -32,11 +33,11 @@ class ItemWidget extends StatelessWidget {
                     );
                 Navigator.of(context).pop(true);
               },
-              child: const Text('confirm'),
+              child: Text(AppLocalizations.of(context)!.confirm),
             ),
           ],
-          title: const Text("Confirm Dismissle"),
-          content: const Text('Do you really want to remove this item?'),
+          title: Text(AppLocalizations.of(context)!.confirmationDialog),
+          content: Text(AppLocalizations.of(context)!.confirmRemoval),
         ),
       );
     }

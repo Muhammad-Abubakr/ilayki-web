@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import 'package:image_picker/image_picker.dart';
+
+import '../models/item.dart';
 
 class AddMenuItemScreen extends StatefulWidget {
   const AddMenuItemScreen({super.key});
@@ -52,7 +53,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
           /* Action Call to Save item */
           TextButton.icon(
             icon: const Icon(Icons.save),
-            label: const Text("Save"),
+            label: Text(AppLocalizations.of(context)!.save),
             onPressed: () {
               /* Basic validation */
               if (_itemNameController.text.isEmpty ||
@@ -79,13 +80,15 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                     final newItemRef = itemRef.push();
 
                     /* Set the new item on the newly create ref */
-                    await newItemRef.set({
-                      "name": _itemNameController.text,
-                      "price": double.parse(_itemPriceController.text),
-                      "description": _itemDescController.text,
-                      "image": await imageRef
+                    await newItemRef.set(Item(
+                      owner: user.uid,
+                      id: newItemRef.path.split('/').last,
+                      name: _itemNameController.text,
+                      price: double.parse(_itemPriceController.text),
+                      description: _itemDescController.text,
+                      image: await imageRef
                           .getDownloadURL(), // arrives ones we upload the picture to the storage
-                    });
+                    ).toJson());
                   })();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

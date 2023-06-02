@@ -61,6 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ));
             break;
           case UserStates.registered:
+            /* Popping Register Screen off Stack */
             Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
@@ -224,9 +225,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       } else {
                         userBloc.add(
                           RegisterUserWithEmailAndPassword(
-                            displayName: _nameController.text,
-                            email: _emailController.text,
-                            password: _passwordController.text,
+                            displayName: _nameController.text.trim(),
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim(),
                             xFile: _xFile!,
                           ),
                         );

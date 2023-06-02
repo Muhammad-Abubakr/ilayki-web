@@ -18,9 +18,12 @@ class UpdatesPage extends StatelessWidget {
             unselectedLabelColor: const Color.fromARGB(255, 236, 201, 171),
             tabs: [
               Tab(
-                  text: AppLocalizations.of(context)!.alerts,
+                  text: AppLocalizations.of(context)!.notifications,
                   icon: const Icon(Icons.notifications)),
-              Tab(text: AppLocalizations.of(context)!.chat, icon: const Icon(Icons.chat)),
+              Tab(
+                text: AppLocalizations.of(context)!.chat,
+                icon: const Icon(Icons.chat),
+              ),
             ],
           ),
         ),

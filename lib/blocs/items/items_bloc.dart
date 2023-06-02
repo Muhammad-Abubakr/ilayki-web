@@ -39,15 +39,9 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
         // declaring a list to hold the items data
         List<Item> userItems = [];
 
-        for (var element in data.entries) {
+        for (var element in data.values) {
           /* Parsing and making new Items from data */
-          final newItem = Item(
-            id: element.key,
-            name: element.value["name"] as String,
-            price: (element.value["price"] as int) / 1.0,
-            description: element.value["description"] as String,
-            image: '${element.value["image"]}',
-          );
+          final newItem = Item.fromJson(element.toString());
 
           // appending to the newly created list
           userItems.add(newItem);
@@ -64,6 +58,9 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
       DeactivateItemsListener event, Emitter<ItemsState> emit) {
     /* Unsubscribing to Items stream */
     _itemsStream.cancel().then((_) => print("Unsubscribed from items stream...!"));
+
+    /* Clear the Items */
+    emit(const ItemsUpdated(items: []));
   }
 
   /* deleting a specific object at some reference in firebase */

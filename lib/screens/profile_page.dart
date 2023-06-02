@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onTap: () => _pickImage(),
 
                         // Ternary Operation: image present ? show : show placeholder icon;
-                        child: user!.photoURL == null
+                        child: state.user!.photoURL == null
                             ? CircleAvatar(
                                 radius: 196.r,
                                 child: Icon(
@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: CircleAvatar(
                                   radius: 196.r,
                                   // If the photo url of the user in not null ? show the email pfp
-                                  backgroundImage: Image.network(user.photoURL!).image,
+                                  backgroundImage: Image.network(state.user!.photoURL!).image,
                                 ),
                               ),
                       );

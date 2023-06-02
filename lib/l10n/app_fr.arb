@@ -171,5 +171,41 @@
     "itemAddedSuccessfully" : "L'article a été ajouté avec succès",
     "@itemAddedSuccessfully" : {
         "description" : "L'article a été ajouté à la base de données avec succès."
+    },
+    "updationSuccessfull" : "Mise à jour réussie",
+    "@updationSuccessfull" : {
+        "description" : "La mise à jour a été effectuée avec succès."
+    },
+    "confirmationDialog" : "Dialogue de confirmation",
+    "@confirmationDialog" : {
+        "description" : "Dialogue de confirmation présenté à l'utilisateur."
+    },
+    "confirmationContent" : "Voulez-vous vraiment quitter l'application ?",
+    "@confirmationContent" : {
+        "description" : "Contenu de confirmation."
+    },
+    "cancel" : "Annuler",
+    "@cancel" : {
+        "description" : "Annuler."
+    },
+    "exit" : "Quitter",
+    "@exit" : {
+        "description" : "Quitter."
+    },
+    "save" : "Enregistrer",
+    "@save" : {
+        "description" : "Enregistrer quelque chose (texte du bouton)."
+    },
+    "confirm" : "Confirmer",
+    "@confirm" : {
+        "description" : "Confirmer quelque chose (texte du bouton)."
+    },
+    "confirmRemoval" : "Voulez-vous vraiment supprimer cet élément ?",
+    "@confirmRemoval" : {
+        "description" : "Voulez-vous vraiment supprimer cet élément ?"
+    },
+    "notifications" : "Notifications",
+    "@notifications" : {
+        "description" : "Notifications (texte de l'onglet)."
     }
 }
