@@ -83,7 +83,7 @@ class ItemOverview extends StatelessWidget {
                         // intialized there and end there
                         Navigator.of(context).pushNamed(ChatRoomScreen.routeName, arguments: {
                           "currentUser": context.read<UserBloc>().state.user!.uid,
-                          "owner": owner,
+                          "itemOwner": owner,
                         });
                       },
                       color: Theme.of(context).primaryColor,

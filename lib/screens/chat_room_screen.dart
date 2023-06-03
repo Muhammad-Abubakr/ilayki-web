@@ -22,7 +22,7 @@ class ChatRoomScreen extends StatefulWidget {
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
   /* Params */
   late String currentUser;
-  late User secondUser;
+  late User itemOwner;
 
   /* Controllers */
   final TextEditingController _messageController = TextEditingController();
@@ -33,7 +33,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     var args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
     currentUser = args["currentUser"] as String;
-    secondUser = args["owner"] as User;
+    itemOwner = args["itemOwner"] as User;
 
     super.didChangeDependencies();
   }
@@ -52,7 +52,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     final chatBloc = context.watch<ChatBloc>();
 
     /* intialize the chat room */
-    chatBloc.add(InitChatEvent(currentUser, secondUser.uid));
+    chatBloc.add(InitChatEvent(currentUser, itemOwner.uid));
 
     return Scaffold(
       /* Chat Screen App Bar */
@@ -68,11 +68,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(1.sw),
-              child: Image.network(secondUser.photoURL, fit: BoxFit.cover),
+              child: Image.network(itemOwner.photoURL, fit: BoxFit.cover),
             ),
           ),
           // Username
-          title: Text(secondUser.name),
+          title: Text(itemOwner.name),
           // online status
           trailing: BlocBuilder<OnlineCubit, OnlineState>(
             builder: (context, state) {
@@ -81,7 +81,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 child: CircleAvatar(
                   radius: 20.r,
-                  backgroundColor: state.onlineUsers.contains(secondUser.uid)
+                  backgroundColor: state.onlineUsers.contains(itemOwner.uid)
                       ? Colors.green
                       : Colors.redAccent,
                 ),
@@ -151,7 +151,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                     sender: context.read<UserBloc>().state.user!.uid,
                                     receiver:
                                         context.read<UserBloc>().state.user!.uid == currentUser
-                                            ? secondUser.uid
+                                            ? itemOwner.uid
                                             : currentUser,
                                     time: DateTime.now(),
                                     content: _messageController.text),

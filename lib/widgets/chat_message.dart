@@ -21,7 +21,7 @@ class ChatMessage extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 4.spMax),
             padding: EdgeInsets.all(8.spMax),
             decoration: BoxDecoration(
-              boxShadow: kElevationToShadow[1],
+              boxShadow: kElevationToShadow[3],
               borderRadius: BorderRadius.circular(32.r),
               color: message.sender == state.user?.uid
                   ? Theme.of(context).primaryColor
