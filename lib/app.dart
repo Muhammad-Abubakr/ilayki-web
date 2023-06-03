@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
+import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -147,11 +148,11 @@ class _AppState extends State<App> {
                 ),
                 BottomNavigationBarItem(
                   label: AppLocalizations.of(context)!.updates,
-                  icon: BlocBuilder<BasketCubit, BasketState>(
+                  icon: BlocBuilder<RequestsCubit, RequestsState>(
                     builder: (context, state) {
                       return Stack(children: [
                         const Icon(Icons.notifications),
-                        if (state.orderItems.isNotEmpty)
+                        if (state.requests.isNotEmpty)
                           CircleAvatar(
                             radius: 12.r,
                             backgroundColor: Colors.red.shade400,
