@@ -43,6 +43,11 @@ class UserbaseCubit extends Cubit<UserbaseState> {
     });
   }
 
+  /* Single User Getter */
+  User getUser(String uid) {
+    return state.userbase.firstWhere((u) => u.uid == uid);
+  }
+
   /* Dispose */
   Future<void> dispose() async {
     await _streamHolder.cancel();

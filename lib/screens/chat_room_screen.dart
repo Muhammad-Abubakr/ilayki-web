@@ -26,6 +26,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   /* Controllers */
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _controller = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -89,6 +90,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             },
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () => _controller.animateTo(
+                    _controller.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                  ),
+              icon: const Icon(Icons.keyboard_double_arrow_down))
+        ],
       ),
 
       /* Chat Body */
@@ -96,6 +106,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         children: [
           /* Chat Messages */
           ListView.builder(
+            controller: _controller,
             padding: EdgeInsets.only(
               left: 8.0.spMax,
               right: 8.0.spMax,

@@ -8,6 +8,7 @@ import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
+import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
 import 'package:ilayki/screens/register_screen.dart';
 
 import '../app.dart';
@@ -56,6 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
             /* Initialize the online users */
             context.read<OnlineCubit>().initialize();
+
+            /* Initialize the user chats */
+            context.read<UserchatCubit>().intialize();
 
             /* Initialize the userbase */
             context.read<UserbaseCubit>().initialize();

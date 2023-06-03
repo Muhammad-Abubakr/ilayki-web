@@ -64,6 +64,11 @@ class OnlineCubit extends Cubit<OnlineState> {
     });
   }
 
+  // is this user online
+  bool isOnline(String uid) {
+    return state.onlineUsers.contains(uid);
+  }
+
   // disposing the stream
   void dispose() async {
     await _authStream.cancel();

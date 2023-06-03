@@ -10,6 +10,7 @@ import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
+import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
 import 'package:ilayki/l10n/l10n.dart';
 import 'package:ilayki/screens/chat_room_screen.dart';
 import 'package:ilayki/screens/login_screen.dart';
@@ -40,6 +41,7 @@ void main() {
           BlocProvider<UserbaseCubit>(create: (context) => UserbaseCubit()),
           BlocProvider<OnlineCubit>(create: (context) => OnlineCubit()),
           BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
+          BlocProvider<UserchatCubit>(create: (context) => UserchatCubit()),
         ],
         child: const MyApp(),
       ),
