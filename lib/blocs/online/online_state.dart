@@ -1,7 +1,7 @@
 part of 'online_cubit.dart';
 
 abstract class OnlineState extends Equatable {
-  final List<User> onlineUsers;
+  final List<String> onlineUsers;
 
   const OnlineState(this.onlineUsers);
 

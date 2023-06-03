@@ -7,6 +7,7 @@ import 'package:ilayki/screens/add_menu_item.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../blocs/items/items_bloc.dart';
+import '../blocs/online/online_cubit.dart';
 import '../blocs/user/user_bloc.dart';
 import '../widgets/item_widget.dart';
 
@@ -37,28 +38,50 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   BlocBuilder<UserBloc, UserState>(
                     builder: (context, state) {
-                      return GestureDetector(
-                        // Handler for picking image
-                        onTap: () => _pickImage(),
+                      return Stack(
+                        children: [
+                          GestureDetector(
+                            // Handler for picking image
+                            onTap: () => _pickImage(),
 
-                        // Ternary Operation: image present ? show : show placeholder icon;
-                        child: state.user!.photoURL == null
-                            ? CircleAvatar(
-                                radius: 196.r,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 196.r,
-                                ),
-                              )
-                            : CircleAvatar(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                radius: 204.r,
+                            // Ternary Operation: image present ? show : show placeholder icon;
+                            child: state.user!.photoURL == null
+                                ? CircleAvatar(
+                                    radius: 196.r,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 196.r,
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    radius: 204.r,
+                                    child: CircleAvatar(
+                                      radius: 196.r,
+                                      // If the photo url of the user in not null ? show the email pfp
+                                      backgroundImage:
+                                          Image.network(state.user!.photoURL!).image,
+                                    ),
+                                  ),
+                          ),
+                          BlocBuilder<OnlineCubit, OnlineState>(
+                              builder: (context, onlineState) {
+                            return Container(
+                              margin: EdgeInsets.only(right: 16.spMax),
+                              child: CircleAvatar(
+                                radius: 42.r,
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                 child: CircleAvatar(
-                                  radius: 196.r,
-                                  // If the photo url of the user in not null ? show the email pfp
-                                  backgroundImage: Image.network(state.user!.photoURL!).image,
+                                  radius: 32.r,
+                                  backgroundColor:
+                                      onlineState.onlineUsers.contains(state.user!.uid)
+                                          ? Colors.greenAccent
+                                          : Colors.redAccent,
                                 ),
                               ),
+                            );
+                          }),
+                        ],
                       );
                     },
                   ),

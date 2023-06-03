@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ilayki/blocs/online/online_cubit.dart';
 
 import '../models/item.dart';
 import '../models/user.dart';
@@ -45,9 +47,15 @@ class ItemOverview extends StatelessWidget {
                 CircleAvatar(
                   radius: 24.r,
                   backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                  child: CircleAvatar(
-                    radius: 20.r,
-                    backgroundColor: Colors.redAccent,
+                  child: BlocBuilder<OnlineCubit, OnlineState>(
+                    builder: (context, state) {
+                      return CircleAvatar(
+                        radius: 20.r,
+                        backgroundColor: state.onlineUsers.contains(owner.uid)
+                            ? Colors.greenAccent
+                            : Colors.redAccent,
+                      );
+                    },
                   ),
                 ),
               ],

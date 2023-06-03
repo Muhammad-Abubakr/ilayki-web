@@ -11,7 +11,7 @@ part 'userbase_state.dart';
 
 class UserbaseCubit extends Cubit<UserbaseState> {
   /* getting the users ref from firebase realtime database*/
-  final usersRef = FirebaseDatabase.instance.ref("users");
+  final _usersRef = FirebaseDatabase.instance.ref("users");
 
   /* stream ref holder (for cancellation) while disposing*/
   late final StreamSubscription _streamHolder;
@@ -21,7 +21,7 @@ class UserbaseCubit extends Cubit<UserbaseState> {
   /* Initialize */
   Future<void> initialize() async {
     /* Subscribing to userbase stream */
-    _streamHolder = usersRef.onValue.listen((event) {
+    _streamHolder = _usersRef.onValue.listen((event) {
       /* Container for collecting users */
       final List<User> users = List.empty(growable: true);
 
@@ -47,6 +47,8 @@ class UserbaseCubit extends Cubit<UserbaseState> {
   Future<void> dispose() async {
     await _streamHolder.cancel();
 
+    // clearing the state
+    emit(const UserbaseUpdate([]));
     if (kDebugMode) {
       print("Userbase stream cancelled...");
     }

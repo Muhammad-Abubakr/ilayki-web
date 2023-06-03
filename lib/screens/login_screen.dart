@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
@@ -52,6 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
             /* Initialize the wares */
             context.read<WaresCubit>().intialize();
+
+            /* Initialize the online users */
+            context.read<OnlineCubit>().initialize();
 
             /* Initialize the userbase */
             context.read<UserbaseCubit>().initialize();

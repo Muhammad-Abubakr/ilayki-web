@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
+import '../blocs/items/items_bloc.dart';
+import '../blocs/userbase/userbase_cubit.dart';
 import '../blocs/wares/wares_cubit.dart';
 import '../screens/orders_screen.dart';
 import '../screens/sales_screen.dart';
@@ -123,8 +125,14 @@ class MainDrawer extends StatelessWidget {
                   ScaffoldMessenger.of(context).clearMaterialBanners();
                   ScaffoldMessenger.of(context).clearSnackBars();
 
-                  /* Unsubscribe from Wares Streams */
+                  /* Dipose of the wares */
                   context.read<WaresCubit>().dispose();
+
+                  /* Dipose of the userbase */
+                  context.read<UserbaseCubit>().dispose();
+
+                  /* This seems like a good point to unsubscribe to items stream */
+                  context.read<ItemsBloc>().add(const DeactivateItemsListener());
 
                   /* Sign Out the User */
                   context.read<UserBloc>().add(UserSignOut());

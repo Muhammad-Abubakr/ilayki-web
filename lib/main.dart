@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ilayki/blocs/chat/chat_bloc.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
+import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/l10n/l10n.dart';
@@ -36,6 +37,7 @@ void main() {
           BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
           BlocProvider<WaresCubit>(create: (context) => WaresCubit()),
           BlocProvider<UserbaseCubit>(create: (context) => UserbaseCubit()),
+          BlocProvider<OnlineCubit>(create: (context) => OnlineCubit()),
         ],
         child: const MyApp(),
       ),
