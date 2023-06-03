@@ -16,7 +16,7 @@ class OnlineCubit extends Cubit<OnlineState> {
   late final _onlineUsersRef = _database.child("online");
 
   /* stream holder */
-  late final StreamSubscription _onlineStream;
+  late StreamSubscription _onlineStream;
 
   /* Constructor */
   OnlineCubit() : super(const OnlineInitial([]));

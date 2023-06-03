@@ -14,7 +14,7 @@ class WaresCubit extends Cubit<WaresState> {
   final _itemsRef = FirebaseDatabase.instance.ref("items");
 
   /* Streams Array */
-  late final StreamSubscription _itemsStream;
+  late StreamSubscription _itemsStream;
 
   /* Constructor */
   WaresCubit() : super(const WaresInitial(wares: []));

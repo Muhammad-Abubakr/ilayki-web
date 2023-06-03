@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../blocs/user/user_bloc.dart';
+import '../../blocs/user/user_bloc.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {

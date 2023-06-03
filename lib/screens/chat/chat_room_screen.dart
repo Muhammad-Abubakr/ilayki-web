@@ -5,9 +5,9 @@ import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/models/message.dart';
 import 'package:ilayki/widgets/chat_message.dart';
 
-import '../blocs/chat/chat_bloc.dart';
-import '../blocs/online/online_cubit.dart';
-import '../models/user.dart';
+import '../../blocs/chat/chat_bloc.dart';
+import '../../blocs/online/online_cubit.dart';
+import '../../models/user.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   // route name
@@ -59,10 +59,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       /* Chat Screen App Bar */
       appBar: AppBar(
         title: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 0.spMax),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
           leading: Container(
-            margin: EdgeInsets.symmetric(vertical: 6.0.spMax),
-            padding: EdgeInsets.all(2.0.spMax),
+            margin: EdgeInsets.symmetric(vertical: 18.h),
+            padding: EdgeInsets.all(6.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(1.sw),
               color: Theme.of(context).colorScheme.primary,
@@ -108,10 +108,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           ListView.builder(
             controller: _controller,
             padding: EdgeInsets.only(
-              left: 8.0.spMax,
-              right: 8.0.spMax,
-              top: 12.0.spMax,
-              bottom: 64.spMax,
+              left: 24.h,
+              right: 24.h,
+              top: 42.h,
+              bottom: 200.h,
             ),
             itemBuilder: (context, index) =>
                 ChatMessage(message: chatBloc.state.messages[index]),
@@ -123,8 +123,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             alignment: Alignment.bottomCenter,
             child: Container(
               padding: EdgeInsets.symmetric(
-                vertical: 4.0.spMax,
-                horizontal: 8.0.spMax,
+                vertical: 12.h,
+                horizontal: 24.w,
               ),
               width: 100.sw,
               decoration: BoxDecoration(

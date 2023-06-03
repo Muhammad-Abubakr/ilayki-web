@@ -29,6 +29,7 @@ class ChatMessage extends StatelessWidget {
             ),
             child: Text(
               message.content,
+              textAlign: message.sender == state.user?.uid ? TextAlign.right : TextAlign.left,
               style: TextStyle(
                 color: message.sender == state.user?.uid
                     ? Colors.white

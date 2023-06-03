@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
-import 'package:ilayki/screens/login_screen.dart';
+import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../screens/basket_page.dart';
-import '../screens/home_page.dart';
-import '../screens/profile_page.dart';
-import '../screens/updates_page.dart';
+import 'blocs/basket/basket_cubit.dart';
+import 'screens/home/basket_page.dart';
+import 'screens/home/home_page.dart';
+import 'screens/home/profile_page.dart';
+import 'screens/home/updates_page.dart';
 import 'blocs/user/user_bloc.dart';
 
 class App extends StatefulWidget {
@@ -146,11 +147,33 @@ class _AppState extends State<App> {
                 ),
                 BottomNavigationBarItem(
                   label: AppLocalizations.of(context)!.updates,
-                  icon: const Icon(Icons.notifications),
+                  icon: BlocBuilder<BasketCubit, BasketState>(
+                    builder: (context, state) {
+                      return Stack(children: [
+                        const Icon(Icons.notifications),
+                        if (state.orderItems.isNotEmpty)
+                          CircleAvatar(
+                            radius: 12.r,
+                            backgroundColor: Colors.red.shade400,
+                          ),
+                      ]);
+                    },
+                  ),
                 ),
                 BottomNavigationBarItem(
                   label: AppLocalizations.of(context)!.basket,
-                  icon: const Icon(Icons.shopping_basket),
+                  icon: BlocBuilder<BasketCubit, BasketState>(
+                    builder: (context, state) {
+                      return Stack(children: [
+                        const Icon(Icons.shopping_basket),
+                        if (state.orderItems.isNotEmpty)
+                          CircleAvatar(
+                            radius: 12.r,
+                            backgroundColor: Colors.red.shade400,
+                          ),
+                      ]);
+                    },
+                  ),
                 ),
                 BottomNavigationBarItem(
                   label: AppLocalizations.of(context)!.profile,

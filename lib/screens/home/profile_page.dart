@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:ilayki/screens/add_menu_item.dart';
+import 'package:ilayki/screens/home/add_menu_item.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../blocs/items/items_bloc.dart';
-import '../blocs/online/online_cubit.dart';
-import '../blocs/user/user_bloc.dart';
-import '../widgets/item_widget.dart';
+import '../../blocs/items/items_bloc.dart';
+import '../../blocs/online/online_cubit.dart';
+import '../../blocs/user/user_bloc.dart';
+import '../../widgets/item_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

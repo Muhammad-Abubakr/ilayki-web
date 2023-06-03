@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/chat/chat_bloc.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
+import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
 import 'package:ilayki/l10n/l10n.dart';
-import 'package:ilayki/screens/chat_room_screen.dart';
-import 'package:ilayki/screens/login_screen.dart';
-import 'package:ilayki/screens/register_screen.dart';
+import 'package:ilayki/screens/chat/chat_room_screen.dart';
+import 'package:ilayki/screens/auth/login_screen.dart';
+import 'package:ilayki/screens/auth/register_screen.dart';
 
 import './firebase_options.dart';
 
@@ -42,6 +44,8 @@ void main() {
           BlocProvider<OnlineCubit>(create: (context) => OnlineCubit()),
           BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
           BlocProvider<UserchatCubit>(create: (context) => UserchatCubit()),
+          BlocProvider<BasketCubit>(create: (context) => BasketCubit()),
+          BlocProvider<RequestsCubit>(create: (context) => RequestsCubit()),
         ],
         child: const MyApp(),
       ),

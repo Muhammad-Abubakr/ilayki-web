@@ -13,7 +13,7 @@ class UserchatCubit extends Cubit<UserchatState> {
   final _chatsRef = FirebaseDatabase.instance.ref("chats");
 
   /* Stream of Chat Ref */
-  late final StreamSubscription _chatsStream;
+  late StreamSubscription _chatsStream;
 
   UserchatCubit() : super(const UserchatInitial([]));
 

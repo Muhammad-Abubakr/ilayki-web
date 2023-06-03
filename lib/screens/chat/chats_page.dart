@@ -5,9 +5,9 @@ import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
-import 'package:ilayki/screens/chat_room_screen.dart';
+import 'package:ilayki/screens/chat/chat_room_screen.dart';
 
-import '../models/user.dart';
+import '../../models/user.dart';
 
 class ChatsPage extends StatelessWidget {
   const ChatsPage({super.key});

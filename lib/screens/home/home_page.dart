@@ -5,7 +5,7 @@ import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/widgets/item_overview_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../blocs/wares/wares_cubit.dart';
+import '../../blocs/wares/wares_cubit.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});

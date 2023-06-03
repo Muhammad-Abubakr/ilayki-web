@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,7 @@ import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import '../models/item.dart';
+import '../../models/item.dart';
 
 class AddMenuItemScreen extends StatefulWidget {
   const AddMenuItemScreen({super.key});
@@ -103,8 +104,10 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
 
                   /* On Exception */
                 } on FirebaseException catch (e) {
-                  print(
-                      'Error Occured while talking to FirebaseStorage or FirebaseDatabase: $e');
+                  if (kDebugMode) {
+                    print(
+                        'Error Occured while talking to FirebaseStorage or FirebaseDatabase: $e');
+                  }
                 }
               }
             },

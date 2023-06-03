@@ -14,7 +14,7 @@ class UserbaseCubit extends Cubit<UserbaseState> {
   final _usersRef = FirebaseDatabase.instance.ref("users");
 
   /* stream ref holder (for cancellation) while disposing*/
-  late final StreamSubscription _streamHolder;
+  late StreamSubscription _streamHolder;
 
   UserbaseCubit() : super(const UserbaseInitial([]));
 
