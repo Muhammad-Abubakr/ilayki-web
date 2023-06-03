@@ -6,12 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/screens/register_screen.dart';
 
 import '../app.dart';
-import '../blocs/cubit/wares_cubit.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/localization/localization_cubit.dart';
+import '../blocs/wares/wares_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   // route name
@@ -51,6 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
             /* Initialize the wares */
             context.read<WaresCubit>().intialize();
+
+            /* Initialize the userbase */
+            context.read<UserbaseCubit>().initialize();
 
             /* Fetch the Items */
             context

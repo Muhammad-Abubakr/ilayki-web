@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ilayki/blocs/cubit/wares_cubit.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
+import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/screens/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,6 +14,7 @@ import '../screens/home_page.dart';
 import '../screens/profile_page.dart';
 import '../screens/updates_page.dart';
 import 'blocs/user/user_bloc.dart';
+import 'blocs/wares/wares_cubit.dart';
 
 class App extends StatefulWidget {
   // route name
@@ -66,8 +67,11 @@ class _AppState extends State<App> {
               );
               break;
             case UserStates.signedOut:
-              /* Initialize the wares */
+              /* Dipose of the wares */
               context.read<WaresCubit>().dispose();
+
+              /* Dipose of the userbase */
+              context.read<UserbaseCubit>().dispose();
 
               /* This seems like a good point to unsubscribe to items stream */
               context.read<ItemsBloc>().add(const DeactivateItemsListener());

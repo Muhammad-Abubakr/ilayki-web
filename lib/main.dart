@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ilayki/blocs/chat/chat_bloc.dart';
-import 'package:ilayki/blocs/cubit/wares_cubit.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
+import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/l10n/l10n.dart';
 import 'package:ilayki/screens/login_screen.dart';
 import 'package:ilayki/screens/register_screen.dart';
@@ -16,6 +16,7 @@ import 'package:ilayki/screens/register_screen.dart';
 import './firebase_options.dart';
 
 import 'app.dart';
+import 'blocs/wares/wares_cubit.dart';
 
 void main() {
   (() async {
@@ -34,6 +35,7 @@ void main() {
           BlocProvider<ItemsBloc>(create: (context) => ItemsBloc()),
           BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
           BlocProvider<WaresCubit>(create: (context) => WaresCubit()),
+          BlocProvider<UserbaseCubit>(create: (context) => UserbaseCubit()),
         ],
         child: const MyApp(),
       ),
