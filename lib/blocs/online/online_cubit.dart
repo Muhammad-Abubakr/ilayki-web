@@ -58,10 +58,10 @@ class OnlineCubit extends Cubit<OnlineState> {
           uids.add(uid.toString());
         }
       }
-    });
 
-    // after the stream emit the state
-    emit(OnlineUpdated(uids));
+      // after the stream emit the state
+      emit(OnlineUpdated(uids));
+    });
   }
 
   // disposing the stream

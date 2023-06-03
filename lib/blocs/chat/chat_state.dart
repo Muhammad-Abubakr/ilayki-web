@@ -1,7 +1,7 @@
 part of 'chat_bloc.dart';
 
 abstract class ChatState extends Equatable {
-  final List<Message>? messages;
+  final List<Message> messages;
 
   const ChatState({required this.messages});
 
@@ -11,4 +11,8 @@ abstract class ChatState extends Equatable {
 
 class ChatInitial extends ChatState {
   const ChatInitial({required super.messages});
+}
+
+class ChatUpdates extends ChatState {
+  const ChatUpdates({required super.messages});
 }

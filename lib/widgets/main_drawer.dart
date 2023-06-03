@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import '../blocs/items/items_bloc.dart';
@@ -127,6 +128,9 @@ class MainDrawer extends StatelessWidget {
 
                   /* Dipose of the wares */
                   context.read<WaresCubit>().dispose();
+
+                  /* Dipose of the wares */
+                  context.read<OnlineCubit>().dispose();
 
                   /* Dipose of the userbase */
                   context.read<UserbaseCubit>().dispose();

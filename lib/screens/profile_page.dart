@@ -39,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   BlocBuilder<UserBloc, UserState>(
                     builder: (context, state) {
                       return Stack(
+                        alignment: Alignment.bottomRight,
                         children: [
                           GestureDetector(
                             // Handler for picking image

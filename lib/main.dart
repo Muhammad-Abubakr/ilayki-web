@@ -11,6 +11,7 @@ import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/l10n/l10n.dart';
+import 'package:ilayki/screens/chat_room_screen.dart';
 import 'package:ilayki/screens/login_screen.dart';
 import 'package:ilayki/screens/register_screen.dart';
 
@@ -38,6 +39,7 @@ void main() {
           BlocProvider<WaresCubit>(create: (context) => WaresCubit()),
           BlocProvider<UserbaseCubit>(create: (context) => UserbaseCubit()),
           BlocProvider<OnlineCubit>(create: (context) => OnlineCubit()),
+          BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
         ],
         child: const MyApp(),
       ),
@@ -105,6 +107,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (_) => const LoginScreen(),
         RegisterScreen.routeName: (_) => const RegisterScreen(),
         App.routeName: (_) => const App(),
+        ChatRoomScreen.routeName: (_) => const ChatRoomScreen(),
       },
     );
   }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
+import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import '../models/item.dart';
 import '../models/user.dart';
+import '../screens/chat_room_screen.dart';
 
 class ItemOverview extends StatelessWidget {
   final Item item;
@@ -76,7 +78,14 @@ class ItemOverview extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // go to the chat page, send the two users as arguments, chat will be
+                        // intialized there and end there
+                        Navigator.of(context).pushNamed(ChatRoomScreen.routeName, arguments: {
+                          "currentUser": context.read<UserBloc>().state.user!.uid,
+                          "owner": owner,
+                        });
+                      },
                       color: Theme.of(context).primaryColor,
                       icon: const Icon(Icons.chat_rounded),
                     ),
@@ -87,11 +96,12 @@ class ItemOverview extends StatelessWidget {
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              content: Text(
-                                '${item.name} added to basket',
-                                textAlign: TextAlign.center,
-                              )),
+                            backgroundColor: Theme.of(context).primaryColor,
+                            content: Text(
+                              '${item.name} added to basket',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         );
                       },
                       icon: const Icon(Icons.shopping_basket_outlined),
