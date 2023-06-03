@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
+import 'package:ilayki/blocs/orders/orders_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
+import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import '../blocs/items/items_bloc.dart';
@@ -145,6 +147,12 @@ class MainDrawer extends StatelessWidget {
 
                   /* Dipose of the requests for the current user */
                   context.read<RequestsCubit>().dispose();
+
+                  /* Dipose of the orders for the current user */
+                  context.read<OrdersCubit>().dispose();
+
+                  /* Dipose of the sales for the current user */
+                  context.read<SalesCubit>().dispose();
 
                   /* Sign Out the User */
                   context.read<UserBloc>().add(UserSignOut());

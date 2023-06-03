@@ -85,6 +85,7 @@ class _AppState extends State<App> {
               centerTitle: true,
               foregroundColor: const Color.fromARGB(255, 236, 201, 171),
               shadowColor: const Color.fromARGB(255, 244, 217, 185),
+              elevation: 0,
 
               // Locales
               actions: [

@@ -9,7 +9,9 @@ import 'package:ilayki/blocs/chat/chat_bloc.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
+import 'package:ilayki/blocs/orders/orders_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
+import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
@@ -46,6 +48,8 @@ void main() {
           BlocProvider<UserchatCubit>(create: (context) => UserchatCubit()),
           BlocProvider<BasketCubit>(create: (context) => BasketCubit()),
           BlocProvider<RequestsCubit>(create: (context) => RequestsCubit()),
+          BlocProvider<OrdersCubit>(create: (context) => OrdersCubit()),
+          BlocProvider<SalesCubit>(create: (context) => SalesCubit()),
         ],
         child: const MyApp(),
       ),

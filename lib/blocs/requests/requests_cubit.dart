@@ -35,18 +35,18 @@ class RequestsCubit extends Cubit<RequestsState> {
         // filter the keys
         for (var key in data.keys) {
           // checking if the owner id is this user
-          print(key.toString().split('+')[1]);
-          print(myUID);
+          // print(key.toString().split('+')[1]);
+          // print(myUID);
           if (key.toString().split('+')[1] == myUID) {
             // set this key as the ref to our requests
             final requestsRef = _requests.child(key);
 
-            print(requestsRef);
+            // print(requestsRef);
             // get all the requests between these two users
             final data = (await requestsRef.get()).value as Map<dynamic, dynamic>?;
 
             if (data != null) {
-              print(data.values);
+              // print(data.values);
               // for each request in the requests
               for (var request in data.values) {
                 // parse each request to Order
