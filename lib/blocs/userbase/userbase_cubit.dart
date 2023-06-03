@@ -36,10 +36,9 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
           users.add(parsedUser);
         }
-
-        /* emit the new state after collection */
-        emit(UserbaseUpdate(users));
       }
+      /* emit the new state after collection */
+      emit(UserbaseUpdate(users));
     });
   }
 

@@ -15,14 +15,11 @@ class UserchatCubit extends Cubit<UserchatState> {
   /* Stream of Chat Ref */
   late final StreamSubscription _chatsStream;
 
-  /* Stream of Firebase */
-  late final StreamSubscription _firebaseStream;
-
   UserchatCubit() : super(const UserchatInitial([]));
 
   /* Initialize the cubit */
   void intialize() async {
-    _firebaseStream = FirebaseAuth.instance.authStateChanges().listen((user) {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
       // if the user is signed in
       if (user != null) {
         // get all the references for chats
@@ -41,11 +38,9 @@ class UserchatCubit extends Cubit<UserchatState> {
                 chatRefs.add(ref);
               }
             }
-
-            print(chatRefs);
-            /* after all the keys have been collected, emit */
-            emit(UserchatUpdate(chatRefs));
           }
+          /* after all the keys have been collected, emit */
+          emit(UserchatUpdate(chatRefs));
         });
       }
     });
@@ -55,7 +50,6 @@ class UserchatCubit extends Cubit<UserchatState> {
   void dispose() {
     // cancelling streams
     _chatsStream.cancel();
-    _firebaseStream.cancel();
 
     // clearing the state
     emit(const UserchatUpdate([]));

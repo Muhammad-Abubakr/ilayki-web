@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
 import '../../models/item.dart';
@@ -55,9 +56,13 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
 
   /* Unsubscribing from the items obervable stream */
   FutureOr<void> _onDeactivateItemsListener(
-      DeactivateItemsListener event, Emitter<ItemsState> emit) {
+      DeactivateItemsListener event, Emitter<ItemsState> emit) async {
     /* Unsubscribing to Items stream */
-    _itemsStream.cancel().then((_) => print("Unsubscribed from items stream...!"));
+    await _itemsStream.cancel();
+
+    if (kDebugMode) {
+      print("Unsubscribed from items stream...!");
+    }
 
     /* Clear the Items */
     emit(const ItemsUpdated(items: []));

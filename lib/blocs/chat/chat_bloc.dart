@@ -76,11 +76,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           //add the parsed messages to container
           messages.add(parsedMessage);
         }
+        // once all the messages have been read, intialization completes after emition of them
+        // so
+        add(_UpdateMessagesEvent(messages));
       }
-
-      // once all the messages have been read, intialization completes after emition of them
-      // so
-      add(_UpdateMessagesEvent(messages));
     });
   }
 

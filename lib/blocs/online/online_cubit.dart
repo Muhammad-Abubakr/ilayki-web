@@ -18,9 +18,6 @@ class OnlineCubit extends Cubit<OnlineState> {
   /* stream holder */
   late final StreamSubscription _onlineStream;
 
-  /* auth state holder */
-  late final StreamSubscription _authStream;
-
   /* Constructor */
   OnlineCubit() : super(const OnlineInitial([]));
 
@@ -30,7 +27,7 @@ class OnlineCubit extends Cubit<OnlineState> {
     late DatabaseReference signedInUserRef;
 
     // put the value to the onlineUsers ref if signed in and remove if signed out
-    _authStream = FirebaseAuth.instance.authStateChanges().listen((user) async {
+    FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user != null) {
         // getting the ref to the user
         signedInUserRef = _onlineUsersRef.child(user.uid);
@@ -57,10 +54,9 @@ class OnlineCubit extends Cubit<OnlineState> {
         for (var uid in data.keys) {
           uids.add(uid.toString());
         }
-
-        // after the stream emit the state
-        emit(OnlineUpdated(uids));
       }
+      // after the stream emit the state
+      emit(OnlineUpdated(uids));
     });
   }
 
@@ -71,7 +67,6 @@ class OnlineCubit extends Cubit<OnlineState> {
 
   // disposing the stream
   void dispose() async {
-    await _authStream.cancel();
     await _onlineStream.cancel();
 
     // clearing the state

@@ -46,10 +46,10 @@ class WaresCubit extends Cubit<WaresState> {
             }
           }
         }
-
-        /* and once we have iterated on all the users for all items they have */
-        emit(WaresUpdated(wares: wareItems));
       }
+
+      /* and once we have iterated on all the users for all items they have */
+      emit(WaresUpdated(wares: wareItems));
     });
   }
 
