@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../blocs/user/user_bloc.dart';
-import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   // route name
@@ -38,42 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     /* Used for padding for fields */
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return BlocConsumer<UserBloc, UserState>(
-      listener: (context, state) {
-        // In case of error
-        switch (state.state) {
-          case UserStates.error:
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-                state.error!.message!,
-                textAlign: TextAlign.center,
-              ),
-            ));
-            break;
-          case UserStates.processing:
-            showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (_) => Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ));
-            break;
-          case UserStates.registered:
-            /* Popping Register Screen off Stack */
-            Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.userSuccessfullyRegistered,
-                textAlign: TextAlign.center,
-              ),
-            ));
-            break;
-          default:
-            break;
-        }
-      },
+    return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(

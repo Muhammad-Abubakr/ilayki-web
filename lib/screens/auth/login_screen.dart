@@ -84,14 +84,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 .add(ActivateItemsListener(userBloc: context.read<UserBloc>()));
 
             // Pop the progress indicator
-            Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
+            Navigator.of(context).pop();
             // and push the screen
-            Navigator.of(context).pushNamed(App.routeName);
+            Navigator.of(context).popAndPushNamed(App.routeName);
             break;
           case UserStates.error:
             // Incase of error pop the routes (which will contain progress indicator mostly)
             // until login screen and show the snack bar with the error
-            Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
+            Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
                 state.error!.message!,
@@ -101,158 +101,177 @@ class _LoginScreenState extends State<LoginScreen> {
             break;
           case UserStates.processing:
             // Show the Dialog presenting progress indicator
-            showDialog(
-                barrierDismissible: false,
+            Navigator.of(context).push(
+              DialogRoute(
                 context: context,
-                builder: (_) => Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ));
+                builder: (context) => Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+            );
             break;
+          case UserStates.registered:
+            /* Popping Register Screen off Stack */
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.userSuccessfullyRegistered,
+                textAlign: TextAlign.center,
+              ),
+            ));
+            break;
+
           default:
             break;
         }
       },
-      child: WillPopScope(
-        onWillPop: () => showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text(AppLocalizations.of(context)!.confirmationDialog),
-            content: Text(AppLocalizations.of(context)!.confirmationContent),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(AppLocalizations.of(context)!.cancel),
+      child: ScreenUtilInit(
+        designSize: const Size(1080, 2340),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        //* The following builder method returns the child on which we can use screen utils package
+        builder: (context, child) => WillPopScope(
+          onWillPop: () => showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text(AppLocalizations.of(context)!.confirmationDialog),
+              content: Text(AppLocalizations.of(context)!.confirmationContent),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+                ElevatedButton(
+                  onPressed: () => exit(exitCode),
+                  child: Text(AppLocalizations.of(context)!.exit),
+                ),
+              ],
+            ),
+          ).then((value) => value as bool),
+          child: Scaffold(
+            /* App Bar */
+            appBar: AppBar(
+              leading: Center(
+                child: Text(
+                  AppLocalizations.of(context)!.welcome,
+                  style: TextStyle(
+                    fontSize: 22.spMax,
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () => exit(exitCode),
-                child: Text(AppLocalizations.of(context)!.exit),
-              ),
-            ],
-          ),
-        ).then((value) => value as bool),
-        child: Scaffold(
-          /* App Bar */
-          appBar: AppBar(
-            leading: Center(
-              child: Text(
-                AppLocalizations.of(context)!.welcome,
-                style: TextStyle(
-                  fontSize: 22.spMax,
+              leadingWidth: 0.3.sw,
+              foregroundColor: const Color.fromARGB(255, 236, 201, 171),
+              shadowColor: const Color.fromARGB(255, 244, 217, 185),
+
+              // Locales
+              actions: [
+                /* Dropdown Button for changing the locale for the application */
+                DropdownButton(
+                  iconSize: 16.spMax,
+                  elevation: 1,
+                  value: dropdownValue,
+
+                  // Update the cubit state with the locale selected by the user
+                  onChanged: (value) {
+                    if (value != null) cubit.updateLocale(value);
+                  },
+                  items: [
+                    DropdownMenuItem(
+                      value: SupportedLocales.en,
+                      child: Image.asset(
+                        'lib/assets/flags/us.png',
+                        fit: BoxFit.scaleDown,
+                        height: 16.spMax,
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: SupportedLocales.ar,
+                      child: Image.asset(
+                        'lib/assets/flags/sa.png',
+                        fit: BoxFit.scaleDown,
+                        height: 16.spMax,
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: SupportedLocales.fr,
+                      child: Image.asset(
+                        'lib/assets/flags/fr.png',
+                        fit: BoxFit.scaleDown,
+                        height: 16.spMax,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            body: // Form Global Key
+                Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: !isLandscape ? 0.08.sw : 0.3.sw,
+                  vertical: 128.h,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Ilayki',
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                    ),
+                    SizedBox(height: 172.h),
+                    TextField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context)!.email),
+                      ),
+                    ),
+                    SizedBox(height: 24.h),
+                    TextField(
+                      obscureText: true,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        label: Text(AppLocalizations.of(context)!.password),
+                      ),
+                    ),
+                    SizedBox(height: 96.h),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<UserBloc>().add(UserSignInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ));
+                      },
+                      style: TextButton.styleFrom(
+                        elevation: 4,
+                      ),
+                      child: Text(AppLocalizations.of(context)!.signIn),
+                    ),
+                  ],
                 ),
               ),
             ),
-            leadingWidth: 0.3.sw,
-            foregroundColor: const Color.fromARGB(255, 236, 201, 171),
-            shadowColor: const Color.fromARGB(255, 244, 217, 185),
-
-            // Locales
-            actions: [
-              /* Dropdown Button for changing the locale for the application */
-              DropdownButton(
-                iconSize: 16.spMax,
-                elevation: 1,
-                value: dropdownValue,
-
-                // Update the cubit state with the locale selected by the user
-                onChanged: (value) {
-                  if (value != null) cubit.updateLocale(value);
-                },
-                items: [
-                  DropdownMenuItem(
-                    value: SupportedLocales.en,
-                    child: Image.asset(
-                      'lib/assets/flags/us.png',
-                      fit: BoxFit.scaleDown,
-                      height: 16.spMax,
+            persistentFooterButtons: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(AppLocalizations.of(context)!.notRegistered),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const RegisterScreen(),
+                      ),
                     ),
-                  ),
-                  DropdownMenuItem(
-                    value: SupportedLocales.ar,
-                    child: Image.asset(
-                      'lib/assets/flags/sa.png',
-                      fit: BoxFit.scaleDown,
-                      height: 16.spMax,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: SupportedLocales.fr,
-                    child: Image.asset(
-                      'lib/assets/flags/fr.png',
-                      fit: BoxFit.scaleDown,
-                      height: 16.spMax,
-                    ),
-                  ),
+                    child: Text(AppLocalizations.of(context)!.registerHere),
+                  )
                 ],
               ),
             ],
           ),
-          body: // Form Global Key
-              Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: !isLandscape ? 0.08.sw : 0.3.sw,
-                vertical: 128.h,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Ilayki',
-                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                  ),
-                  SizedBox(height: 172.h),
-                  TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      label: Text(AppLocalizations.of(context)!.email),
-                    ),
-                  ),
-                  SizedBox(height: 24.h),
-                  TextField(
-                    obscureText: true,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      label: Text(AppLocalizations.of(context)!.password),
-                    ),
-                  ),
-                  SizedBox(height: 96.h),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<UserBloc>().add(UserSignInWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ));
-                    },
-                    style: TextButton.styleFrom(
-                      elevation: 4,
-                    ),
-                    child: Text(AppLocalizations.of(context)!.signIn),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          persistentFooterButtons: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(AppLocalizations.of(context)!.notRegistered),
-                TextButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const RegisterScreen(),
-                    ),
-                  ),
-                  child: Text(AppLocalizations.of(context)!.registerHere),
-                )
-              ],
-            ),
-          ],
         ),
       ),
     );

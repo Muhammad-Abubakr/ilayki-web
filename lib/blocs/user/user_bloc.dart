@@ -176,10 +176,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               uid: user.uid,
             ).toJson(),
           );
-
-          /* At last check if the user has been logged in auto by firebase sdk */
-          // and sign out
-          add(UserSignOut());
         });
       }
 

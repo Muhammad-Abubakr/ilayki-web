@@ -155,6 +155,7 @@ class MainDrawer extends StatelessWidget {
                   context.read<SalesCubit>().dispose();
 
                   /* Sign Out the User */
+                  Navigator.of(context).pop();
                   context.read<UserBloc>().add(UserSignOut());
                 },
                 splashColor: Colors.white30,
