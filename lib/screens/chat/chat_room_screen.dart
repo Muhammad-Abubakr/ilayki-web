@@ -104,6 +104,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
         children: [
           /* Chat Messages */
           ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
             controller: _controller,
             padding: EdgeInsets.only(
               left: 24.h,

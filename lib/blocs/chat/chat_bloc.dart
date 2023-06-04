@@ -110,7 +110,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   FutureOr<void> _streamEmissionHandler(_UpdateMessagesEvent event, Emitter<ChatState> emit) {
     // order the messages based on timestamp
     event.messages.sort((a, b) => a.time.compareTo(b.time));
+    final messages = event.messages.reversed.toList();
 
-    emit(ChatUpdates(messages: event.messages));
+    emit(ChatUpdates(messages: messages));
   }
 }
