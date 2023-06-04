@@ -126,7 +126,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 title: const Text("Ilayki"),
                 centerTitle: true,
                 foregroundColor: const Color.fromARGB(255, 236, 201, 171),
-                shadowColor: const Color.fromARGB(255, 244, 217, 185),
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                shadowColor: Colors.transparent,
                 elevation: 0,
 
                 // Locales

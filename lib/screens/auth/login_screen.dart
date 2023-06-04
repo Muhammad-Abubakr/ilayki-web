@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 .add(ActivateItemsListener(userBloc: context.read<UserBloc>()));
 
             // Pop the progress indicator
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
             // and push the screen
             Navigator.of(context).popAndPushNamed(App.routeName);
             break;
@@ -114,7 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
             break;
           case UserStates.registered:
             /* Popping Register Screen off Stack */
-            Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
                 AppLocalizations.of(context)!.userSuccessfullyRegistered,

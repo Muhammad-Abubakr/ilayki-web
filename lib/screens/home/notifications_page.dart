@@ -46,9 +46,8 @@ class NotificationsPage extends StatelessWidget {
                       "currentUser": state.requests[index].sellerID,
                       "itemOwner": userbaseCubit.getUser(state.requests[index].buyerID),
                     }),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(1.sw),
-                      child: Image.network(buyer.photoURL, fit: BoxFit.cover),
+                    child: CircleAvatar(
+                      backgroundImage: Image.network(buyer.photoURL, fit: BoxFit.cover).image,
                     ),
                   ),
                 ),
