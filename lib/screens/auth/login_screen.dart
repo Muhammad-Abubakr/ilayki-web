@@ -59,7 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
             context.read<WaresCubit>().intialize();
 
             /* Initialize the online users */
-            context.read<OnlineCubit>().initialize();
+            final onlineCubit = context.read<OnlineCubit>();
+            onlineCubit.initialize();
+            onlineCubit.setOnline();
 
             /* Initialize the requests for current user */
             context.read<RequestsCubit>().initialize();

@@ -60,11 +60,11 @@ class SalesScreen extends StatelessWidget {
                         onTap: () => Navigator.of(context)
                             .pushNamed(ChatRoomScreen.routeName, arguments: {
                           "currentUser": sales[index].sellerID,
-                          "itemOwner": userbaseCubit.getUser(sales[index].buyerID),
+                          "itemOwner": buyer,
                         }),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(1.sw),
-                          child: Image.network(buyer.photoURL, fit: BoxFit.cover),
+                        child: CircleAvatar(
+                          backgroundImage:
+                              Image.network(buyer.photoURL, fit: BoxFit.cover).image,
                         ),
                       ),
                     ),

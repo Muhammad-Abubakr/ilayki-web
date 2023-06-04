@@ -44,7 +44,7 @@ class OrdersScreen extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  final buyer = userbaseCubit.getUser(orders[index].buyerID);
+                  final seller = userbaseCubit.getUser(orders[index].sellerID);
 
                   return ListTile(
                     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -62,9 +62,9 @@ class OrdersScreen extends StatelessWidget {
                           "currentUser": orders[index].buyerID,
                           "itemOwner": userbaseCubit.getUser(orders[index].sellerID),
                         }),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(1.sw),
-                          child: Image.network(buyer.photoURL, fit: BoxFit.cover),
+                        child: CircleAvatar(
+                          backgroundImage:
+                              Image.network(seller.photoURL, fit: BoxFit.cover).image,
                         ),
                       ),
                     ),

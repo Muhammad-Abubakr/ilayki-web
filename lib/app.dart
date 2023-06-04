@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
+import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
@@ -25,7 +26,46 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with WidgetsBindingObserver {
+  /* Hooking the app lifecyles */
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  /* ----------------------------------- */
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+        context.read<OnlineCubit>().setOffline();
+        break;
+
+      case AppLifecycleState.resumed:
+        /* resume the online status */
+        context.read<OnlineCubit>().setOnline();
+        break;
+
+      default:
+        if (kDebugMode) {
+          print(state);
+        }
+        break;
+    }
+
+    super.didChangeAppLifecycleState(state);
+  }
+
   /* Defining currentIndex as state of the app */
   int currentScreenIndex = 0;
 

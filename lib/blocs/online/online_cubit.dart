@@ -22,29 +22,12 @@ class OnlineCubit extends Cubit<OnlineState> {
   OnlineCubit() : super(const OnlineInitial([]));
 
   // intialization of the online users cubit
-  void initialize() async {
-    // keeping the ref to signed in user
-    late DatabaseReference signedInUserRef;
-
-    // put the value to the onlineUsers ref if signed in and remove if signed out
-    FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user != null) {
-        // getting the ref to the user
-        signedInUserRef = _onlineUsersRef.child(user.uid);
-
-        // setting the timestamp as to when the user logged in
-        await signedInUserRef.set({"timestamp": '${DateTime.now()}'});
-      } else {
-        // deleting the user from the online users
-        await signedInUserRef.remove();
-      }
-    });
-
-    /* Uids Container which after mapping from the snapshot is set as the state */
-    List<String> uids = List.empty(growable: true);
-
+  void initialize() {
     // get all the online users snapshot
     _onlineStream = _onlineUsersRef.onValue.listen((event) {
+      /* Uids Container which after mapping from the snapshot is set as the state */
+      List<String> uids = List.empty(growable: true);
+
       // get the data from the snapshot
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
@@ -55,6 +38,9 @@ class OnlineCubit extends Cubit<OnlineState> {
           uids.add(uid.toString());
         }
       }
+      if (kDebugMode) {
+        print('Online Users: $uids');
+      }
       // after the stream emit the state
       emit(OnlineUpdated(uids));
     });
@@ -63,6 +49,39 @@ class OnlineCubit extends Cubit<OnlineState> {
   // is this user online
   bool isOnline(String uid) {
     return state.onlineUsers.contains(uid);
+  }
+
+  // set online
+  void setOnline() async {
+    // keeping the ref to signed in user
+    late DatabaseReference signedInUserRef;
+
+    // put the value to the onlineUsers ref if signed in and remove if signed out
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && !isOnline(user.uid)) {
+      // getting the ref to the user
+      signedInUserRef = _onlineUsersRef.child(user.uid);
+
+      // setting the timestamp as to when the user logged in
+      await signedInUserRef.set({"timestamp": '${DateTime.now()}'});
+    }
+  }
+
+  // set offline
+  void setOffline() async {
+    // keeping the ref to signed in user
+    late DatabaseReference signedInUserRef;
+
+    // put the value to the onlineUsers ref if signed in and remove if signed out
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // getting the ref to the user
+      signedInUserRef = _onlineUsersRef.child(user.uid);
+
+      // setting to offline
+      await signedInUserRef.remove();
+    }
   }
 
   // disposing the stream

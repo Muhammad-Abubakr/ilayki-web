@@ -60,10 +60,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     ///? Now that we are done with the room reference let's get all the chat messages we have
     /// inside the reference our Bloc chose
-    //* Messages Container
-    final List<Message> messages = List.empty(growable: true);
 
     _chatStreamRef = _chatRoomRef.onValue.listen((event) {
+      //* Messages Container
+      final List<Message> messages = List.empty(growable: true);
+
       // extract the data
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
 

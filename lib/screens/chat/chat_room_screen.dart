@@ -19,7 +19,7 @@ class ChatRoomScreen extends StatefulWidget {
   State<ChatRoomScreen> createState() => _ChatRoomScreenState();
 }
 
-class _ChatRoomScreenState extends State<ChatRoomScreen> {
+class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObserver {
   /* Params */
   late String currentUser;
   late User itemOwner;
@@ -36,6 +36,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     currentUser = args["currentUser"] as String;
     itemOwner = args["itemOwner"] as User;
 
+    /* intialize the chat room */
+    context.read<ChatBloc>().add(InitChatEvent(currentUser, itemOwner.uid));
+
     super.didChangeDependencies();
   }
 
@@ -43,7 +46,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   void deactivate() {
     /* dispose the chat room */
     context.read<ChatBloc>().add(const DisposeChat());
-
     super.deactivate();
   }
 
@@ -51,9 +53,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   Widget build(BuildContext context) {
     /* force updating the chats screen */
     final chatBloc = context.watch<ChatBloc>();
-
-    /* intialize the chat room */
-    chatBloc.add(InitChatEvent(currentUser, itemOwner.uid));
 
     return Scaffold(
       /* Chat Screen App Bar */
@@ -67,9 +66,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               borderRadius: BorderRadius.circular(1.sw),
               color: Theme.of(context).colorScheme.primary,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(1.sw),
-              child: Image.network(itemOwner.photoURL, fit: BoxFit.cover),
+            child: CircleAvatar(
+              backgroundImage: Image.network(itemOwner.photoURL, fit: BoxFit.cover).image,
             ),
           ),
           // Username
@@ -156,18 +154,20 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   ),
                   IconButton.filled(
                       onPressed: () {
-                        context.read<ChatBloc>().add(
-                              SendMessageEvent(
-                                Message(
-                                    sender: context.read<UserBloc>().state.user!.uid,
-                                    receiver:
-                                        context.read<UserBloc>().state.user!.uid == currentUser
-                                            ? itemOwner.uid
-                                            : currentUser,
-                                    time: DateTime.now(),
-                                    content: _messageController.text),
-                              ),
-                            );
+                        if (_messageController.text.isNotEmpty) {
+                          context.read<ChatBloc>().add(
+                                SendMessageEvent(
+                                  Message(
+                                      sender: context.read<UserBloc>().state.user!.uid,
+                                      receiver: context.read<UserBloc>().state.user!.uid ==
+                                              currentUser
+                                          ? itemOwner.uid
+                                          : currentUser,
+                                      time: DateTime.now(),
+                                      content: _messageController.text),
+                                ),
+                              );
+                        }
 
                         // after sending the event clear the text
                         _messageController.clear();

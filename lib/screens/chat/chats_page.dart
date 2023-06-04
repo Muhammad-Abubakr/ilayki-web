@@ -51,9 +51,8 @@ class ChatsPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(1.sw),
               color: Theme.of(context).colorScheme.primary,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(1.sw),
-              child: Image.network(otherUser.photoURL, fit: BoxFit.cover),
+            child: CircleAvatar(
+              backgroundImage: Image.network(otherUser.photoURL, fit: BoxFit.cover).image,
             ),
           ),
           title: Text(otherUser.name),
