@@ -160,6 +160,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         // Getting the reference
         final imageRef = storage.child('pfps/${user.uid}');
 
+//        File(event.xFile.path).readAsBytes();
+
         imageRef.putFile(File(event.xFile.path)).whenComplete(() async {
           /* Updating the user */
           await user.updateDisplayName(event.displayName);

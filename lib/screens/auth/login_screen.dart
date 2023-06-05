@@ -113,13 +113,18 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             break;
           case UserStates.registered:
-            /* Popping Register Screen off Stack */
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.userSuccessfullyRegistered,
-                textAlign: TextAlign.center,
-              ),
-            ));
+             /* Popping Register Screen off Stack */
+             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+             content: Text(
+                "User successfully registered.",
+                 textAlign: TextAlign.center,
+               ),
+           ));
+
+           // if (kDebugMode) {
+           //   print("""User has been registered successfully...
+           //          => Next step should be signing in   """);
+           // }
             break;
 
           default:
