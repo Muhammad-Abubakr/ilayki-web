@@ -19,6 +19,7 @@ import 'package:ilayki/l10n/l10n.dart';
 import 'package:ilayki/screens/chat/chat_room_screen.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/screens/auth/register_screen.dart';
+import 'package:ilayki/screens/home/user_items_page.dart';
 
 import './firebase_options.dart';
 
@@ -118,6 +119,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (_) => const RegisterScreen(),
         App.routeName: (_) => const App(),
         ChatRoomScreen.routeName: (_) => const ChatRoomScreen(),
+        UserItems.routeName: (_) => const UserItems(),
       },
     );
   }

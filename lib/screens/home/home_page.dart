@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
-import 'package:ilayki/widgets/item_overview_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../blocs/wares/wares_cubit.dart';
-import '../../models/item.dart';
+import '../../models/user.dart';
+import '../../widgets/user_overview_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -19,17 +19,19 @@ class _MyHomePageState extends State<MyHomePage> {
   // controllers
   final TextEditingController _controller = TextEditingController();
 
-  // wares Cubit
-  late WaresState state;
-  List<Item> wares = List.empty(growable: true);
+  // Userbase Cubit State
+  late UserbaseState state;
+  List<User> users = List.empty(growable: true);
 
   @override
   void didChangeDependencies() {
     // get the wares cubit
-    state = context.watch<WaresCubit>().state;
+    state = context.watch<UserbaseCubit>().state;
 
     // update the wares
-    wares = state.wares;
+    users = state.userbase
+        .where((element) => element.uid != context.read<UserBloc>().state.user!.uid)
+        .toList();
 
     super.didChangeDependencies();
   }
@@ -37,10 +39,14 @@ class _MyHomePageState extends State<MyHomePage> {
   /* Function to filter wares */
   void filterWares() {
     setState(() {
-      wares = state.wares
-          .where((element) => element.name.toLowerCase().contains(
-                _controller.text.trim().toLowerCase(),
-              ))
+      users = state.userbase
+          .where(
+            (element) =>
+                element.name.toLowerCase().contains(
+                      _controller.text.trim().toLowerCase(),
+                    ) &&
+                element.uid != context.read<UserBloc>().state.user!.uid,
+          )
           .toList();
     });
   }
@@ -49,13 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // orientation
     final isLandscape = MediaQuery.of(context).orientation.index == 1;
-    // watching the userbase cubit
-    final userbaseCubit = context.watch<UserbaseCubit>();
 
-    return BlocBuilder<WaresCubit, WaresState>(
+    return BlocBuilder<UserbaseCubit, UserbaseState>(
       builder: (context, state) {
         /* If there are no items in warehouse display text in center */
-        return state.wares.isEmpty || userbaseCubit.state.userbase.isEmpty
+        return state.userbase.isEmpty
             ? Center(
                 child: Text(AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
               )
@@ -103,18 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       : EdgeInsets.all(32.h),
                   separatorBuilder: (context, _) => const Divider(thickness: 0),
                   itemBuilder: (context, index) {
-                    /* get the owner of the item from users */
-                    final user = userbaseCubit.state.userbase
-                        .firstWhere((u) => u.uid == wares[index].owner);
-
                     /* return the Item Overview Widget */
-                    return ItemOverview(
-                      idx: index,
-                      item: wares[index],
-                      owner: user,
+                    return UserOverview(
+                      user: users[index],
                     );
                   },
-                  itemCount: wares.length,
+                  itemCount: users.length,
                 ),
               );
       },
