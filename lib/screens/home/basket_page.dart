@@ -30,7 +30,7 @@ class BasketPage extends StatelessWidget {
             appBar: isLandscape
                 ? null
                 : AppBar(
-                    title: const Text('Basket'),
+                    title: Text(AppLocalizations.of(context)!.basket),
                     centerTitle: true,
                     leading: const Text(''),
                   ),
@@ -40,12 +40,12 @@ class BasketPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   /* Header */
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Basket Items"),
-                      Text("Quantity"),
-                      Text("Price (Single)"),
+                      Text(AppLocalizations.of(context)!.basketItems),
+                      Text(AppLocalizations.of(context)!.quantity),
+                      Text(AppLocalizations.of(context)!.singlePrice),
                     ],
                   ),
                   const Divider(),
@@ -129,7 +129,7 @@ class BasketPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Total : ${basketCubit.state.totalPrice.toString()}',
+                    '${AppLocalizations.of(context)!.total} : ${basketCubit.state.totalPrice.toString()}',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
@@ -142,14 +142,13 @@ class BasketPage extends StatelessWidget {
                       // show the user that the request has been made to the sellers
                       showDialog(
                         context: context,
-                        builder: (_) => const AlertDialog(
-                          title: Text("Request Sent"),
-                          content: Text(
-                              "Your order request has been sent to the Seller for confirmation."),
+                        builder: (_) => AlertDialog(
+                          title: Text(AppLocalizations.of(context)!.requestSent),
+                          content: Text(AppLocalizations.of(context)!.requestSentContent),
                         ),
                       );
                     },
-                    child: const Text("Place Order"),
+                    child: Text(AppLocalizations.of(context)!.placeOrder),
                   )
                 ],
               ),

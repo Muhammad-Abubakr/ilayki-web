@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/item.dart';
 import '../models/user.dart';
@@ -98,7 +99,7 @@ class ItemOverview extends StatelessWidget {
                           SnackBar(
                             backgroundColor: Theme.of(context).primaryColor,
                             content: Text(
-                              '${item.name} added to basket',
+                              '${item.name} ${AppLocalizations.of(context)!.addedToBasket}',
                               textAlign: TextAlign.center,
                             ),
                           ),

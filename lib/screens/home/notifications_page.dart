@@ -53,10 +53,11 @@ class NotificationsPage extends StatelessWidget {
                 ),
 
                 /* Buyer name */
-                title: Text('Price: ${state.requests[index].totalPrice.toString()}'),
+                title: Text(
+                    '${AppLocalizations.of(context)!.price}: ${state.requests[index].totalPrice.toString()}'),
 
                 /* Items description */
-                subtitle: Text(orderParser(state.requests[index].orderItems)),
+                subtitle: Text(orderParser(context, state.requests[index].orderItems)),
 
                 /* trailing button to accept order */
                 trailing: SizedBox(
@@ -94,8 +95,8 @@ class NotificationsPage extends StatelessWidget {
   }
 
   // description parser
-  String orderParser(List<OrderItem> items) {
-    String order = 'Order:-\n';
+  String orderParser(BuildContext context, List<OrderItem> items) {
+    String order = '${AppLocalizations.of(context)!.order}:-\n';
 
     for (var orditem in items) {
       order = '$order${orditem.item.name} : ${orditem.quantity}\n';

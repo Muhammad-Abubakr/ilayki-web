@@ -159,9 +159,9 @@
     "@allCaughtUp" : {
         "description" : "All caught up for now for notifications."
     },
-    "userSuccessfullyRegistered"  : "User Successfully Registered. Please Login!",
+    "userSuccessfullyRegistered"  : "User Successfully Registered.",
     "@userSuccessfullyRegistered" : {
-        "description"  : "User Successfully Registered. Please Login!"
+        "description"  : "User Successfully Registered."
     },
     "tapOnTheImageAgainToChange" : "Tip: Tap on the Image again to change",
     "@tapOnTheImageAgainToChange" : {
@@ -210,5 +210,61 @@
     "notifications" : "Notifications",
     "@notifications" : {
         "description" : "Notifications (Tab text)."
+    },
+    "enterMessageHintText"  : "Enter your message here.",
+    "@enterMessageHintText" : {
+        "description"  : "hint text for search text field."
+    },
+    "price"  : "Price",
+    "@price" : {
+        "description"  : "price."
+    },
+    "status"  : "Status",
+    "@status" : {
+        "description"  : "status."
+    },
+    "completed"  : "Completed",
+    "@completed" : {
+        "description"  : "Completed."
+    },
+    "basketItems"  : "Basket Items",
+    "@basketItems" : {
+        "description"  : "Basket Items."
+    },
+    "total"  : "Total",
+    "@total" : {
+        "description"  : "Total."
+    },
+    "requestSent"  : "Request Sent",
+    "@requestSent" : {
+        "description"  : "Request Sent."
+    },
+    "requestSentContent": "Your order request has been sent to the Seller for confirmation",
+    "@requestSentContent" : { 
+        "description" :  "Your order request has been sent to the Seller for confirmation"
+    },
+    "placeOrder": "Place Order",
+    "@placeOrder" : { 
+        "description" :  "Place Order {button text}"
+    },
+    "searchHelperText": "empty search for all items...",
+    "@searchHelperText" : { 
+        "description" :  "Search TextField helper  {button text}"
+    },
+    "order" : "Order",
+    "@order": {
+        "description" : "order screen table header item"
+    },
+    "addedToBasket" : "added to Basket",
+    "@addedToBasket": {
+        "description" : "when an item is added to basket"
+    },
+    "quantity" : "Quantity",
+    "@quantity": {
+        "description" : "Quantity of the items"
+    },
+    "singlePrice" : "Price (Single)",
+    "@singlePrice": {
+        "description" : "Price of the single item"
     }
 }

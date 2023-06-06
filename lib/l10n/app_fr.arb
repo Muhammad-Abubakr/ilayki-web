@@ -156,9 +156,9 @@
     "@allCaughtUp" : {
         "description" : "Tout est à jour pour le moment pour les notifications."
     },
-    "userSuccessfullyRegistered" : "Utilisateur enregistré avec succès. Veuillez vous connecter !",
+    "userSuccessfullyRegistered" : "Utilisateur enregistré avec succès.",
     "@userSuccessfullyRegistered" : {
-        "description" : "Utilisateur enregistré avec succès. Veuillez vous connecter !"
+        "description" : "Utilisateur enregistré avec succès."
     },
     "tapOnTheImageAgainToChange" : "Astuce : Appuyez à nouveau sur l'image pour la modifier",
     "@tapOnTheImageAgainToChange" : {
@@ -207,5 +207,61 @@
     "notifications" : "Notifications",
     "@notifications" : {
         "description" : "Notifications (texte de l'onglet)."
+    },
+    "enterMessageHintText" : "Entrez votre message ici.",
+    "@enterMessageHintText" : {
+        "description" : "Texte d'indication pour le champ de recherche."
+    },
+    "price" : "Prix",
+    "@price" : {
+        "description" : "Prix."
+    },
+    "status" : "Statut",
+    "@status" : {
+        "description" : "Statut."
+    },
+    "completed"  : "Completed",
+    "@completed" : {
+        "description"  : "Completed."
+    },
+    "basketItems" : "Articles du panier",
+    "@basketItems" : {
+        "description" : "Articles du panier."
+    },
+    "total" : "Total",
+    "@total" : {
+        "description" : "Total."
+    },
+    "requestSent" : "Demande envoyée",
+    "@requestSent" : {
+        "description" : "Demande envoyée."
+    },
+    "requestSentContent" : "Votre demande de commande a été envoyée au vendeur pour confirmation",
+    "@requestSentContent" : {
+        "description" : "Votre demande de commande a été envoyée au vendeur pour confirmation"
+    },
+    "placeOrder" : "Passer la commande",
+    "@placeOrder" : {
+        "description" : "Passer la commande {texte du bouton}"
+    },
+    "searchHelperText" : "Recherche vide pour tous les éléments...",
+    "@searchHelperText" : {
+        "description" : "Aide pour la recherche dans le TextField {texte du bouton}"
+    },
+    "order" : "Commande",
+    "@order": {
+        "description" : "En-tête de colonne de la liste des commandes"
+    },
+    "addedToBasket" : "ajouté au panier",
+    "@addedToBasket": {
+        "description" : "lorsqu'un article est ajouté au panier"
+    },
+    "quantity" : "Quantité",
+    "@quantity": {
+        "description" : "Quantité des articles"
+    },
+    "singlePrice" : "Prix (Unitaire)",
+    "@singlePrice": {
+        "description" : "Prix de l'article individuel"
     }
 }

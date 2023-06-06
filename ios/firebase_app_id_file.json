@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:259036118618:ios:7fb599919c330503506263",
-  "FIREBASE_PROJECT_ID": "ilayki-db",
-  "GCM_SENDER_ID": "259036118618"
+  "GOOGLE_APP_ID": "1:370324669560:ios:db0cc70b1174969194198d",
+  "FIREBASE_PROJECT_ID": "ilayki-db-backup",
+  "GCM_SENDER_ID": "370324669560"
 }

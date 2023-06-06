@@ -31,11 +31,11 @@ class OrdersScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             /* Header */
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Order"),
-                Text("Status"),
+                Text(AppLocalizations.of(context)!.orders),
+                Text(AppLocalizations.of(context)!.status),
               ],
             ),
             const Divider(),
@@ -70,13 +70,15 @@ class OrdersScreen extends StatelessWidget {
                     ),
 
                     /* Buyer name */
-                    title: Text('Price: ${orders[index].totalPrice.toString()}'),
+                    title: Text(
+                        '${AppLocalizations.of(context)!.price}: ${orders[index].totalPrice.toString()}'),
 
                     /* Items description */
                     subtitle: Text(orderParser(orders[index].orderItems)),
 
                     /* trailing button to accept order */
-                    trailing: const Text("Completed", textAlign: TextAlign.center),
+                    trailing: Text(AppLocalizations.of(context)!.completed,
+                        textAlign: TextAlign.center),
                   );
                 },
                 separatorBuilder: (context, index) => const Divider(),

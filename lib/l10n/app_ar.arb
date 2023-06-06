@@ -158,9 +158,9 @@
     "@allCaughtUp" : {
         "description" : "كل الأمور مستوفاة حتى الآن بالنسبة للإشعارات."
     },
-    "userSuccessfullyRegistered" : "تم تسجيل المستخدم بنجاح. الرجاء تسجيل الدخول!",
+    "userSuccessfullyRegistered" : "تم تسجيل المستخدم بنجاح.",
     "@userSuccessfullyRegistered" : {
-        "description" : "تم تسجيل المستخدم بنجاح. الرجاء تسجيل الدخول!"
+        "description" : "تم تسجيل المستخدم بنجاح."
     },
     "tapOnTheImageAgainToChange" : "نصيحة: انقر مرة أخرى على الصورة لتغييرها",
     "@tapOnTheImageAgainToChange" : {
@@ -209,5 +209,61 @@
     "notifications" : "الإشعارات",
     "@notifications" : {
         "description" : "الإشعارات (نص التبويب)."
+    },
+    "enterMessageHintText" : "أدخل رسالتك هنا.",
+    "@enterMessageHintText" : {
+        "description" : "نص تلميح لحقل البحث."
+    },
+    "price" : "السعر",
+    "@price" : {
+        "description" : "السعر."
+    },
+    "status" : "الحالة",
+    "@status" : {
+        "description" : "الحالة."
+    },
+    "completed" : "مكتمل",
+    "@completed" : {
+        "description" : "مكتمل."
+    },
+    "basketItems" : "عناصر السلة",
+    "@basketItems" : {
+        "description" : "عناصر السلة."
+    },
+    "total" : "الإجمالي",
+    "@total" : {
+        "description" : "الإجمالي."
+    },
+    "requestSent" : "تم إرسال الطلب",
+    "@requestSent" : {
+        "description" : "تم إرسال الطلب."
+    },
+    "requestSentContent" : "تم إرسال طلب الطلب الخاص بك إلى البائع للتأكيد",
+    "@requestSentContent" : {
+        "description" : "تم إرسال طلب الطلب الخاص بك إلى البائع للتأكيد"
+    },
+    "placeOrder" : "قم بالطلب",
+    "@placeOrder" : {
+        "description" : "قم بالطلب {نص الزر}"
+    },
+    "searchHelperText" : "بحث فارغ عن جميع العناصر...",
+    "@searchHelperText" : {
+        "description" : "مساعدة بحث في الحقل النصي {نص الزر}"
+    },
+    "order" : "الطلب",
+    "@order": {
+        "description" : "عنصر عنوان الجدول في صفحة الطلبات"
+    },
+    "addedToBasket" : "تمت الإضافة إلى السلة",
+    "@addedToBasket": {
+        "description" : "عند إضافة عنصر إلى السلة"
+    },
+    "quantity" : "الكمية",
+    "@quantity": {
+        "description" : "كمية العناصر"
+    },
+    "singlePrice" : "السعر (الفردي)",
+    "@singlePrice": {
+        "description" : "سعر العنصر الفردي"
     }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/models/message.dart';
 import 'package:ilayki/widgets/chat_message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../blocs/chat/chat_bloc.dart';
 import '../../blocs/online/online_cubit.dart';
@@ -95,7 +96,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.fastEaseInToSlowEaseOut,
                   ),
-              icon: const Icon(Icons.keyboard_double_arrow_down))
+              icon: const Icon(Icons.keyboard_double_arrow_up))
         ],
       ),
 
@@ -145,9 +146,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
                     width: 0.8.sw,
                     child: TextField(
                       controller: _messageController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your message here',
-                        prefixIcon: Icon(Icons.edit_square),
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.enterMessageHintText,
+                        prefixIcon: const Icon(Icons.edit_square),
                         border: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,

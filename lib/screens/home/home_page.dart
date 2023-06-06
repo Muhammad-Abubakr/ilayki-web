@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: TextField(
                             controller: _controller,
                             decoration: InputDecoration(
-                              hintText: "empty search for all items...",
+                              hintText: AppLocalizations.of(context)!.searchHelperText,
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
                               enabledBorder: OutlineInputBorder(
