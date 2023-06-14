@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 .add(ActivateItemsListener(userBloc: context.read<UserBloc>()));
 
             // Pop the progress indicator
-            Navigator.of(context).popUntil(ModalRoute.withName(LoginScreen.routeName));
+            Navigator.of(context).pop();
             // and push the screen
             Navigator.of(context).popAndPushNamed(App.routeName);
             break;

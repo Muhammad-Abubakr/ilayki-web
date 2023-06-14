@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<User?> get subscribe => _auth.userChanges();
+  Stream<User?> get subscribe => _auth.authStateChanges();
 
   /* Sign in Anononymously using signInAnonmously provided by FirebaseAuth.instance
   on successfull sign in return User, otherwise return null; */

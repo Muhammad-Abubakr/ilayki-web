@@ -28,6 +28,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
+  /* Blocs */
+  late UserbaseCubit userbaseCubit;
+
   /* Hooking the app lifecyles */
   @override
   void initState() {
@@ -37,18 +40,19 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeDependencies() {
+    /* Initialize the userbase */
+    userbaseCubit = context.watch<UserbaseCubit>();
+    userbaseCubit.initialize();
+
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
 
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    /* Initialize the userbase */
-    context.watch<UserbaseCubit>().initialize();
-
-    super.didChangeDependencies();
   }
 
   /* ----------------------------------- */
@@ -88,9 +92,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // Userbase Cubit
-    final userbaseCubit = context.read<UserbaseCubit>();
-
     // Localization cubit
     final LocalizationCubit cubit = context.watch<LocalizationCubit>();
 
@@ -104,6 +105,11 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       listener: (context, state) {
         // In case of error
         switch (state.state) {
+          case UserStates.signedOut:
+            // pop the app
+            Navigator.of(context).popAndPushNamed(LoginScreen.routeName);
+            break;
+
           case UserStates.updated:
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -114,19 +120,13 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               ),
             );
             break;
-          case UserStates.signedOut:
-            // set the user status to be offline
-            context.read<OnlineCubit>().setOffline();
-
-            // pop the app
-            Navigator.of(context).popAndPushNamed(LoginScreen.routeName);
-            break;
-
           default:
             break;
         }
       },
-      builder: (context, state) => state.user == null
+      builder: (context, state) => state.user == null ||
+              userbaseCubit.state.customer == null ||
+              userbaseCubit.state.seller == null
           ? const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),

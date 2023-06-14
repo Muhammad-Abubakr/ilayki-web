@@ -163,6 +163,8 @@ class MainDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   // set the user status to be offline
                   context.read<OnlineCubit>().setOffline();
+
+                  // sign out the user
                   context.read<UserBloc>().add(UserSignOut());
                 },
                 splashColor: Colors.white30,

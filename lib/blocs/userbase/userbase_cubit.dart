@@ -20,8 +20,8 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
   UserbaseCubit()
       : super(const UserbaseInitial(
-          customer: [],
-          seller: [],
+          customer: null,
+          seller: null,
         ));
 
   /* Initialize */
@@ -102,8 +102,8 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
     // clearing the state
     emit(const UserbaseUpdate(
-      customer: [],
-      seller: [],
+      customer: null,
+      seller: null,
     ));
     if (kDebugMode) {
       print("Userbase stream cancelled...");
