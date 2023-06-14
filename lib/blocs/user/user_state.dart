@@ -4,12 +4,19 @@ part of 'user_bloc.dart';
    This helps in implementing features like loading widgets, error dialogs etc.
  */
 enum UserStates {
+  initialized,
   updated,
   signedOut,
   signedIn,
   processing,
   registered,
   error,
+}
+
+/* User Roles in the application */
+enum UserRoles {
+  customer,
+  seller,
 }
 
 /* extending package Equatable for deep comparision between objects,

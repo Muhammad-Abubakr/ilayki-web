@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserBloc>().state.user;
+    final user = context.watch<UserBloc>().state.user;
 
     return BlocBuilder<ItemsBloc, ItemsState>(
       builder: (context, state) {

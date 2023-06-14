@@ -146,39 +146,45 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       // i.
       if (kDebugMode) {
-        print('Registering user with: \nEmail: ${event.email}\nPass: ${event.password}\n');
+        print(
+            'Registering user with: \nEmail: ${event.email}\nPass: ${event.password} as ${event.role}\n');
       }
 
       User? user = await _auth.registerWithEmailAndPassword(event.email, event.password);
 
       if (user != null) {
-        emit(UserUpdate(user: state.user, state: UserStates.registered));
-
-        /* Update Display Name and PhotoURL */
+        /* Updating the user */
+        await user.updateDisplayName(event.displayName);
 
         /* Storing the image */
         // Getting the reference
         final imageRef = storage.child('pfps/${user.uid}');
+        await imageRef.putFile(File(event.xFile.path));
+        await user.updatePhotoURL(await imageRef.getDownloadURL());
 
-//        File(event.xFile.path).readAsBytes();
+        /* Add the User to users collection in realtime database */
+        late final DatabaseReference userRef;
 
-        imageRef.putFile(File(event.xFile.path)).whenComplete(() async {
-          /* Updating the user */
-          await user.updateDisplayName(event.displayName);
-          await user.updatePhotoURL(await imageRef.getDownloadURL());
+        if (event.role == UserRoles.customer) {
+          userRef = database.child('users/customers/${user.uid}');
+        } else {
+          userRef = database.child('users/sellers/${user.uid}');
+        }
 
-          /* Add the User to users collection in realtime database */
-          final usersRef = database.child('users/${user.uid}');
+        /* Create user at the usersRef */
+        await userRef.set(
+          my_user.User(
+            name: event.displayName,
+            photoURL: await imageRef.getDownloadURL(),
+            uid: user.uid,
+            role: event.role,
+          ).toJson(),
+        );
 
-          /* Create user at the usersRef */
-          await usersRef.set(
-            my_user.User(
-              name: event.displayName,
-              photoURL: await imageRef.getDownloadURL(),
-              uid: user.uid,
-            ).toJson(),
-          );
-        });
+        emit(UserUpdate(
+          state: UserStates.registered,
+          user: user,
+        ));
       }
 
       // Incase of error while registering on Signing in

@@ -10,7 +10,6 @@ import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
 import 'package:ilayki/screens/auth/register_screen.dart';
 
@@ -75,9 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
             /* Initialize the user chats */
             context.read<UserchatCubit>().intialize();
 
-            /* Initialize the userbase */
-            context.read<UserbaseCubit>().initialize();
-
             /* Fetch the Items */
             context
                 .read<ItemsBloc>()
@@ -120,11 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.center,
               ),
             ));
-
-            // if (kDebugMode) {
-            //   print("""User has been registered successfully...
-            //          => Next step should be signing in   """);
-            // }
             break;
 
           default:
@@ -265,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text(AppLocalizations.of(context)!.notRegistered),
                   TextButton(
-                    onPressed: () => Navigator.of(context).push(
+                    onPressed: () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (_) => const RegisterScreen(),
                       ),

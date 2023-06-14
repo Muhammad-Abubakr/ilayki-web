@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
+import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +19,7 @@ import 'blocs/user/user_bloc.dart';
 
 class App extends StatefulWidget {
   // route name
-  static const routeName = '/';
+  static const routeName = '/app';
 
   const App({super.key});
 
@@ -40,6 +41,14 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
 
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    /* Initialize the userbase */
+    context.watch<UserbaseCubit>().initialize();
+
+    super.didChangeDependencies();
   }
 
   /* ----------------------------------- */
@@ -79,6 +88,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // Userbase Cubit
+    final userbaseCubit = context.read<UserbaseCubit>();
+
     // Localization cubit
     final LocalizationCubit cubit = context.watch<LocalizationCubit>();
 
@@ -117,7 +129,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       builder: (context, state) => state.user == null
           ? const Scaffold(
               body: Center(
-                child: Text("GOODBYE!"),
+                child: CircularProgressIndicator(),
               ),
             )
           : Scaffold(
@@ -220,10 +232,11 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                       },
                     ),
                   ),
-                  BottomNavigationBarItem(
-                    label: AppLocalizations.of(context)!.profile,
-                    icon: const Icon(Icons.person),
-                  ),
+                  if (userbaseCubit.getUser(state.user!.uid).role != UserRoles.customer)
+                    BottomNavigationBarItem(
+                      label: AppLocalizations.of(context)!.profile,
+                      icon: const Icon(Icons.person),
+                    ),
                 ],
               ),
             ),

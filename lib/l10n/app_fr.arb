@@ -263,5 +263,25 @@
     "singlePrice" : "Prix (Unitaire)",
     "@singlePrice": {
         "description" : "Prix de l'article individuel"
+    },
+    "customer": "Client",
+    "@customer": {
+        "description": "Connecte l'utilisateur en tant que client"
+    },
+    "seller": "Vendeur",
+    "@seller": {
+        "description": "Connecte l'utilisateur en tant que vendeur"
+    },
+    "signInAs": "Se connecter en tant que",
+    "@signInAs": {
+        "description": "Connecte l'utilisateur en tant que {role}"
+    },
+    "registerAs": "S'inscrire en tant que",
+    "@registerAs": {
+        "description": "S'inscrire en tant que {role}"
+    },
+    "alreadyRegistered": "Déjà inscrit(e) ?",
+    "@alreadyRegistered": {
+        "description": "Déjà inscrit(e) ? pour l'utilisateur"
     }
 }

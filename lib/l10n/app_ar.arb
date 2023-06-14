@@ -265,5 +265,33 @@
     "singlePrice" : "السعر (الفردي)",
     "@singlePrice": {
         "description" : "سعر العنصر الفردي"
+    },
+    "customerSignIn": "تسجيل الدخول كعميل",
+    "@customerSignIn": {
+        "description": "تسجيل الدخول كعميل"
+    },
+    "sellerSignIn": "تسجيل الدخول كبائع",
+    "@sellerSignIn": {
+        "description": "تسجيل الدخول للمستخدم كبائع"
+    },
+    "customer": "العميل",
+    "@customer": {
+        "description": "تسجيل دخول المستخدم كعميل"
+    },
+    "seller": "البائع",
+    "@seller": {
+        "description": "تسجيل دخول المستخدم كبائع"
+    },
+    "signInAs": "تسجيل الدخول كـ",
+    "@signInAs": {
+        "description": "تسجيل دخول المستخدم كـ {role}"
+    },
+    "registerAs": "التسجيل كـ",
+    "@registerAs": {
+        "description": "التسجيل كـ {role}"
+    },
+    "alreadyRegistered": "هل لديك حساب بالفعل؟",
+    "@alreadyRegistered": {
+        "description": "هل لديك حساب بالفعل؟ للمستخدم"
     }
 }

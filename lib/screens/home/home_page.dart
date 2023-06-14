@@ -29,26 +29,29 @@ class _MyHomePageState extends State<MyHomePage> {
     state = context.watch<UserbaseCubit>().state;
 
     // update the wares
-    users = state.userbase
-        .where((element) => element.uid != context.read<UserBloc>().state.user!.uid)
-        .toList();
-
+    if (state.seller != null) {
+      users = state.seller!
+          .where((element) => element.uid != context.read<UserBloc>().state.user!.uid)
+          .toList();
+    }
     super.didChangeDependencies();
   }
 
   /* Function to filter wares */
   void filterWares() {
-    setState(() {
-      users = state.userbase
-          .where(
-            (element) =>
-                element.name.toLowerCase().contains(
-                      _controller.text.trim().toLowerCase(),
-                    ) &&
-                element.uid != context.read<UserBloc>().state.user!.uid,
-          )
-          .toList();
-    });
+    if (state.seller != null) {
+      setState(() {
+        users = state.seller!
+            .where(
+              (element) =>
+                  element.name.toLowerCase().contains(
+                        _controller.text.trim().toLowerCase(),
+                      ) &&
+                  element.uid != context.read<UserBloc>().state.user!.uid,
+            )
+            .toList();
+      });
+    }
   }
 
   @override
@@ -59,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return BlocBuilder<UserbaseCubit, UserbaseState>(
       builder: (context, state) {
         /* If there are no items in warehouse display text in center */
-        return state.userbase.isEmpty
+        return state.seller == null || state.seller!.isEmpty
             ? Center(
                 child: Text(AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
               )

@@ -23,12 +23,14 @@ class RegisterUserWithEmailAndPassword extends UserEvent {
   final String email;
   final String password;
   final XFile xFile;
+  final UserRoles role;
 
   RegisterUserWithEmailAndPassword({
     required this.displayName,
     required this.email,
     required this.password,
     required this.xFile,
+    required this.role,
   });
 }
 

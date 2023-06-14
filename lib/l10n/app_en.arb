@@ -266,5 +266,25 @@
     "singlePrice" : "Price (Single)",
     "@singlePrice": {
         "description" : "Price of the single item"
+    },
+    "customer" :  "Customer",
+    "@customer" : {
+        "description": "Sign in user as customer"
+    },
+    "seller": "Seller",
+    "@seller": {
+        "description": "Signs in the user as Seller"
+    },
+    "signInAs" :  "Sign in as",
+    "@signInAs" : {
+        "description": "Sign in user as {role}"
+    },
+    "registerAs" :  "Register As",
+    "@registerAs" : {
+        "description": "Register as {role}"
+    },
+    "alreadyRegistered" :  "Already have an account ?",
+    "@alreadyRegistered" : {
+        "description": "Already have an account ? to the user"
     }
 }

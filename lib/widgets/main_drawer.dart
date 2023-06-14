@@ -20,6 +20,9 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserBloc>().state.user;
+    final userBase = context.watch<UserbaseCubit>();
+
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 244, 217, 185),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
@@ -69,25 +72,27 @@ class MainDrawer extends StatelessWidget {
               const Divider(thickness: 2, color: Colors.white54),
 
               // ? Navigate to Sales Screen (keeps record)
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const SalesScreen(),
+              if (userBase.getUser(user!.uid).role != UserRoles.customer)
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SalesScreen(),
+                      ),
+                    );
+                  },
+                  splashColor: Colors.white30,
+                  leading: Text(
+                    AppLocalizations.of(context)!.sales,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 72.sp,
                     ),
-                  );
-                },
-                splashColor: Colors.white30,
-                leading: Text(
-                  AppLocalizations.of(context)!.sales,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 72.sp,
                   ),
+                  style: ListTileStyle.drawer,
                 ),
-                style: ListTileStyle.drawer,
-              ),
-              const Divider(thickness: 2, color: Colors.white54),
+              if (userBase.getUser(user.uid).role != UserRoles.customer)
+                const Divider(thickness: 2, color: Colors.white54),
 
               // ? Navigate to about us screen
               ListTile(
