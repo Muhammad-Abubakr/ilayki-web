@@ -29,7 +29,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   /* Initiation Handler */
-  FutureOr<void> _initiationHandler(InitChatEvent event, Emitter<ChatState> emit) async {
+  FutureOr<void> _initiationHandler(
+      InitChatEvent event, Emitter<ChatState> emit) async {
     /* create a reference to the chat room between two users */
     _chatRoomRef = _chatsRef.child('${event.currentUser}+${event.itemOwner}');
 
@@ -45,9 +46,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       // if this ref exists switch the chatRoomRef to this ref
       if ((await _chatRoomRef.get()).exists) {
-        _chatRoomRef = _chatsRef.child('${event.itemOwner}+${event.currentUser}');
+        _chatRoomRef =
+            _chatsRef.child('${event.itemOwner}+${event.currentUser}');
       } else {
-        _chatRoomRef = _chatsRef.child('${event.currentUser}+${event.itemOwner}');
+        _chatRoomRef =
+            _chatsRef.child('${event.currentUser}+${event.itemOwner}');
       }
 
       if (kDebugMode) {
@@ -85,7 +88,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   /* Handles the sending messages event */
-  FutureOr<void> _sendMessageHandler(SendMessageEvent event, Emitter<ChatState> emit) {
+  FutureOr<void> _sendMessageHandler(
+      SendMessageEvent event, Emitter<ChatState> emit) {
     // create a push reference for the new message in the database
     final messageRef = _chatRoomRef.push();
 
@@ -94,7 +98,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   // disposition
-  FutureOr<void> _dispositionHandler(DisposeChat event, Emitter<ChatState> emit) async {
+  FutureOr<void> _dispositionHandler(
+      DisposeChat event, Emitter<ChatState> emit) async {
     // disposing open streams
     _chatStreamRef.cancel();
 
@@ -107,7 +112,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   /* Handles the emissions from the stream */
-  FutureOr<void> _streamEmissionHandler(_UpdateMessagesEvent event, Emitter<ChatState> emit) {
+  FutureOr<void> _streamEmissionHandler(
+      _UpdateMessagesEvent event, Emitter<ChatState> emit) {
     // order the messages based on timestamp
     event.messages.sort((a, b) => a.time.compareTo(b.time));
     final messages = event.messages.reversed.toList();

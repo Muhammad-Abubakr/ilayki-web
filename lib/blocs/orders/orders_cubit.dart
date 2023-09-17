@@ -43,7 +43,8 @@ class OrdersCubit extends Cubit<OrdersState> {
 
             // print(ordersRef);
             // get all the orders between these two users
-            final data = (await ordersRef.get()).value as Map<dynamic, dynamic>?;
+            final data =
+                (await ordersRef.get()).value as Map<dynamic, dynamic>?;
 
             if (data != null) {
               // print(data.values);

@@ -20,11 +20,13 @@ class BasketPage extends StatelessWidget {
     final UserbaseCubit userbaseCubit = context.watch<UserbaseCubit>();
 
     // orientation
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return basketCubit.state.orderItems.isEmpty
         ? Center(
-            child: Text(AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
+            child: Text(
+                AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
           )
         : Scaffold(
             appBar: isLandscape
@@ -60,10 +62,12 @@ class BasketPage extends StatelessWidget {
                           /* Item Image */
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24.r)),
                               color: Theme.of(context).primaryColor,
                               image: DecorationImage(
-                                image: Image.network(orders[index].item.image).image,
+                                image: Image.network(orders[index].item.image)
+                                    .image,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -75,13 +79,18 @@ class BasketPage extends StatelessWidget {
                             children: [
                               /* Add Item */
                               IconButton.filledTonal(
-                                onPressed: () => basketCubit.addItem(orders[index].item),
+                                onPressed: () =>
+                                    basketCubit.addItem(orders[index].item),
                                 style: ButtonStyle(
                                   alignment: Alignment.center,
-                                  padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-                                  fixedSize: MaterialStatePropertyAll(Size.fromRadius(36.r)),
-                                  minimumSize: MaterialStatePropertyAll(Size.fromRadius(0.r)),
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  padding: const MaterialStatePropertyAll(
+                                      EdgeInsets.all(0)),
+                                  fixedSize: MaterialStatePropertyAll(
+                                      Size.fromRadius(36.r)),
+                                  minimumSize: MaterialStatePropertyAll(
+                                      Size.fromRadius(0.r)),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 icon: const Icon(
                                   Icons.arrow_drop_up_rounded,
@@ -93,13 +102,18 @@ class BasketPage extends StatelessWidget {
 
                               /* Remove Item */
                               IconButton.filledTonal(
-                                onPressed: () => basketCubit.removeItem(orders[index].item),
+                                onPressed: () =>
+                                    basketCubit.removeItem(orders[index].item),
                                 style: ButtonStyle(
                                   alignment: Alignment.center,
-                                  padding: const MaterialStatePropertyAll(EdgeInsets.all(0)),
-                                  fixedSize: MaterialStatePropertyAll(Size.fromRadius(36.r)),
-                                  minimumSize: MaterialStatePropertyAll(Size.fromRadius(0.r)),
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  padding: const MaterialStatePropertyAll(
+                                      EdgeInsets.all(0)),
+                                  fixedSize: MaterialStatePropertyAll(
+                                      Size.fromRadius(36.r)),
+                                  minimumSize: MaterialStatePropertyAll(
+                                      Size.fromRadius(0.r)),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 icon: const Icon(
                                   Icons.arrow_drop_down_rounded,
@@ -137,14 +151,17 @@ class BasketPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // place the order
-                      basketCubit.placeOrder(userbaseCubit.getUser(orders.first.item.owner));
+                      basketCubit.placeOrder(
+                          userbaseCubit.getUser(orders.first.item.owner));
 
                       // show the user that the request has been made to the sellers
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
-                          title: Text(AppLocalizations.of(context)!.requestSent),
-                          content: Text(AppLocalizations.of(context)!.requestSentContent),
+                          title:
+                              Text(AppLocalizations.of(context)!.requestSent),
+                          content: Text(
+                              AppLocalizations.of(context)!.requestSentContent),
                         ),
                       );
                     },

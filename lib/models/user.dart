@@ -47,7 +47,8 @@ class User {
       name: map['name'] as String,
       photoURL: map['photoURL'] as String,
       uid: map['uid'] as String,
-      role: UserRoles.values.firstWhere((e) => describeEnum(e) == (map['role'] as String)),
+      role: UserRoles.values
+          .firstWhere((e) => describeEnum(e) == (map['role'] as String)),
     );
   }
 

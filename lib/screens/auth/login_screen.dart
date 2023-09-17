@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 .add(ActivateItemsListener(userBloc: context.read<UserBloc>()));
 
             // Pop the progress indicator
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil((route) => route.isCurrent);
             // and push the screen
             Navigator.of(context).pushReplacementNamed(App.routeName);
             break;
@@ -155,11 +155,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   AppLocalizations.of(context)!.welcome,
                   style: TextStyle(
-                    fontSize: 22.spMax,
+                    fontSize: 128.spMax,
                   ),
                 ),
               ),
-              leadingWidth: 0.3.sw,
+              leadingWidth: 0.2.sw,
               foregroundColor: const Color.fromARGB(255, 236, 201, 171),
               shadowColor: const Color.fromARGB(255, 244, 217, 185),
 
@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
               actions: [
                 /* Dropdown Button for changing the locale for the application */
                 DropdownButton(
-                  iconSize: 16.spMax,
+                  iconSize: 32.spMax,
                   elevation: 1,
                   value: dropdownValue,
 
@@ -181,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Image.asset(
                         'lib/assets/flags/us.png',
                         fit: BoxFit.scaleDown,
-                        height: 16.spMax,
+                        height: 32.spMax,
                       ),
                     ),
                     DropdownMenuItem(
@@ -189,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Image.asset(
                         'lib/assets/flags/sa.png',
                         fit: BoxFit.scaleDown,
-                        height: 16.spMax,
+                        height: 32.spMax,
                       ),
                     ),
                     DropdownMenuItem(
@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Image.asset(
                         'lib/assets/flags/fr.png',
                         fit: BoxFit.scaleDown,
-                        height: 16.spMax,
+                        height: 32.spMax,
                       ),
                     ),
                   ],
@@ -208,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
-                  horizontal: !isLandscape ? 0.08.sw : 0.3.sw,
+                  horizontal: !isLandscape ? 0.08.sw : 0.4.sw,
                   vertical: 128.h,
                 ),
                 child: Column(
@@ -257,20 +257,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             persistentFooterButtons: [
-              FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(AppLocalizations.of(context)!.notRegistered),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterScreen(),
+              Center(
+                child: FittedBox(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(AppLocalizations.of(context)!.notRegistered),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => const RegisterScreen(),
+                          ),
                         ),
-                      ),
-                      child: Text(AppLocalizations.of(context)!.registerHere),
-                    )
-                  ],
+                        child: Text(AppLocalizations.of(context)!.registerHere),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

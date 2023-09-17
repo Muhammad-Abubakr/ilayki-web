@@ -15,8 +15,9 @@ class ChatMessage extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return Align(
-          alignment:
-              message.sender == state.user?.uid ? Alignment.topRight : Alignment.topLeft,
+          alignment: message.sender == state.user?.uid
+              ? Alignment.topRight
+              : Alignment.topLeft,
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 4.spMax),
             padding: EdgeInsets.all(8.spMax),
@@ -29,7 +30,9 @@ class ChatMessage extends StatelessWidget {
             ),
             child: Text(
               message.content,
-              textAlign: message.sender == state.user?.uid ? TextAlign.right : TextAlign.left,
+              textAlign: message.sender == state.user?.uid
+                  ? TextAlign.right
+                  : TextAlign.left,
               style: TextStyle(
                 color: message.sender == state.user?.uid
                     ? Colors.white

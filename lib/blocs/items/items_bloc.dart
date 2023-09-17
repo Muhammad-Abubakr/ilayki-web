@@ -30,8 +30,10 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   FutureOr<void> _onActivatingItemsListeners(
       ActivateItemsListener event, Emitter<ItemsState> emit) async {
     /* Attaching the Stream point */
-    _itemsStream =
-        database.child('items/${event.userBloc.state.user?.uid}').onValue.listen((event) {
+    _itemsStream = database
+        .child('items/${event.userBloc.state.user?.uid}')
+        .onValue
+        .listen((event) {
       /* Obtaining the actual data from the Snapshot */
       final data = (event.snapshot.value as Map<dynamic, dynamic>?);
 
@@ -69,7 +71,8 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   }
 
   /* deleting a specific object at some reference in firebase */
-  FutureOr<void> _onItemsDelete(ItemsDeleteEvent event, Emitter<ItemsState> emit) async {
+  FutureOr<void> _onItemsDelete(
+      ItemsDeleteEvent event, Emitter<ItemsState> emit) async {
     // get the reference to the object
     final itemRef = database.child('items/${event.userUID}/${event.itemFID}');
 
@@ -78,7 +81,8 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   }
 
 /* Used Internally to update Items got throught the stream subcription to firebase database*/
-  FutureOr<void> _onItemsUpdate(_ItemsUpdateEvent event, Emitter<ItemsState> emit) {
+  FutureOr<void> _onItemsUpdate(
+      _ItemsUpdateEvent event, Emitter<ItemsState> emit) {
     // emit the updated state
     emit(ItemsUpdated(items: event.items));
   }

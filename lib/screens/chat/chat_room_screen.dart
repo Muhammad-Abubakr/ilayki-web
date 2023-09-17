@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/models/message.dart';
 import 'package:ilayki/widgets/chat_message.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../blocs/chat/chat_bloc.dart';
 import '../../blocs/online/online_cubit.dart';
@@ -20,7 +20,8 @@ class ChatRoomScreen extends StatefulWidget {
   State<ChatRoomScreen> createState() => _ChatRoomScreenState();
 }
 
-class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObserver {
+class _ChatRoomScreenState extends State<ChatRoomScreen>
+    with WidgetsBindingObserver {
   /* Params */
   late String currentUser;
   late User itemOwner;
@@ -32,7 +33,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
   @override
   void didChangeDependencies() {
     /* Accessing parameters sent using route navigator */
-    var args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    var args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
     currentUser = args["currentUser"] as String;
     itemOwner = args["itemOwner"] as User;
@@ -68,7 +70,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
               color: Theme.of(context).colorScheme.primary,
             ),
             child: CircleAvatar(
-              backgroundImage: Image.network(itemOwner.photoURL, fit: BoxFit.cover).image,
+              backgroundImage:
+                  Image.network(itemOwner.photoURL, fit: BoxFit.cover).image,
             ),
           ),
           // Username
@@ -147,7 +150,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.enterMessageHintText,
+                        hintText:
+                            AppLocalizations.of(context)!.enterMessageHintText,
                         prefixIcon: const Icon(Icons.edit_square),
                         border: InputBorder.none,
                         enabledBorder: InputBorder.none,
@@ -161,8 +165,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> with WidgetsBindingObse
                           context.read<ChatBloc>().add(
                                 SendMessageEvent(
                                   Message(
-                                      sender: context.read<UserBloc>().state.user!.uid,
-                                      receiver: context.read<UserBloc>().state.user!.uid ==
+                                      sender: context
+                                          .read<UserBloc>()
+                                          .state
+                                          .user!
+                                          .uid,
+                                      receiver: context
+                                                  .read<UserBloc>()
+                                                  .state
+                                                  .user!
+                                                  .uid ==
                                               currentUser
                                           ? itemOwner.uid
                                           : currentUser,

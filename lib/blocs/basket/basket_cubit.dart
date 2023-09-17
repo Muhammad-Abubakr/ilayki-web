@@ -21,7 +21,8 @@ class BasketCubit extends Cubit<BasketState> {
   void addItem(Item item) {
     // Two things can happen here:
     // checking if the item is present
-    final int isPresent = state.orderItems.indexWhere((order) => order.item.id == item.id);
+    final int isPresent =
+        state.orderItems.indexWhere((order) => order.item.id == item.id);
 
     // 1- item is not present => add item with quantity one
     if (isPresent == -1) {
@@ -44,7 +45,8 @@ class BasketCubit extends Cubit<BasketState> {
       final presentState = state.orderItems[isPresent];
 
       // update the quantity
-      final updatedState = presentState.copyWith(quantity: presentState.quantity + 1);
+      final updatedState =
+          presentState.copyWith(quantity: presentState.quantity + 1);
 
       // replace the previous item
       state.orderItems.replaceRange(isPresent, isPresent + 1, [updatedState]);
@@ -86,10 +88,12 @@ class BasketCubit extends Cubit<BasketState> {
       final presentState = state.orderItems[prevStateIndex];
 
       // update the quantity
-      final updatedState = presentState.copyWith(quantity: presentState.quantity - 1);
+      final updatedState =
+          presentState.copyWith(quantity: presentState.quantity - 1);
 
       // replace the previous item
-      state.orderItems.replaceRange(prevStateIndex, prevStateIndex + 1, [updatedState]);
+      state.orderItems
+          .replaceRange(prevStateIndex, prevStateIndex + 1, [updatedState]);
       final updatedItems = [...state.orderItems];
 
       // decrease the total price

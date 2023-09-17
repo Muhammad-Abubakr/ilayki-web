@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/screens/home/add_menu_item.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -55,13 +54,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   )
                                 : CircleAvatar(
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
                                     radius: 204.r,
                                     child: CircleAvatar(
                                       radius: 196.r,
                                       // If the photo url of the user in not null ? show the email pfp
                                       backgroundImage:
-                                          Image.network(state.user!.photoURL!).image,
+                                          Image.network(state.user!.photoURL!)
+                                              .image,
                                     ),
                                   ),
                           ),
@@ -71,13 +72,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               margin: EdgeInsets.only(right: 16.spMax),
                               child: CircleAvatar(
                                 radius: 42.r,
-                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                backgroundColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 child: CircleAvatar(
                                   radius: 32.r,
-                                  backgroundColor:
-                                      onlineState.onlineUsers.contains(state.user!.uid)
-                                          ? Colors.greenAccent
-                                          : Colors.redAccent,
+                                  backgroundColor: onlineState.onlineUsers
+                                          .contains(state.user!.uid)
+                                      ? Colors.greenAccent
+                                      : Colors.redAccent,
                                 ),
                               ),
                             );
@@ -135,7 +137,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (state.items.isEmpty)
                     Padding(
                       padding: EdgeInsets.only(top: 200.h),
-                      child: Text(AppLocalizations.of(context)!.addSomethingToShowHere),
+                      child: Text(
+                          AppLocalizations.of(context)!.addSomethingToShowHere),
                     )
                   else
                     Expanded(
@@ -218,7 +221,8 @@ two sources: Camera or Gallery */
           actions: [
             ElevatedButton(
               child: Text(AppLocalizations.of(context)!.dismiss),
-              onPressed: () => ScaffoldMessenger.of(context).clearMaterialBanners(),
+              onPressed: () =>
+                  ScaffoldMessenger.of(context).clearMaterialBanners(),
             )
           ],
         ),

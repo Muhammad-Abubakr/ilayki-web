@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../models/user.dart';
 import '../../widgets/user_overview_widget.dart';
@@ -31,7 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // update the wares
     if (state.seller != null) {
       users = state.seller!
-          .where((element) => element.uid != context.read<UserBloc>().state.user!.uid)
+          .where((element) =>
+              element.uid != context.read<UserBloc>().state.user!.uid)
           .toList();
     }
     super.didChangeDependencies();
@@ -64,7 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
         /* If there are no items in warehouse display text in center */
         return state.seller == null || state.seller!.isEmpty
             ? Center(
-                child: Text(AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
+                child: Text(AppLocalizations.of(context)!
+                    .nothingToShowHereForTheMoment),
               )
             /* otherwise build items */
             : Scaffold(
@@ -83,9 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: TextField(
                             controller: _controller,
                             decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!.searchHelperText,
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
+                              hintText: AppLocalizations.of(context)!
+                                  .searchHelperText,
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 32.w, vertical: 12.h),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(32.r),
                                 borderSide: BorderSide(
@@ -106,7 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                 body: ListView.separated(
                   padding: isLandscape
-                      ? EdgeInsets.symmetric(horizontal: 0.25.sw, vertical: 32.h)
+                      ? EdgeInsets.symmetric(
+                          horizontal: 0.25.sw, vertical: 32.h)
                       : EdgeInsets.all(32.h),
                   separatorBuilder: (context, _) => const Divider(thickness: 0),
                   itemBuilder: (context, index) {

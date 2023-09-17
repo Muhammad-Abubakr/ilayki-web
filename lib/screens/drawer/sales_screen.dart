@@ -64,7 +64,8 @@ class SalesScreen extends StatelessWidget {
                         }),
                         child: CircleAvatar(
                           backgroundImage:
-                              Image.network(buyer.photoURL, fit: BoxFit.cover).image,
+                              Image.network(buyer.photoURL, fit: BoxFit.cover)
+                                  .image,
                         ),
                       ),
                     ),

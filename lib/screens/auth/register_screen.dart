@@ -1,11 +1,10 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../app.dart';
 import '../../blocs/items/items_bloc.dart';
@@ -30,9 +29,10 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   /* Image Picker */
-  XFile? _xFile;
+/*  XFile? _xFile;
   ImageSource? _imageSource;
-  final _imagePicker = ImagePicker();
+  final _imagePicker = ImagePicker();*/
+  Uint8List? _imageBytes;
 
   // Text Field Controllers
   final TextEditingController _nameController = TextEditingController();
@@ -116,13 +116,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Ilayki', style: GoogleFonts.kaushanScript()),
+            title: Text('Ilayki',
+                style: GoogleFonts.kaushanScript(fontSize: 32.spMax)),
             centerTitle: true,
           ),
           body: Center(
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(
-                horizontal: !isLandscape ? 0.08.sw : 0.3.sw,
+                horizontal: !isLandscape ? 0.08.sw : 0.35.sw,
                 vertical: 128.h,
               ),
               child: Column(
@@ -202,11 +203,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(24.r)),
                         color: Theme.of(context).primaryColor.withOpacity(0.3),
-                        image: _xFile != null
+                        image: _imageBytes != null
                             ? DecorationImage(
-                                image: FileImage(
-                                  File(_xFile!.path),
-                                ),
+                                image: Image.memory(_imageBytes!).image,
                                 fit: BoxFit.cover,
                               )
                             : null,
@@ -215,7 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: 128.spMax,
                       height: 128.spMax,
                       /* Picture Update */
-                      child: _xFile == null
+                      child: _imageBytes == null
                           ? Text(
                               AppLocalizations.of(context)!.tapHereToAddPicture,
                               textAlign: TextAlign.center,
@@ -224,7 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   /* Hint for Changing image after Selection */
-                  if (_xFile != null)
+                  if (_imageBytes != null)
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 64.0.sp),
                       child: Text(
@@ -255,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (_nameController.text.isEmpty ||
                               _emailController.text.isEmpty ||
                               _passwordController.text.isEmpty ||
-                              _xFile == null) {
+                              _imageBytes == null) {
                             /* else show the snackbar saying passwords dont match */
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -283,7 +282,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 displayName: _nameController.text.trim(),
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),
-                                xFile: _xFile!,
+                                image: _imageBytes!,
                                 role: UserRoles.customer,
                               ),
                             );
@@ -301,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (_nameController.text.isEmpty ||
                               _emailController.text.isEmpty ||
                               _passwordController.text.isEmpty ||
-                              _xFile == null) {
+                              _imageBytes == null) {
                             /* else show the snackbar saying passwords dont match */
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -329,7 +328,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 displayName: _nameController.text.trim(),
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),
-                                xFile: _xFile!,
+                                image: _imageBytes!,
                                 role: UserRoles.seller,
                               ),
                             );
@@ -364,95 +363,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  /* Displays a Modal Bootm Sheet with Two Options for _imageSource required by ImagePicker in a Row  */
-  Future _pickImageSource() async {
-    return await showModalBottomSheet(
-      constraints: BoxConstraints.tight(Size.fromHeight(256.h)),
-      context: context,
-      builder: (bottomSheetContext) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton.icon(
-              onPressed: () {
-                _imageSource = ImageSource.camera;
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.camera),
-              label: const Text("Camera"),
-            ),
-            const VerticalDivider(),
-            TextButton.icon(
-              onPressed: () {
-                _imageSource = ImageSource.gallery;
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.photo_album),
-              label: const Text("Gallery"),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
-without providing the _imageSource value by tapping on either of the
-two sources: Camera or Gallery */
-  bool _validateImageSource() {
-    if (_imageSource == null) {
-      ScaffoldMessenger.of(context).showMaterialBanner(
-        MaterialBanner(
-          margin: const EdgeInsets.only(bottom: 16.0),
-          content: Text(AppLocalizations.of(context)!.operationCancelled),
-          actions: [
-            ElevatedButton(
-              child: Text(AppLocalizations.of(context)!.dismiss),
-              onPressed: () =>
-                  ScaffoldMessenger.of(context).clearMaterialBanners(),
-            )
-          ],
-        ),
-      );
-
-      return false;
-    }
-    return true;
-  }
-
-/* Shows a SnackBar that displays that No image was picked or Captured by the User */
-  void _noImagePickedOrCaptured() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.noImageSelected),
-        action: SnackBarAction(
-          label: AppLocalizations.of(context)!.dismiss,
-          onPressed: () => ScaffoldMessenger.of(context).clearSnackBars(),
-        ),
-      ),
-    );
-  }
-
-  /* Image Picker Utilizer */
-  void _pickImage() async {
-    // Pick the Image Source
-    await _pickImageSource();
-
-    // Check if Image Source is Null, Cancel the Operation
-    if (_validateImageSource()) {
-      /* Else Pick the Image File */
-      _imagePicker.pickImage(source: _imageSource!).then((value) {
-        if (value != null) {
-          setState(() {
-            _xFile = value;
-          });
-        } else {
-          /* Show the SnackBar telling the user that no image was selected */
-          _noImagePickedOrCaptured();
-        }
-        /* Set the _imageSource to be Null */
-        _imageSource = null;
+  Future<void> _pickImage() async {
+    final pickedImage = await ImagePickerWeb.getImageAsBytes();
+    if (pickedImage != null) {
+      setState(() {
+        _imageBytes = pickedImage;
       });
     }
   }

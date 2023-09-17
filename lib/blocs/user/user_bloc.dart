@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:ilayki/services/firebase/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ilayki/services/firebase/auth.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../models/user.dart' as my_user;
 
 part 'user_event.dart';
@@ -53,7 +54,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   /* 
     Subscription Handler
    */
-  FutureOr<void> _subscriptionHandler(_UserUpdateEvent event, Emitter<UserState> emit) {
+  FutureOr<void> _subscriptionHandler(
+      _UserUpdateEvent event, Emitter<UserState> emit) {
     // updates the Bloc about the change in user state from the firebase subscription
     if (kDebugMode) {
       print(event.user);
@@ -112,7 +114,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     returns bool
   */
-  FutureOr<void> _signOutUserHandler(UserSignOut event, Emitter<UserState> emit) async {
+  FutureOr<void> _signOutUserHandler(
+      UserSignOut event, Emitter<UserState> emit) async {
     try {
       // i.
       await _auth.logout();
@@ -150,7 +153,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             'Registering user with: \nEmail: ${event.email}\nPass: ${event.password} as ${event.role}\n');
       }
 
-      User? user = await _auth.registerWithEmailAndPassword(event.email, event.password);
+      User? user =
+          await _auth.registerWithEmailAndPassword(event.email, event.password);
 
       if (user != null) {
         /* Updating the user */
@@ -159,7 +163,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         /* Storing the image */
         // Getting the reference
         final imageRef = storage.child('pfps/${user.uid}');
-        await imageRef.putFile(File(event.xFile.path));
+        await imageRef.putData(event.image);
         await user.updatePhotoURL(await imageRef.getDownloadURL());
 
         /* Add the User to users collection in realtime database */
@@ -217,7 +221,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     try {
       if (kDebugMode) {
-        print('Signing in user with: \nEmail: ${event.email}\nPass: ${event.password}\n');
+        print(
+            'Signing in user with: \nEmail: ${event.email}\nPass: ${event.password}\n');
       }
       // i.
       await _auth.signInWithEmailAndPassword(event.email, event.password);
@@ -235,7 +240,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     * User-Disabled
       ? thrown if the relevant authentication method is not enabled
    */
-  FutureOr<void> _signInWithGoogle(UserSignInWithGoogle event, Emitter<UserState> emit) async {
+  FutureOr<void> _signInWithGoogle(
+      UserSignInWithGoogle event, Emitter<UserState> emit) async {
     try {
       emit(UserUpdate(user: state.user, state: UserStates.processing));
       // i).
@@ -254,7 +260,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     ii). Updates the photo url in the user instance of firebase
     iii). catches errors incase any
    */
-  FutureOr<void> _userPfpUpdateHandler(UserPfpUpdate event, Emitter<UserState> emit) async {
+  FutureOr<void> _userPfpUpdateHandler(
+      UserPfpUpdate event, Emitter<UserState> emit) async {
     try {
       // i).
 
@@ -277,21 +284,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final imageSnapshot = await imageRef.putFile(File(event.xFile.path));
 
       /* Updating the user */
-      await state.user?.updatePhotoURL(await imageSnapshot.ref.getDownloadURL());
+      await state.user
+          ?.updatePhotoURL(await imageSnapshot.ref.getDownloadURL());
 
       /* Updating reference to user profile pic in the users collection in database */
       // getting the reference
       final userRef = database.child('users/${state.user?.uid}');
 
       // parsing and updating the user modal
-      final user = my_user.User.fromJson((await userRef.get()).value.toString());
-      final updatedUser = user.copyWith(photoURL: await imageSnapshot.ref.getDownloadURL());
+      final user =
+          my_user.User.fromJson((await userRef.get()).value.toString());
+      final updatedUser =
+          user.copyWith(photoURL: await imageSnapshot.ref.getDownloadURL());
 
       // setting the new model for the user in the database
       userRef.set(updatedUser.toJson());
 
       // emit the user state, that the user is updated
-      emit(UserUpdate(user: FirebaseAuth.instance.currentUser, state: UserStates.updated));
+      emit(UserUpdate(
+          user: FirebaseAuth.instance.currentUser, state: UserStates.updated));
       // ii).
     } on FirebaseAuthException catch (error) {
       emit(UserUpdate(state: UserStates.error, error: error));

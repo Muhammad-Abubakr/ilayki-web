@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/item.dart';
 import '../models/user.dart';
@@ -13,7 +13,8 @@ class ItemOverview extends StatelessWidget {
   final User owner;
   final int idx;
 
-  const ItemOverview({super.key, required this.idx, required this.item, required this.owner});
+  const ItemOverview(
+      {super.key, required this.idx, required this.item, required this.owner});
 
   @override
   Widget build(BuildContext context) {

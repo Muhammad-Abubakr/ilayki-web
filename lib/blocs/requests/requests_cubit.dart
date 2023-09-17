@@ -43,7 +43,8 @@ class RequestsCubit extends Cubit<RequestsState> {
 
             // print(requestsRef);
             // get all the requests between these two users
-            final data = (await requestsRef.get()).value as Map<dynamic, dynamic>?;
+            final data =
+                (await requestsRef.get()).value as Map<dynamic, dynamic>?;
 
             if (data != null) {
               // print(data.values);
@@ -69,7 +70,8 @@ class RequestsCubit extends Cubit<RequestsState> {
   void decline(Order order) async {
     // goal: remove the request from the requests collection in database
     // 1- get the reference to the order
-    final orderRef = _requests.child('${order.buyerID}+${order.sellerID}/${order.refID}');
+    final orderRef =
+        _requests.child('${order.buyerID}+${order.sellerID}/${order.refID}');
 
     // 2 - delete the item
     await orderRef.remove();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../blocs/user/user_bloc.dart';
 import '../../blocs/wares/wares_cubit.dart';
@@ -52,13 +52,15 @@ class _UserItemsState extends State<UserItems> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.name, style: TextStyle(color: Theme.of(context).primaryColor)),
+        title: Text(user.name,
+            style: TextStyle(color: Theme.of(context).primaryColor)),
         actions: [
           IconButton(
             onPressed: () {
               // go to the chat page, send the two users as arguments, chat will be
               // intialized there and end there
-              Navigator.of(context).pushNamed(ChatRoomScreen.routeName, arguments: {
+              Navigator.of(context)
+                  .pushNamed(ChatRoomScreen.routeName, arguments: {
                 "currentUser": context.read<UserBloc>().state.user!.uid,
                 "itemOwner": user,
               });
@@ -70,7 +72,8 @@ class _UserItemsState extends State<UserItems> {
       ),
       body: wares.isEmpty
           ? Center(
-              child: Text(AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
+              child: Text(
+                  AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
             )
           /* otherwise build items */
           : ListView.separated(

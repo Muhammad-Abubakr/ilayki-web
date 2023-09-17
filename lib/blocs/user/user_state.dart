@@ -36,12 +36,14 @@ abstract class UserState {
 
 /* Initial State of the User Bloc */
 class UserInitial extends UserState {
-  const UserInitial({User? user, required UserStates state, FirebaseAuthException? error})
+  const UserInitial(
+      {User? user, required UserStates state, FirebaseAuthException? error})
       : super(user: user, state: state, error: error);
 }
 
 /* Updated State of the User Bloc */
 class UserUpdate extends UserState {
-  const UserUpdate({User? user, required UserStates state, FirebaseAuthException? error})
+  const UserUpdate(
+      {User? user, required UserStates state, FirebaseAuthException? error})
       : super(user: user, state: state, error: error);
 }

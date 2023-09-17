@@ -60,11 +60,13 @@ class OrdersScreen extends StatelessWidget {
                         onTap: () => Navigator.of(context)
                             .pushNamed(ChatRoomScreen.routeName, arguments: {
                           "currentUser": orders[index].buyerID,
-                          "itemOwner": userbaseCubit.getUser(orders[index].sellerID),
+                          "itemOwner":
+                              userbaseCubit.getUser(orders[index].sellerID),
                         }),
                         child: CircleAvatar(
                           backgroundImage:
-                              Image.network(seller.photoURL, fit: BoxFit.cover).image,
+                              Image.network(seller.photoURL, fit: BoxFit.cover)
+                                  .image,
                         ),
                       ),
                     ),
