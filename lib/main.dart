@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/chat/chat_bloc.dart';
 import 'package:ilayki/blocs/items/items_bloc.dart';
@@ -16,13 +16,12 @@ import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
 import 'package:ilayki/l10n/l10n.dart';
-import 'package:ilayki/screens/chat/chat_room_screen.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/screens/auth/register_screen.dart';
+import 'package:ilayki/screens/chat/chat_room_screen.dart';
 import 'package:ilayki/screens/home/user_items_page.dart';
 
 import './firebase_options.dart';
-
 import 'app.dart';
 import 'blocs/wares/wares_cubit.dart';
 
@@ -34,11 +33,12 @@ void main() {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // Intializing Flutter App
+    // Initializing Flutter App
     runApp(
       MultiBlocProvider(
         providers: [
-          BlocProvider<LocalizationCubit>(create: (context) => LocalizationCubit()),
+          BlocProvider<LocalizationCubit>(
+              create: (context) => LocalizationCubit()),
           BlocProvider<UserBloc>(create: (context) => UserBloc()),
           BlocProvider<ItemsBloc>(create: (context) => ItemsBloc()),
           BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
@@ -79,9 +79,10 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: ThemeData(
-        fontFamily: "KaushanScript",
+        fontFamily: GoogleFonts.roboto(fontWeight: FontWeight.w400).fontFamily,
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 246, 246),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 244, 217, 185)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 244, 217, 185)),
         useMaterial3: true,
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -90,14 +91,16 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               width: 2,
-              color: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 244, 217, 185))
+              color: ColorScheme.fromSeed(
+                      seedColor: const Color.fromARGB(255, 244, 217, 185))
                   .primary,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               width: 2,
-              color: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 244, 217, 185))
+              color: ColorScheme.fromSeed(
+                      seedColor: const Color.fromARGB(255, 244, 217, 185))
                   .primary,
             ),
           ),

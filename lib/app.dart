@@ -1,21 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ilayki/blocs/localization/localization_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'blocs/basket/basket_cubit.dart';
+import 'blocs/user/user_bloc.dart';
 import 'screens/home/basket_page.dart';
 import 'screens/home/home_page.dart';
 import 'screens/home/profile_page.dart';
 import 'screens/home/updates_page.dart';
-import 'blocs/user/user_bloc.dart';
 
 class App extends StatefulWidget {
   // route name
@@ -96,6 +97,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     final LocalizationCubit cubit = context.watch<LocalizationCubit>();
 
     /* Locales Dropdown */
+    debugPrint("I am here");
     final SupportedLocales dropdownValue = SupportedLocales.values.firstWhere(
       (element) => describeEnum(element) == cubit.state.locale,
     );
@@ -135,7 +137,10 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           : Scaffold(
               /* App Bar */
               appBar: AppBar(
-                title: const Text("Ilayki"),
+                title: Text(
+                  "Ilayki",
+                  style: GoogleFonts.kaushanScript(),
+                ),
                 centerTitle: true,
                 foregroundColor: const Color.fromARGB(255, 236, 201, 171),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -232,7 +237,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                       },
                     ),
                   ),
-                  if (userbaseCubit.getUser(state.user!.uid).role != UserRoles.customer)
+                  if (userbaseCubit.getUser(state.user!.uid).role !=
+                      UserRoles.customer)
                     BottomNavigationBarItem(
                       label: AppLocalizations.of(context)!.profile,
                       icon: const Icon(Icons.person),

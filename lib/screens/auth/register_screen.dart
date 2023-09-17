@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../app.dart';
@@ -37,14 +38,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final userBloc = context.read<UserBloc>();
 
     /* Used for padding for fields */
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return BlocConsumer<UserBloc, UserState>(
       listener: (context, state) {
@@ -82,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Navigator.of(context).popAndPushNamed(App.routeName);
             break;
           case UserStates.error:
-            // Incase of error pop the routes (which will contain progress indicator mostly)
+            // In case of error pop the routes (which will contain progress indicator mostly)
             // until login screen and show the snack bar with the error
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -96,6 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             // Show the Dialog presenting progress indicator
             Navigator.of(context).push(
               DialogRoute(
+                barrierDismissible: false,
                 context: context,
                 builder: (context) => Center(
                   child: CircularProgressIndicator(
@@ -112,7 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Ilayki'),
+            title: Text('Ilayki', style: GoogleFonts.kaushanScript()),
             centerTitle: true,
           ),
           body: Center(
@@ -167,7 +171,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _confirmPasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
-                      label: Text(AppLocalizations.of(context)!.confirmPassword),
+                      label:
+                          Text(AppLocalizations.of(context)!.confirmPassword),
                     ),
                   ),
 
@@ -223,7 +228,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 64.0.sp),
                       child: Text(
-                        AppLocalizations.of(context)!.tapOnTheImageAgainToChange,
+                        AppLocalizations.of(context)!
+                            .tapOnTheImageAgainToChange,
                         style: TextStyle(
                           fontSize: 48.sp,
                           color: Colors.grey,
@@ -254,7 +260,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  AppLocalizations.of(context)!.fillAllFieldsAndImage,
+                                  AppLocalizations.of(context)!
+                                      .fillAllFieldsAndImage,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -299,7 +306,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  AppLocalizations.of(context)!.fillAllFieldsAndImage,
+                                  AppLocalizations.of(context)!
+                                      .fillAllFieldsAndImage,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -344,8 +352,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 Text(AppLocalizations.of(context)!.alreadyRegistered),
                 TextButton(
-                  onPressed: () =>
-                      Navigator.of(context).popAndPushNamed(LoginScreen.routeName),
+                  onPressed: () => Navigator.of(context)
+                      .popAndPushNamed(LoginScreen.routeName),
                   child: Text(AppLocalizations.of(context)!.signIn),
                 )
               ],
@@ -389,8 +397,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed 
-without providing the _imageSource value by tapping on either of the 
+/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
+without providing the _imageSource value by tapping on either of the
 two sources: Camera or Gallery */
   bool _validateImageSource() {
     if (_imageSource == null) {
@@ -401,7 +409,8 @@ two sources: Camera or Gallery */
           actions: [
             ElevatedButton(
               child: Text(AppLocalizations.of(context)!.dismiss),
-              onPressed: () => ScaffoldMessenger.of(context).clearMaterialBanners(),
+              onPressed: () =>
+                  ScaffoldMessenger.of(context).clearMaterialBanners(),
             )
           ],
         ),

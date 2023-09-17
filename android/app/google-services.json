@@ -1,35 +1,42 @@
 {
   "project_info": {
-    "project_number": "370324669560",
-    "firebase_url": "https://ilayki-db-backup-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "ilayki-db-backup",
-    "storage_bucket": "ilayki-db-backup.appspot.com"
+    "project_number": "132839856528",
+    "firebase_url": "https://ilayki-9c3e1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ilayki-9c3e1",
+    "storage_bucket": "ilayki-9c3e1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:370324669560:android:68d6decadbb023da94198d",
+        "mobilesdk_app_id": "1:132839856528:android:fd5c3bc8038ac67fdebb15",
         "android_client_info": {
           "package_name": "com.example.ilayki"
         }
       },
       "oauth_client": [
         {
-          "client_id": "370324669560-gmh8vcufcpsm558hkiq83k8e4be3h1kk.apps.googleusercontent.com",
+          "client_id": "132839856528-2ep4nuttgobq1m9pkqo81ujoanhk7u6n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCkJ9dCzD1KaS35WJ5_vp0-NTTMhyOG3hw"
+          "current_key": "AIzaSyAjzSl-M5bOU0t4RzvLM1LkWSfVBtSTp4o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "370324669560-gmh8vcufcpsm558hkiq83k8e4be3h1kk.apps.googleusercontent.com",
+              "client_id": "132839856528-2ep4nuttgobq1m9pkqo81ujoanhk7u6n.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "132839856528-19qdalekrvn03msj6kbvvdt39r5vorj9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ilayki"
+              }
             }
           ]
         }

@@ -81,13 +81,9 @@ class UserbaseCubit extends Cubit<UserbaseState> {
   /* Single User Getter */
   User getUser(String uid) {
     final customerIdx = state.customer!.indexWhere((u) => u.uid == uid);
-    debugPrint(state.customer.toString());
-    debugPrint(uid);
 
     if (customerIdx == -1) {
       final sellerIdx = state.seller!.indexWhere((u) => u.uid == uid);
-      debugPrint(uid);
-      debugPrint(state.seller.toString());
 
       return state.seller![sellerIdx];
     } else {

@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/orders/orders_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
 import 'package:ilayki/screens/auth/register_screen.dart';
 
@@ -43,7 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
       (element) => describeEnum(element) == cubit.state.locale,
     );
 
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // Pop the progress indicator
             Navigator.of(context).pop();
             // and push the screen
-            Navigator.of(context).popAndPushNamed(App.routeName);
+            Navigator.of(context).pushReplacementNamed(App.routeName);
             break;
           case UserStates.error:
             // Incase of error pop the routes (which will contain progress indicator mostly)
@@ -99,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // Show the Dialog presenting progress indicator
             Navigator.of(context).push(
               DialogRoute(
+                barrierDismissible: false,
                 context: context,
                 builder: (context) => Center(
                   child: CircularProgressIndicator(
@@ -148,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Scaffold(
             /* App Bar */
             appBar: AppBar(
-              leading: Center(
+              leading: FittedBox(
                 child: Text(
                   AppLocalizations.of(context)!.welcome,
                   style: TextStyle(
@@ -213,9 +216,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       'Ilayki',
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                            color: Theme.of(context).primaryColor,
-                          ),
+                      style: GoogleFonts.kaushanScript(
+                        fontSize: 172.sp,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                     SizedBox(height: 172.h),
                     TextField(
@@ -236,7 +240,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 96.h),
                     ElevatedButton(
                       onPressed: () {
-                        context.read<UserBloc>().add(UserSignInWithEmailAndPassword(
+                        context
+                            .read<UserBloc>()
+                            .add(UserSignInWithEmailAndPassword(
                               email: _emailController.text,
                               password: _passwordController.text,
                             ));
@@ -251,19 +257,21 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             persistentFooterButtons: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(AppLocalizations.of(context)!.notRegistered),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => const RegisterScreen(),
+              FittedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(AppLocalizations.of(context)!.notRegistered),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => const RegisterScreen(),
+                        ),
                       ),
-                    ),
-                    child: Text(AppLocalizations.of(context)!.registerHere),
-                  )
-                ],
+                      child: Text(AppLocalizations.of(context)!.registerHere),
+                    )
+                  ],
+                ),
               ),
             ],
           ),

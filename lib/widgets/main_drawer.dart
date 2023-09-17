@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/orders/orders_cubit.dart';
@@ -41,7 +42,7 @@ class MainDrawer extends StatelessWidget {
                 child: Text(
                   "Ilayki",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: GoogleFonts.kaushanScript(
                     color: Theme.of(context).primaryColor,
                     fontSize: 196.sp,
                   ),
@@ -148,7 +149,9 @@ class MainDrawer extends StatelessWidget {
                   context.read<UserbaseCubit>().dispose();
 
                   /* This seems like a good point to unsubscribe to items stream */
-                  context.read<ItemsBloc>().add(const DeactivateItemsListener());
+                  context
+                      .read<ItemsBloc>()
+                      .add(const DeactivateItemsListener());
 
                   /* Dipose of the requests for the current user */
                   context.read<RequestsCubit>().dispose();
