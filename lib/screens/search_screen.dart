@@ -39,17 +39,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
   /* Function to filter wares */
   void filterWares() {
-    if (state.wares != null) {
-      setState(() {
-        items = state.wares
-            .where(
-              (element) => element.name.toLowerCase().contains(
-                    _controller.text.trim().toLowerCase(),
-                  ),
-            )
-            .toList();
-      });
-    }
+    setState(() {
+      items = state.wares
+          .where(
+            (element) => element.name.toLowerCase().contains(
+                  _controller.text.trim().toLowerCase(),
+                ),
+          )
+          .toList();
+    });
   }
 
   @override
@@ -83,8 +81,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 controller: _controller,
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.searchHelperText,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(32.r),
                     borderSide: BorderSide(
@@ -139,14 +136,12 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           body: items.isEmpty
               ? Center(
-                  child: Text(AppLocalizations.of(context)!
-                      .nothingToShowHereForTheMoment),
+                  child: Text(AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
                 )
               /* otherwise build items */
               : ListView.separated(
                   padding: isLandscape
-                      ? EdgeInsets.symmetric(
-                          horizontal: 0.25.sw, vertical: 32.h)
+                      ? EdgeInsets.symmetric(horizontal: 0.25.sw, vertical: 32.h)
                       : EdgeInsets.all(32.h),
                   separatorBuilder: (context, _) => const Divider(thickness: 0),
                   itemBuilder: (context, index) {

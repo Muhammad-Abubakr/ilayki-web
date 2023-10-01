@@ -42,8 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
       (element) => describeEnum(element) == cubit.state.locale,
     );
 
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
@@ -225,9 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 96.h),
                   ElevatedButton(
                     onPressed: () {
-                      context
-                          .read<UserBloc>()
-                          .add(UserSignInWithEmailAndPassword(
+                      context.read<UserBloc>().add(UserSignInWithEmailAndPassword(
                             email: _emailController.text,
                             password: _passwordController.text,
                           ));
