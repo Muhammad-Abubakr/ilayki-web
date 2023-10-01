@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 
 import '../../models/user.dart';
@@ -30,10 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // update the wares
     if (state.seller != null) {
-      users = state.seller!
-          .where((element) =>
-              element.uid != context.read<UserBloc>().state.user!.uid)
-          .toList();
+      users = state.seller!;
     }
     super.didChangeDependencies();
   }
@@ -43,13 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (state.seller != null) {
       setState(() {
         users = state.seller!
-            .where(
-              (element) =>
-                  element.name.toLowerCase().contains(
-                        _controller.text.trim().toLowerCase(),
-                      ) &&
-                  element.uid != context.read<UserBloc>().state.user!.uid,
-            )
+            .where((element) => element.name.toLowerCase().contains(
+                  _controller.text.trim().toLowerCase(),
+                ))
             .toList();
       });
     }
@@ -70,43 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             /* otherwise build items */
             : Scaffold(
-                appBar: !Navigator.of(context).mounted
-                    ? null
-                    : AppBar(
-                        leading: IconButton.filledTonal(
-                          onPressed: filterWares,
-                          color: Theme.of(context).primaryColor,
-                          icon: const Icon(Icons.search),
-                        ),
-                        backgroundColor: Colors.transparent,
-                        // leadingWidth: 0,
-                        title: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24.h),
-                          child: TextField(
-                            controller: _controller,
-                            decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!
-                                  .searchHelperText,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 32.w, vertical: 12.h),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(32.r),
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(32.r),
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                 body: ListView.separated(
                   padding: isLandscape
                       ? EdgeInsets.symmetric(

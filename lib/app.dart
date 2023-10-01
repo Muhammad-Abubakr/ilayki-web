@@ -9,6 +9,7 @@ import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/userbase/userbase_cubit.dart';
 import 'package:ilayki/screens/auth/login_screen.dart';
+import 'package:ilayki/screens/search_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 
 import 'blocs/basket/basket_cubit.dart';
@@ -42,10 +43,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   void didChangeDependencies() {
-    /* Initialize the userbase */
-    userbaseCubit = context.watch<UserbaseCubit>();
-    userbaseCubit.initialize();
-
     super.didChangeDependencies();
   }
 
@@ -71,9 +68,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         break;
 
       default:
-        if (kDebugMode) {
-          print(state);
-        }
         break;
     }
 
@@ -97,7 +91,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     final LocalizationCubit cubit = context.watch<LocalizationCubit>();
 
     /* Locales Dropdown */
-    debugPrint("I am here");
     final SupportedLocales dropdownValue = SupportedLocales.values.firstWhere(
       (element) => describeEnum(element) == cubit.state.locale,
     );
@@ -126,9 +119,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             break;
         }
       },
-      builder: (context, state) => state.user == null ||
-              userbaseCubit.state.customer == null ||
-              userbaseCubit.state.seller == null
+      builder: (context, state) => state.user == null
           ? const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
@@ -139,17 +130,24 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               appBar: AppBar(
                 title: Text(
                   "Ilayki",
-                  style: GoogleFonts.kaushanScript(),
+                  style: GoogleFonts.kaushanScript(fontSize: 32.spMax),
                 ),
                 centerTitle: true,
                 foregroundColor: const Color.fromARGB(255, 236, 201, 171),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 shadowColor: Colors.transparent,
                 elevation: 0,
 
                 // Locales
                 actions: [
                   /* Dropdown Button for changing the locale for the application */
+                  IconButton.filledTonal(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const SearchScreen())),
+                    color: Theme.of(context).primaryColor,
+                    icon: const Icon(Icons.search),
+                  ),
+                  SizedBox(width: 32.spMax),
                   DropdownButton(
                     iconSize: 16.spMax,
                     elevation: 1,
@@ -193,58 +191,122 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               drawer: const MainDrawer(),
 
               /* Body */
-              body: screens[currentScreenIndex],
-
-              /* Bottom Navbar */
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: currentScreenIndex,
-                onTap: (index) => setState(() => currentScreenIndex = index),
-                unselectedItemColor: const Color.fromARGB(255, 236, 201, 171),
-                selectedItemColor: Theme.of(context).colorScheme.primary,
-                type: BottomNavigationBarType.fixed,
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    label: AppLocalizations.of(context)!.home,
-                    icon: const Icon(Icons.cookie),
-                  ),
-                  BottomNavigationBarItem(
-                    label: AppLocalizations.of(context)!.updates,
-                    icon: BlocBuilder<RequestsCubit, RequestsState>(
-                      builder: (context, state) {
-                        return Stack(children: [
-                          const Icon(Icons.notifications),
-                          if (state.requests.isNotEmpty)
-                            CircleAvatar(
-                              radius: 12.r,
-                              backgroundColor: Colors.red.shade400,
-                            ),
-                        ]);
-                      },
+              body: Row(
+                children: [
+                  if (MediaQuery.of(context).orientation ==
+                      Orientation.landscape)
+                    NavigationRail(
+                      selectedIndex: currentScreenIndex,
+                      useIndicator: true,
+                      labelType: NavigationRailLabelType.selected,
+                      unselectedIconTheme: const IconThemeData(
+                          color: Color.fromARGB(255, 236, 201, 171)),
+                      selectedIconTheme: IconThemeData(
+                          color: Theme.of(context).colorScheme.primary),
+                      onDestinationSelected: (index) =>
+                          setState(() => currentScreenIndex = index),
+                      destinations: <NavigationRailDestination>[
+                        NavigationRailDestination(
+                          label: Text(AppLocalizations.of(context)!.home),
+                          icon: const Icon(Icons.cookie),
+                        ),
+                        NavigationRailDestination(
+                          label: Text(AppLocalizations.of(context)!.updates),
+                          icon: BlocBuilder<RequestsCubit, RequestsState>(
+                            builder: (context, state) {
+                              return Stack(children: [
+                                const Icon(Icons.notifications),
+                                if (state.requests.isNotEmpty)
+                                  CircleAvatar(
+                                    radius: 12.r,
+                                    backgroundColor: Colors.red.shade400,
+                                  ),
+                              ]);
+                            },
+                          ),
+                        ),
+                        NavigationRailDestination(
+                          label: Text(AppLocalizations.of(context)!.basket),
+                          icon: BlocBuilder<BasketCubit, BasketState>(
+                            builder: (context, state) {
+                              return Stack(children: [
+                                const Icon(Icons.shopping_basket),
+                                if (state.orderItems.isNotEmpty)
+                                  CircleAvatar(
+                                    radius: 12.r,
+                                    backgroundColor: Colors.red.shade400,
+                                  ),
+                              ]);
+                            },
+                          ),
+                        ),
+                        if (userbaseCubit.getUser(state.user!.uid).role !=
+                            UserRoles.customer)
+                          NavigationRailDestination(
+                            label: Text(AppLocalizations.of(context)!.profile),
+                            icon: const Icon(Icons.person),
+                          ),
+                      ],
                     ),
-                  ),
-                  BottomNavigationBarItem(
-                    label: AppLocalizations.of(context)!.basket,
-                    icon: BlocBuilder<BasketCubit, BasketState>(
-                      builder: (context, state) {
-                        return Stack(children: [
-                          const Icon(Icons.shopping_basket),
-                          if (state.orderItems.isNotEmpty)
-                            CircleAvatar(
-                              radius: 12.r,
-                              backgroundColor: Colors.red.shade400,
-                            ),
-                        ]);
-                      },
-                    ),
-                  ),
-                  if (userbaseCubit.getUser(state.user!.uid).role !=
-                      UserRoles.customer)
-                    BottomNavigationBarItem(
-                      label: AppLocalizations.of(context)!.profile,
-                      icon: const Icon(Icons.person),
-                    ),
+                  Expanded(child: screens[currentScreenIndex]),
                 ],
               ),
+
+              /* Bottom Navbar */
+              bottomNavigationBar: MediaQuery.of(context).orientation ==
+                      Orientation.portrait
+                  ? BottomNavigationBar(
+                      currentIndex: currentScreenIndex,
+                      onTap: (index) =>
+                          setState(() => currentScreenIndex = index),
+                      unselectedItemColor:
+                          const Color.fromARGB(255, 236, 201, 171),
+                      selectedItemColor: Theme.of(context).colorScheme.primary,
+                      type: BottomNavigationBarType.fixed,
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          label: AppLocalizations.of(context)!.home,
+                          icon: const Icon(Icons.cookie),
+                        ),
+                        BottomNavigationBarItem(
+                          label: AppLocalizations.of(context)!.updates,
+                          icon: BlocBuilder<RequestsCubit, RequestsState>(
+                            builder: (context, state) {
+                              return Stack(children: [
+                                const Icon(Icons.notifications),
+                                if (state.requests.isNotEmpty)
+                                  CircleAvatar(
+                                    radius: 12.r,
+                                    backgroundColor: Colors.red.shade400,
+                                  ),
+                              ]);
+                            },
+                          ),
+                        ),
+                        BottomNavigationBarItem(
+                          label: AppLocalizations.of(context)!.basket,
+                          icon: BlocBuilder<BasketCubit, BasketState>(
+                            builder: (context, state) {
+                              return Stack(children: [
+                                const Icon(Icons.shopping_basket),
+                                if (state.orderItems.isNotEmpty)
+                                  CircleAvatar(
+                                    radius: 12.r,
+                                    backgroundColor: Colors.red.shade400,
+                                  ),
+                              ]);
+                            },
+                          ),
+                        ),
+                        if (userbaseCubit.getUser(state.user!.uid).role !=
+                            UserRoles.customer)
+                          BottomNavigationBarItem(
+                            label: AppLocalizations.of(context)!.profile,
+                            icon: const Icon(Icons.person),
+                          ),
+                      ],
+                    )
+                  : null,
             ),
     );
   }

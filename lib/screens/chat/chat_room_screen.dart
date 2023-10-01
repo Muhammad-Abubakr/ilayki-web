@@ -62,17 +62,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
       appBar: AppBar(
         title: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-          leading: Container(
-            margin: EdgeInsets.symmetric(vertical: 18.h),
-            padding: EdgeInsets.all(6.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(1.sw),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: CircleAvatar(
-              backgroundImage:
-                  Image.network(itemOwner.photoURL, fit: BoxFit.cover).image,
-            ),
+          leading: CircleAvatar(
+            backgroundImage:
+                Image.network(itemOwner.photoURL, fit: BoxFit.cover).image,
           ),
           // Username
           title: Text(itemOwner.name),

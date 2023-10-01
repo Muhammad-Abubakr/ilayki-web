@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/orders/orders_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
@@ -17,7 +16,6 @@ import 'package:ilayki/screens/auth/register_screen.dart';
 import '../../app.dart';
 import '../../blocs/items/items_bloc.dart';
 import '../../blocs/localization/localization_cubit.dart';
-import '../../blocs/wares/wares_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   // route name
@@ -55,14 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
             // clear the controllers
             _emailController.clear();
             _passwordController.clear();
-
-            /* Initialize the wares */
-            context.read<WaresCubit>().intialize();
-
-            /* Initialize the online users */
-            final onlineCubit = context.read<OnlineCubit>();
-            onlineCubit.initialize();
-            onlineCubit.setOnline();
 
             /* Initialize the requests for current user */
             context.read<RequestsCubit>().initialize();
@@ -125,159 +115,153 @@ class _LoginScreenState extends State<LoginScreen> {
             break;
         }
       },
-      child: ScreenUtilInit(
-        designSize: const Size(1080, 2340),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        //* The following builder method returns the child on which we can use screen utils package
-        builder: (context, child) => WillPopScope(
-          onWillPop: () => showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text(AppLocalizations.of(context)!.confirmationDialog),
-              content: Text(AppLocalizations.of(context)!.confirmationContent),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(AppLocalizations.of(context)!.cancel),
-                ),
-                ElevatedButton(
-                  onPressed: () => exit(exitCode),
-                  child: Text(AppLocalizations.of(context)!.exit),
-                ),
-              ],
-            ),
-          ).then((value) => value as bool),
-          child: Scaffold(
-            /* App Bar */
-            appBar: AppBar(
-              leading: FittedBox(
-                child: Text(
-                  AppLocalizations.of(context)!.welcome,
-                  style: TextStyle(
-                    fontSize: 128.spMax,
-                  ),
-                ),
+      child: WillPopScope(
+        onWillPop: () => showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text(AppLocalizations.of(context)!.confirmationDialog),
+            content: Text(AppLocalizations.of(context)!.confirmationContent),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(AppLocalizations.of(context)!.cancel),
               ),
-              leadingWidth: 0.2.sw,
-              foregroundColor: const Color.fromARGB(255, 236, 201, 171),
-              shadowColor: const Color.fromARGB(255, 244, 217, 185),
-
-              // Locales
-              actions: [
-                /* Dropdown Button for changing the locale for the application */
-                DropdownButton(
-                  iconSize: 32.spMax,
-                  elevation: 1,
-                  value: dropdownValue,
-
-                  // Update the cubit state with the locale selected by the user
-                  onChanged: (value) {
-                    if (value != null) cubit.updateLocale(value);
-                  },
-                  items: [
-                    DropdownMenuItem(
-                      value: SupportedLocales.en,
-                      child: Image.asset(
-                        'lib/assets/flags/us.png',
-                        fit: BoxFit.scaleDown,
-                        height: 32.spMax,
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: SupportedLocales.ar,
-                      child: Image.asset(
-                        'lib/assets/flags/sa.png',
-                        fit: BoxFit.scaleDown,
-                        height: 32.spMax,
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: SupportedLocales.fr,
-                      child: Image.asset(
-                        'lib/assets/flags/fr.png',
-                        fit: BoxFit.scaleDown,
-                        height: 32.spMax,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            body: // Form Global Key
-                Center(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: !isLandscape ? 0.08.sw : 0.4.sw,
-                  vertical: 128.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Ilayki',
-                      style: GoogleFonts.kaushanScript(
-                        fontSize: 172.sp,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    SizedBox(height: 172.h),
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context)!.email),
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    TextField(
-                      obscureText: true,
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        label: Text(AppLocalizations.of(context)!.password),
-                      ),
-                    ),
-                    SizedBox(height: 96.h),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<UserBloc>()
-                            .add(UserSignInWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            ));
-                      },
-                      style: TextButton.styleFrom(
-                        elevation: 4,
-                      ),
-                      child: Text(AppLocalizations.of(context)!.signIn),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            persistentFooterButtons: [
-              Center(
-                child: FittedBox(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(AppLocalizations.of(context)!.notRegistered),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (_) => const RegisterScreen(),
-                          ),
-                        ),
-                        child: Text(AppLocalizations.of(context)!.registerHere),
-                      )
-                    ],
-                  ),
-                ),
+              ElevatedButton(
+                onPressed: () => exit(exitCode),
+                child: Text(AppLocalizations.of(context)!.exit),
               ),
             ],
           ),
+        ).then((value) => value as bool),
+        child: Scaffold(
+          /* App Bar */
+          appBar: AppBar(
+            leading: FittedBox(
+              child: Text(
+                AppLocalizations.of(context)!.welcome,
+                style: TextStyle(
+                  fontSize: 128.spMax,
+                ),
+              ),
+            ),
+            leadingWidth: 0.2.sw,
+            foregroundColor: const Color.fromARGB(255, 236, 201, 171),
+            shadowColor: const Color.fromARGB(255, 244, 217, 185),
+
+            // Locales
+            actions: [
+              /* Dropdown Button for changing the locale for the application */
+              DropdownButton(
+                iconSize: 32.spMax,
+                elevation: 1,
+                value: dropdownValue,
+
+                // Update the cubit state with the locale selected by the user
+                onChanged: (value) {
+                  if (value != null) cubit.updateLocale(value);
+                },
+                items: [
+                  DropdownMenuItem(
+                    value: SupportedLocales.en,
+                    child: Image.asset(
+                      'lib/assets/flags/us.png',
+                      fit: BoxFit.scaleDown,
+                      height: 32.spMax,
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: SupportedLocales.ar,
+                    child: Image.asset(
+                      'lib/assets/flags/sa.png',
+                      fit: BoxFit.scaleDown,
+                      height: 32.spMax,
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: SupportedLocales.fr,
+                    child: Image.asset(
+                      'lib/assets/flags/fr.png',
+                      fit: BoxFit.scaleDown,
+                      height: 32.spMax,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          body: // Form Global Key
+              Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: !isLandscape ? 0.08.sw : 0.35.sw,
+                vertical: 128.h,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Ilayki',
+                    style: GoogleFonts.kaushanScript(
+                      fontSize: 172.sp,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  SizedBox(height: 172.h),
+                  TextField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      label: Text(AppLocalizations.of(context)!.email),
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  TextField(
+                    obscureText: true,
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      label: Text(AppLocalizations.of(context)!.password),
+                    ),
+                  ),
+                  SizedBox(height: 96.h),
+                  ElevatedButton(
+                    onPressed: () {
+                      context
+                          .read<UserBloc>()
+                          .add(UserSignInWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ));
+                    },
+                    style: TextButton.styleFrom(
+                      elevation: 4,
+                    ),
+                    child: Text(AppLocalizations.of(context)!.signIn),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          persistentFooterButtons: [
+            Center(
+              child: FittedBox(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(AppLocalizations.of(context)!.notRegistered),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => const RegisterScreen(),
+                        ),
+                      ),
+                      child: Text(AppLocalizations.of(context)!.registerHere),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

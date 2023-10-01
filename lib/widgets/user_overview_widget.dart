@@ -43,6 +43,7 @@ class UserOverview extends StatelessWidget {
             /* Item and Owner Details */
             ListTile(
               // user pfp
+              contentPadding: EdgeInsets.all(24.h),
               leading: Stack(
                 children: [
                   CircleAvatar(

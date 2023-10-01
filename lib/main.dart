@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ilayki/blocs/basket/basket_cubit.dart';
 import 'package:ilayki/blocs/chat/chat_bloc.dart';
@@ -20,6 +21,7 @@ import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/screens/auth/register_screen.dart';
 import 'package:ilayki/screens/chat/chat_room_screen.dart';
 import 'package:ilayki/screens/home/user_items_page.dart';
+import 'package:ilayki/splash.dart';
 
 import './firebase_options.dart';
 import 'app.dart';
@@ -67,63 +69,69 @@ class MyApp extends StatelessWidget {
     // Watching the locale state of the application
     final locale = context.watch<LocalizationCubit>().state.locale;
 
-    return MaterialApp(
-      title: 'Ilayki',
-      // Locales Supported in the Application
-      locale: Locale(locale),
-      supportedLocales: L10n.all,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      theme: ThemeData(
-        fontFamily: GoogleFonts.roboto(fontWeight: FontWeight.w400).fontFamily,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 246, 246),
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 244, 217, 185)),
-        useMaterial3: true,
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: const Color.fromARGB(255, 255, 246, 246),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              width: 2,
-              color: ColorScheme.fromSeed(
-                      seedColor: const Color.fromARGB(255, 244, 217, 185))
-                  .primary,
+    return ScreenUtilInit(
+      designSize: const Size(1080, 2340),
+      minTextAdapt: true,
+      builder: (_, child) => MaterialApp(
+        title: 'Ilayki',
+        // Locales Supported in the Application
+        locale: Locale(locale),
+        supportedLocales: L10n.all,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        theme: ThemeData(
+          fontFamily:
+              GoogleFonts.roboto(fontWeight: FontWeight.w400).fontFamily,
+          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 246, 246),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 244, 217, 185)),
+          useMaterial3: true,
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: const Color.fromARGB(255, 255, 246, 246),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                width: 2,
+                color: ColorScheme.fromSeed(
+                        seedColor: const Color.fromARGB(255, 244, 217, 185))
+                    .primary,
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              width: 2,
-              color: ColorScheme.fromSeed(
-                      seedColor: const Color.fromARGB(255, 244, 217, 185))
-                  .primary,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2,
+                color: ColorScheme.fromSeed(
+                        seedColor: const Color.fromARGB(255, 244, 217, 185))
+                    .primary,
+              ),
             ),
-          ),
-          focusedErrorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              width: 2,
-              color: ColorScheme.fromSwatch(primarySwatch: Colors.red).primary,
+            focusedErrorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                width: 2,
+                color:
+                    ColorScheme.fromSwatch(primarySwatch: Colors.red).primary,
+              ),
             ),
           ),
         ),
+        // Home (include when Initial Route not given)
+        // home: const App(),
+        // Initial Route
+        initialRoute: SplashScreen.routeName,
+        // Root Route Table
+        routes: {
+          LoginScreen.routeName: (_) => const LoginScreen(),
+          RegisterScreen.routeName: (_) => const RegisterScreen(),
+          App.routeName: (_) => const App(),
+          ChatRoomScreen.routeName: (_) => const ChatRoomScreen(),
+          UserItems.routeName: (_) => const UserItems(),
+        },
       ),
-      // Home (include when Initial Route not given)
-      // home: const App(),
-      // Initial Route
-      initialRoute: LoginScreen.routeName,
-      // Root Route Table
-      routes: {
-        LoginScreen.routeName: (_) => const LoginScreen(),
-        RegisterScreen.routeName: (_) => const RegisterScreen(),
-        App.routeName: (_) => const App(),
-        ChatRoomScreen.routeName: (_) => const ChatRoomScreen(),
-        UserItems.routeName: (_) => const UserItems(),
-      },
     );
   }
 }

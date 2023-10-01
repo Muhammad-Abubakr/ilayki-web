@@ -175,7 +175,7 @@
     "@itemAddedSuccessfully" : {
         "description" : "The Item has been added to database successfully."
     },
-    "updationSuccessfull" : "Updation Successfull",
+    "updationSuccessfull" : "Update Successful",
     "@updationSuccessfull" : {
         "description" : "The thing has been updated successfully."
     },

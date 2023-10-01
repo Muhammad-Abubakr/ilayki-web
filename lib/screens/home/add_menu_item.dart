@@ -116,7 +116,13 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
 
       /* Body of the Screen containing the form which contains two textfields and an Image Container */
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(24.spMax),
+        padding: EdgeInsets.symmetric(
+          horizontal:
+              MediaQuery.of(context).orientation == Orientation.landscape
+                  ? 0.35.sw
+                  : 0.1.sw,
+          vertical: 120.h,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

@@ -8,13 +8,11 @@ import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../app.dart';
 import '../../blocs/items/items_bloc.dart';
-import '../../blocs/online/online_cubit.dart';
 import '../../blocs/orders/orders_cubit.dart';
 import '../../blocs/requests/requests_cubit.dart';
 import '../../blocs/sales/sales_cubit.dart';
 import '../../blocs/user/user_bloc.dart';
 import '../../blocs/userchat/userchat_cubit.dart';
-import '../../blocs/wares/wares_cubit.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -54,14 +52,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         // In case of error
         switch (state.state) {
           case UserStates.registered:
-            /* Initialize the wares */
-            context.read<WaresCubit>().intialize();
-
-            /* Initialize the online users */
-            final onlineCubit = context.read<OnlineCubit>();
-            onlineCubit.initialize();
-            onlineCubit.setOnline();
-
             /* Initialize the requests for current user */
             context.read<RequestsCubit>().initialize();
 

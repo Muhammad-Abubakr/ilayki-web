@@ -27,8 +27,9 @@ class MainDrawer extends StatelessWidget {
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 244, 217, 185),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-      width: 0.7.sw,
-
+      width: MediaQuery.of(context).orientation == Orientation.portrait
+          ? 0.7.sw
+          : 0.25.sw,
       /* Adding a Safe Area in order to avoid notches */
       child: SafeArea(
         /* Adding SingleChildScrollView in order to avoid screen cutoffs */
