@@ -4,6 +4,33 @@
     "@home": {
         "description" : "Aller à l'écran d'accueil"
     },
+    "fullName": "Nom complet",
+    "@fullName": {
+        "description": "Nom complet de l'utilisateur"
+    },
+    "gender": "Genre",
+    "phoneNumber": "Numéro de téléphone",
+    "address": "Adresse",
+    "city": "Ville",
+    "addYourIdCardPicture": "Ajoutez la photo de votre carte d'identité",
+    "addAProfilePicture": "Ajouter une photo de profil",
+    "anEmailSentTo" : "Un e-mail a été envoyé à",
+    "followLinkAndVerify" : "Veuillez suivre le lien pour la vérification. Sinon, vous n'aurez pas accès à l'application.",
+    "confirmBeforeLogging" : "Veuillez confirmer votre adresse e-mail avant de vous connecter.",
+    "somethingWentWrong" : "Quelque chose s'est mal passé ! Veuillez réessayer ultérieurement.",
+    "backToLogin" : "Retour à la connexion",
+    "requests" : "Demandes",
+    "rateYourOrder": "Évaluez votre commande",
+    "rating": "Évaluation",
+    "noRating": "Pas d'évaluation",
+
+    "orderType": "Type de commande",
+    "orderTime": "Heure de la commande",
+    "orderDate": "Date de la commande",
+    "pickATime": "Choisissez une heure",
+    "pickADate": "Choisissez une date",
+
+
     "updates": "Mises à jour",
     "@updates": {
         "description" : "Aller à l'écran des mises à jour"

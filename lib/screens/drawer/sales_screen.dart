@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
 
 import '../../blocs/userbase/userbase_cubit.dart';
-import '../../models/orderitem.dart';
+import '../../models/order.dart';
 import '../chat/chat_room_screen.dart';
 
 class SalesScreen extends StatelessWidget {
@@ -71,14 +72,15 @@ class SalesScreen extends StatelessWidget {
                     ),
 
                     /* Buyer name */
-                    title: Text(
-                        '${AppLocalizations.of(context)!.price}: ${sales[index].totalPrice.toString()}'),
+                    title: Text("Ref#${sales[index].productId}",
+                        textDirection: TextDirection.ltr),
 
                     /* Items description */
-                    subtitle: Text(orderParser(sales[index].orderItems)),
+                    subtitle: Text(orderParser(context, sales[index])),
 
                     /* trailing button to accept order */
-                    trailing: Text(AppLocalizations.of(context)!.completed,
+                    trailing: Text(
+                        "Status: ${describeEnum(sales[index].status)}",
                         textAlign: TextAlign.center),
                   );
                 },
@@ -93,10 +95,11 @@ class SalesScreen extends StatelessWidget {
   }
 
   // description parser
-  String orderParser(List<OrderItem> items) {
-    String order = 'Order:-\n';
+  String orderParser(BuildContext context, Order sale) {
+    String order =
+        '${AppLocalizations.of(context)!.price}: ${sale.totalPrice.toString()}\n';
 
-    for (var orditem in items) {
+    for (var orditem in sale.orderItems) {
       order = '$order${orditem.item.name} : ${orditem.quantity}\n';
     }
 

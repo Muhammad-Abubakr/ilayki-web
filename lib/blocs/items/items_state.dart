@@ -1,18 +1,22 @@
 part of 'items_bloc.dart';
 
-abstract class ItemsState extends Equatable {
+enum Status {
+  processing,
+  rated,
+  error,
+}
+
+abstract class ItemsState {
   final List<Item> items;
+  final Status? status;
 
-  const ItemsState({required this.items});
-
-  @override
-  List<Object> get props => [items];
+  const ItemsState({required this.items, this.status});
 }
 
 class ItemsInitial extends ItemsState {
-  const ItemsInitial({required super.items});
+  const ItemsInitial({required super.items, super.status});
 }
 
 class ItemsUpdated extends ItemsState {
-  const ItemsUpdated({required super.items});
+  const ItemsUpdated({required super.items, super.status});
 }

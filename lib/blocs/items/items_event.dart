@@ -18,9 +18,16 @@ class ItemsDeleteEvent extends ItemsEvent {
 }
 
 class ActivateItemsListener extends ItemsEvent {
-  final UserBloc userBloc;
+  const ActivateItemsListener();
+}
 
-  const ActivateItemsListener({required this.userBloc});
+class UpdateItemRating extends ItemsEvent {
+  final String ownerUid;
+  final String itemId;
+  final double rating;
+
+  const UpdateItemRating(
+      {required this.rating, required this.ownerUid, required this.itemId});
 }
 
 class DeactivateItemsListener extends ItemsEvent {

@@ -10,9 +10,8 @@ import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
-import '../blocs/items/items_bloc.dart';
+import '../blocs/notifications/notifications_cubit.dart';
 import '../blocs/userbase/userbase_cubit.dart';
-import '../blocs/wares/wares_cubit.dart';
 import '../screens/drawer/orders_screen.dart';
 import '../screens/drawer/sales_screen.dart';
 
@@ -27,9 +26,8 @@ class MainDrawer extends StatelessWidget {
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 244, 217, 185),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-      width: MediaQuery.of(context).orientation == Orientation.portrait
-          ? 0.7.sw
-          : 0.25.sw,
+      width: 0.7.sw,
+
       /* Adding a Safe Area in order to avoid notches */
       child: SafeArea(
         /* Adding SingleChildScrollView in order to avoid screen cutoffs */
@@ -137,36 +135,23 @@ class MainDrawer extends StatelessWidget {
                   ScaffoldMessenger.of(context).clearMaterialBanners();
                   ScaffoldMessenger.of(context).clearSnackBars();
 
-                  /* Dipose of the wares */
-                  context.read<WaresCubit>().dispose();
-
-                  /* Dipose of the wares */
-                  context.read<OnlineCubit>().dispose();
-
                   /* Clear the basket */
                   context.read<BasketCubit>().clear();
 
-                  /* Dipose of the userbase */
-                  context.read<UserbaseCubit>().dispose();
+                  // offline
+                  context.read<OnlineCubit>().setOffline();
 
-                  /* This seems like a good point to unsubscribe to items stream */
-                  context
-                      .read<ItemsBloc>()
-                      .add(const DeactivateItemsListener());
-
-                  /* Dipose of the requests for the current user */
+                  /* Dispose of the requests for the current user */
                   context.read<RequestsCubit>().dispose();
-
-                  /* Dipose of the orders for the current user */
+                  /* Dispose of the orders for the current user */
                   context.read<OrdersCubit>().dispose();
-
-                  /* Dipose of the sales for the current user */
+                  /* Dispose of the sales for the current user */
                   context.read<SalesCubit>().dispose();
+                  /* Dispose of the sales for the current user */
+                  context.read<NotificationsCubit>().dispose();
 
                   /* Sign Out the User */
                   Navigator.of(context).pop();
-                  // set the user status to be offline
-                  context.read<OnlineCubit>().setOffline();
 
                   // sign out the user
                   context.read<UserBloc>().add(UserSignOut());

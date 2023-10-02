@@ -1,20 +1,24 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ilayki/blocs/notifications/notifications_cubit.dart';
+import 'package:ilayki/blocs/online/online_cubit.dart';
 import 'package:ilayki/blocs/orders/orders_cubit.dart';
 import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 import 'package:ilayki/blocs/userchat/userchat_cubit.dart';
+import 'package:ilayki/screens/auth/email_verification_screen.dart';
 import 'package:ilayki/screens/auth/register_screen.dart';
 
 import '../../app.dart';
-import '../../blocs/items/items_bloc.dart';
+import '../../blocs/email_verificaton/email_verification_cubit.dart';
 import '../../blocs/localization/localization_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,6 +35,16 @@ class _LoginScreenState extends State<LoginScreen> {
   // Text Field Controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late EmailVerificationCubit _emailVerificationCubit;
+
+  @override
+  void didChangeDependencies() {
+    /* Initialize the user stream for email verification cubit */
+    _emailVerificationCubit = context.read<EmailVerificationCubit>();
+    _emailVerificationCubit.initialize();
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
       (element) => describeEnum(element) == cubit.state.locale,
     );
 
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
@@ -53,30 +68,44 @@ class _LoginScreenState extends State<LoginScreen> {
             _emailController.clear();
             _passwordController.clear();
 
-            /* Initialize the requests for current user */
-            context.read<RequestsCubit>().initialize();
+            if (state.user!.emailVerified) {
+              /* Initialize the online users */
+              context.read<OnlineCubit>().setOnline();
 
-            /* Initialize the orders for current user */
-            context.read<OrdersCubit>().initialize();
+              /* Initialize the requests for current user */
+              context.read<RequestsCubit>().initialize();
 
-            /* Initialize the sales for current user */
-            context.read<SalesCubit>().initialize();
+              /* Initialize the orders for current user */
+              context.read<OrdersCubit>().initialize();
 
-            /* Initialize the user chats */
-            context.read<UserchatCubit>().intialize();
+              /* Initialize the sales for current user */
+              context.read<SalesCubit>().initialize();
 
-            /* Fetch the Items */
+              /* Initialize the user chats */
+              context.read<UserchatCubit>().intialize();
+
+              /* Initialize the user chats */
+              context.read<NotificationsCubit>().initialize();
+
+              // Pop the progress indicator
+              Navigator.of(context).popUntil((route) => route.isCurrent);
+              // and push the screen
+              Navigator.of(context).pushReplacementNamed(App.routeName);
+              break;
+            }
+
+            /* Send user for Email Verification */
             context
-                .read<ItemsBloc>()
-                .add(ActivateItemsListener(userBloc: context.read<UserBloc>()));
-
-            // Pop the progress indicator
-            Navigator.of(context).popUntil((route) => route.isCurrent);
-            // and push the screen
-            Navigator.of(context).pushReplacementNamed(App.routeName);
+                .read<UserBloc>()
+                .add(EmailVerification(context.read<UserBloc>().state.user!));
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const EmailVerificationScreen()),
+            );
+            context.read<UserBloc>().add(UserSignOut());
             break;
           case UserStates.error:
-            // Incase of error pop the routes (which will contain progress indicator mostly)
+            // In case of error pop the routes (which will contain progress indicator mostly)
             // until login screen and show the snack bar with the error
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -135,15 +164,18 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
           /* App Bar */
           appBar: AppBar(
-            leading: FittedBox(
-              child: Text(
-                AppLocalizations.of(context)!.welcome,
-                style: TextStyle(
-                  fontSize: 128.spMax,
+            leading: Padding(
+              padding: EdgeInsets.only(left: 24.w),
+              child: FittedBox(
+                child: Text(
+                  AppLocalizations.of(context)!.welcome,
+                  style: TextStyle(
+                    fontSize: 22.spMax,
+                  ),
                 ),
               ),
             ),
-            leadingWidth: 0.2.sw,
+            leadingWidth: 0.3.sw,
             foregroundColor: const Color.fromARGB(255, 236, 201, 171),
             shadowColor: const Color.fromARGB(255, 244, 217, 185),
 
@@ -151,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
             actions: [
               /* Dropdown Button for changing the locale for the application */
               DropdownButton(
-                iconSize: 32.spMax,
+                iconSize: 16.spMax,
                 elevation: 1,
                 value: dropdownValue,
 
@@ -161,27 +193,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 items: [
                   DropdownMenuItem(
+                    alignment: Alignment.center,
                     value: SupportedLocales.en,
                     child: Image.asset(
                       'lib/assets/flags/us.png',
                       fit: BoxFit.scaleDown,
-                      height: 32.spMax,
+                      height: 16.spMax,
                     ),
                   ),
                   DropdownMenuItem(
+                    alignment: Alignment.center,
                     value: SupportedLocales.ar,
                     child: Image.asset(
                       'lib/assets/flags/sa.png',
                       fit: BoxFit.scaleDown,
-                      height: 32.spMax,
+                      height: 16.spMax,
                     ),
                   ),
                   DropdownMenuItem(
+                    alignment: Alignment.center,
                     value: SupportedLocales.fr,
                     child: Image.asset(
                       'lib/assets/flags/fr.png',
                       fit: BoxFit.scaleDown,
-                      height: 32.spMax,
+                      height: 16.spMax,
                     ),
                   ),
                 ],
@@ -192,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(
-                horizontal: !isLandscape ? 0.08.sw : 0.35.sw,
+                horizontal: !isLandscape ? 0.08.sw : 0.3.sw,
                 vertical: 128.h,
               ),
               child: Column(
@@ -224,10 +259,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 96.h),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<UserBloc>().add(UserSignInWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ));
+                      final userBloc = context.read<UserBloc>();
+                      if (FirebaseAuth.instance.currentUser != null) {
+                        userBloc.add(UserSignOut());
+                      }
+
+                      userBloc.add(UserSignInWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ));
                     },
                     style: TextButton.styleFrom(
                       elevation: 4,

@@ -4,7 +4,33 @@
     "@home": {
         "description" : "الانتقال إلى شاشة الرئيسية"
     },
-    "updates": "التحديثات",
+  "fullName": "الاسم الكامل",
+  "@fullName": {
+    "description": "الاسم الكامل للمستخدم"
+  },
+  "gender": "الجنس",
+  "phoneNumber": "رقم الهاتف",
+  "address": "العنوان",
+  "city": "مدينة",
+  "addAProfilePicture": "أضف صورة ملف تعريف",
+  "addYourIdCardPicture": "أضف صورة بطاقة الهوية الخاصة بك",
+  "anEmailSentTo" : "تم إرسال بريد إلكتروني إلى",
+  "followLinkAndVerify" : "يرجى متابعة الرابط للتحقق. وإلا، لن تكون لديك وصول إلى التطبيق.",
+  "confirmBeforeLogging" : "الرجاء تأكيد عنوان بريدك الإلكتروني قبل تسجيل الدخول.",
+  "somethingWentWrong" : "حدث خطأ ما! يرجى المحاولة مرة أخرى بعد فترة من الزمن.",
+  "backToLogin" : "العودة إلى تسجيل الدخول",
+  "requests" : "الطلبات",
+  "orderType": "نوع الطلب",
+  "orderTime": "وقت الطلب",
+  "orderDate": "تاريخ الطلب",
+  "pickATime": "اختر وقتًا",
+  "pickADate": "اختر تاريخًا",
+  "rateYourOrder": "قيم طلبك",
+  "rating": "التقييم",
+  "noRating": "لا تقييم",
+
+
+  "updates": "التحديثات",
     "@updates": {
         "description" : "الانتقال إلى شاشة التحديثات"
     },
@@ -33,9 +59,6 @@
         "description" : "الانتقال إلى شاشة المبيعات"
     },
     "aboutUs" : "معلومات عنا",
-    "@orders": {
-        "description" : "الانتقال إلى شاشة معلومات عنا"
-    },
     "contactUs" : "اتصل بنا",
     "@contactUS": {
         "description" : "الانتقال إلى شاشة اتصل بنا"

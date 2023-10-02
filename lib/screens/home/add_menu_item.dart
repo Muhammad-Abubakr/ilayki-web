@@ -86,6 +86,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                       name: _itemNameController.text,
                       price: double.parse(_itemPriceController.text),
                       description: _itemDescController.text,
+                      ratingCount: 0,
                       image: await imageRef
                           .getDownloadURL(), // arrives ones we upload the picture to the storage
                     ).toJson());
@@ -116,13 +117,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
 
       /* Body of the Screen containing the form which contains two textfields and an Image Container */
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal:
-              MediaQuery.of(context).orientation == Orientation.landscape
-                  ? 0.35.sw
-                  : 0.1.sw,
-          vertical: 120.h,
-        ),
+        padding: EdgeInsets.all(24.spMax),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -176,15 +171,23 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
               /* Container */
               child: Container(
                 alignment: Alignment.center,
+                padding: EdgeInsets.all(4.spMax),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(24.r)),
-                  color: Theme.of(context).primaryColor.withOpacity(0.3),
-                ),
-                padding: const EdgeInsets.all(1),
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    image: _xFile != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image: Image(
+                              image: FileImage(File(_xFile!.path)),
+                              fit: BoxFit.cover,
+                            ).image,
+                          )
+                        : null),
                 width: 128.spMax,
                 height: 128.spMax,
                 /* Picture Update */
@@ -193,13 +196,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                         AppLocalizations.of(context)!.tapHereToAddPicture,
                         textAlign: TextAlign.center,
                       )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(24.r),
-                        child: Image(
-                          image: FileImage(File(_xFile!.path)),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                    : null,
               ),
             ),
             /* Hint for Changing image after Selection */

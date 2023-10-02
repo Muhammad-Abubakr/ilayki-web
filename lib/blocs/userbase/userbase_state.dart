@@ -1,16 +1,13 @@
 part of 'userbase_cubit.dart';
 
-abstract class UserbaseState extends Equatable {
-  final List<User>? customer;
-  final List<User>? seller;
+abstract class UserbaseState {
+  final List<User> customer;
+  final List<User> seller;
 
   const UserbaseState({
     required this.customer,
     required this.seller,
   });
-
-  @override
-  List<Object?> get props => [customer, seller];
 }
 
 class UserbaseInitial extends UserbaseState {

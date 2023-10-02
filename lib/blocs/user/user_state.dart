@@ -27,7 +27,7 @@ abstract class UserState {
   // Firebase User instance
   final User? user;
   final UserStates state;
-  final FirebaseAuthException? error;
+  final FirebaseException? error;
 
   // Constructor for UserState,
   // takes in one Named Parameter: user of type FirebaseAuth.User
@@ -44,6 +44,6 @@ class UserInitial extends UserState {
 /* Updated State of the User Bloc */
 class UserUpdate extends UserState {
   const UserUpdate(
-      {User? user, required UserStates state, FirebaseAuthException? error})
+      {User? user, required UserStates state, FirebaseException? error})
       : super(user: user, state: state, error: error);
 }

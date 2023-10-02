@@ -68,9 +68,6 @@ class Message {
 
   @override
   int get hashCode {
-    return sender.hashCode ^
-        receiver.hashCode ^
-        time.hashCode ^
-        content.hashCode;
+    return sender.hashCode ^ receiver.hashCode ^ time.hashCode ^ content.hashCode;
   }
 }

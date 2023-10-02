@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 
@@ -20,8 +19,8 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
   UserbaseCubit()
       : super(const UserbaseInitial(
-          customer: null,
-          seller: null,
+          customer: [],
+          seller: [],
         ));
 
   /* Initialize */
@@ -42,14 +41,14 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
           users.add(parsedUser);
         }
-      }
 
-      /* emit the new state after collection */
-      debugPrint('Customers: $users');
-      emit(UserbaseUpdate(
-        customer: users,
-        seller: state.seller ?? [],
-      ));
+        /* emit the new state after collection */
+        debugPrint('Customers: ${users.length}');
+        emit(UserbaseUpdate(
+          customer: users,
+          seller: [...state.seller],
+        ));
+      }
     });
 
     /* Subscribing to Sellers stream */
@@ -68,26 +67,36 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
           users.add(parsedUser);
         }
+
+        /* emit the new state after collection */
+        debugPrint('Sellers: ${users.length}');
+        emit(UserbaseUpdate(
+          customer: [...state.customer],
+          seller: users,
+        ));
       }
-      /* emit the new state after collection */
-      debugPrint('Sellers: $users');
-      emit(UserbaseUpdate(
-        customer: state.customer ?? [],
-        seller: users,
-      ));
     });
   }
 
   /* Single User Getter */
   User getUser(String uid) {
-    final customerIdx = state.customer!.indexWhere((u) => u.uid == uid);
+    final customerIdx = state.customer.indexWhere((u) => u.uid == uid);
+    for (var element in state.seller) {
+      debugPrint("seller: ${element.uid}");
+    }
+    for (var element in state.customer) {
+      debugPrint("customer: ${element.uid}");
+    }
+    debugPrint("Querying UID: $uid");
 
-    if (customerIdx == -1) {
-      final sellerIdx = state.seller!.indexWhere((u) => u.uid == uid);
+    debugPrint("Customer Index: $customerIdx");
+    if (customerIdx < 0) {
+      final sellerIdx = state.seller.indexWhere((j) => j.uid == uid);
+      debugPrint("Seller Index: $sellerIdx");
 
-      return state.seller![sellerIdx];
+      return state.seller[sellerIdx];
     } else {
-      return state.customer![customerIdx];
+      return state.customer[customerIdx];
     }
   }
 
@@ -98,8 +107,8 @@ class UserbaseCubit extends Cubit<UserbaseState> {
 
     // clearing the state
     emit(const UserbaseUpdate(
-      customer: null,
-      seller: null,
+      customer: [],
+      seller: [],
     ));
     if (kDebugMode) {
       print("Userbase stream cancelled...");

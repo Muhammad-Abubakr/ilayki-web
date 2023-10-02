@@ -52,7 +52,7 @@ class _UserItemsState extends State<UserItems> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.name,
+        title: Text(user.fullName,
             style: TextStyle(color: Theme.of(context).primaryColor)),
         actions: [
           IconButton(

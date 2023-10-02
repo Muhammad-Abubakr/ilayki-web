@@ -5,9 +5,17 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<User?> get subscribe => _auth.authStateChanges();
+  User? get currentUser => _auth.currentUser;
+  bool? get isEmailVerified => _auth.currentUser?.emailVerified;
 
-  /* Sign in Anononymously using signInAnonmously provided by FirebaseAuth.instance
-  on successfull sign in return User, otherwise return null; */
+  /* Send email verification link to the user */
+  Future<bool> verifyEmail(User user) async {
+    await user.sendEmailVerification();
+    return true;
+  }
+
+  /* Sign in Anonymously using signInAnonymously provided by FirebaseAuth.instance
+  on successful sign in return User, otherwise return null; */
   Future<User?> signInAnon() async {
     UserCredential cred = await _auth.signInAnonymously();
 

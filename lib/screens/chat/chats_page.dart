@@ -45,11 +45,19 @@ class ChatsPage extends StatelessWidget {
             "currentUser": myUID,
             "itemOwner": otherUser,
           }),
-          leading: CircleAvatar(
-            backgroundImage:
-                Image.network(otherUser.photoURL, fit: BoxFit.cover).image,
+          leading: Container(
+            margin: EdgeInsets.symmetric(vertical: 6.0.spMax),
+            padding: EdgeInsets.all(2.0.spMax),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1.sw),
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: CircleAvatar(
+              backgroundImage:
+                  Image.network(otherUser.photoURL, fit: BoxFit.cover).image,
+            ),
           ),
-          title: Text(otherUser.name),
+          title: Text(otherUser.fullName),
           trailing: CircleAvatar(
             radius: 24.r,
             backgroundColor: Theme.of(context).colorScheme.secondary,

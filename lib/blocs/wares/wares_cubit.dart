@@ -53,6 +53,10 @@ class WaresCubit extends Cubit<WaresState> {
     });
   }
 
+  Item getItem(String itemUid) {
+    return state.wares.firstWhere((element) => element.id == itemUid);
+  }
+
   /* Cancel Streams */
   void dispose() async {
     await _itemsStream.cancel();

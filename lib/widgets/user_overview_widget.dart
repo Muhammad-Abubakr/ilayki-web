@@ -43,7 +43,6 @@ class UserOverview extends StatelessWidget {
             /* Item and Owner Details */
             ListTile(
               // user pfp
-              contentPadding: EdgeInsets.all(24.h),
               leading: Stack(
                 children: [
                   CircleAvatar(
@@ -64,7 +63,7 @@ class UserOverview extends StatelessWidget {
               ),
 
               // item name as title
-              title: Text(user.name),
+              title: Text(user.fullName),
 
               // item price as subtitle
               // subtitle: const Text('rating here'),

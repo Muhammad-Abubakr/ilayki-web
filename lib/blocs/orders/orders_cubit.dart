@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ part 'orders_state.dart';
 class OrdersCubit extends Cubit<OrdersState> {
   /* acquiring the database reference */
   final DatabaseReference _orders = FirebaseDatabase.instance.ref('orders');
+  final DatabaseReference _requests = FirebaseDatabase.instance.ref('requests');
 
   /* Streams Subscription */
   late StreamSubscription _stream;
@@ -64,6 +66,33 @@ class OrdersCubit extends Cubit<OrdersState> {
 
       emit(OrdersUpdate(allOrders));
     });
+  }
+
+  void markCompleted(Order order) async {
+    final requestRef = FirebaseDatabase.instance
+        .ref('requests/${order.buyerID}+${order.sellerID}/${order.refID}');
+    final orderRef =
+        _orders.child('${order.buyerID}+${order.sellerID}/${order.refID}');
+    final notificationsRef =
+        FirebaseDatabase.instance.ref('notifications/${order.buyerID}');
+    final notificationRef = notificationsRef.push();
+
+    //   Approach change from deleting to updating the status of the order
+    //   and placing it in the orders along with the requests so for that we
+    //   will need to get the order and then update the status of the order
+    final data = await requestRef.get();
+
+    if (data.value != null) {
+      final request = jsonDecode(data.value.toString());
+
+      // parse each request to Order
+      final parsedRequest = Order.fromJson(json.encode(request));
+      final updatedRequest = parsedRequest.copyWith(
+          status: OrderStatus.completed, time: DateTime.now());
+      await requestRef.set(updatedRequest.toJson());
+      await orderRef.set(updatedRequest.toJson());
+      await notificationRef.set(updatedRequest.toJson());
+    }
   }
 
   /* disposing the stream */

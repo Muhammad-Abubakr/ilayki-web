@@ -94,7 +94,21 @@ class ItemWidget extends StatelessWidget {
               ],
             ),
             /* Price Text */
-            Text('\$${item.price}'),
+            Column(
+              children: [
+                Text('\$${item.price}'),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    Text(
+                        "${item.rating ?? AppLocalizations.of(context)!.noRating} (${item.ratingCount})")
+                  ],
+                )
+              ],
+            ),
           ],
         ),
       ),

@@ -20,11 +20,13 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   ImageSource? _imageSource;
   final _imagePicker = ImagePicker();
+  late TextEditingController _nameController;
+  bool editingName = false;
 
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserBloc>().state.user;
-
+    _nameController = TextEditingController(text: user?.displayName);
     return BlocBuilder<ItemsBloc, ItemsState>(
       builder: (context, state) {
         return Scaffold(
@@ -89,22 +91,74 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                   /* User Title */
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
-                    child: Text(
-                      // If the display name of the user is null? show placeholder name
-                      user!.displayName == null || user.displayName!.isEmpty
-                          ? AppLocalizations.of(context)!.store
-                          // else show real name
-                          : user.displayName!,
-                      // name styling / configuration
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 72.sp,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                  if (!editingName)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 16.0, bottom: 24.0),
+                          child: Text(
+                            // If the display name of the user is null? show placeholder name
+                            user!.displayName == null ||
+                                    user.displayName!.isEmpty
+                                ? AppLocalizations.of(context)!.store
+                                // else show real name
+                                : user.displayName!,
+                            // name styling / configuration
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 72.sp,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () => setState(() => editingName = true),
+                            icon: const Icon(Icons.edit)),
+                      ],
                     ),
-                  ),
+                  if (editingName) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 16.0, bottom: 24.0),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 68.sp,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              controller: _nameController,
+                              keyboardType: TextInputType.name,
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                                border: const UnderlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton.filled(
+                          onPressed: () {
+                            context.read<UserBloc>().add(UserNameUpdate(
+                                name: _nameController.text.trim()));
+                            setState(() => editingName = false);
+                          },
+                          icon: const Icon(Icons.done),
+                        ),
+                      ],
+                    )
+                  ],
 
                   /* User Menu Label */
                   Row(
@@ -207,8 +261,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed 
-without providing the _imageSource value by tapping on either of the 
+/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
+without providing the _imageSource value by tapping on either of the
 two sources: Camera or Gallery */
   bool _validateImageSource() {
     if (_imageSource == null) {

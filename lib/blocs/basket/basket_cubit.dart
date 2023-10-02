@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../../models/item.dart';
 import '../../models/order.dart';
@@ -105,20 +106,28 @@ class BasketCubit extends Cubit<BasketState> {
   }
 
   /* place order */
-  void placeOrder(my_user.User seller) async {
+  void placeOrder(my_user.User seller, TimeOfDay pickupTime,
+      OrderType orderType, DateTime pickupDate) async {
     // create a ref at the requests in format BuyerID+SellerID
     final String buyerUID = FirebaseAuth.instance.currentUser!.uid;
 
     final DatabaseReference ref = _requests.child('$buyerUID+${seller.uid}');
 
     // create a new ref at the orders/request between two users so they don't get overwritten
-    final orderRef = ref.push();
+    final requestRef = ref.push();
+    final DatabaseReference notificationsRef =
+        FirebaseDatabase.instance.ref('notifications/$buyerUID');
+    final DatabaseReference buyerNotification = notificationsRef.push();
 
     // create the Order model
     final Order order = Order(
-      refID: orderRef.path.split('/').last,
+      refID: requestRef.path.split('/').last,
       buyerID: buyerUID,
       sellerID: seller.uid,
+      status: OrderStatus.pending,
+      orderType: orderType,
+      pickupTime: pickupTime,
+      pickupDate: pickupDate,
       orderItems: state.orderItems,
       totalPrice: state.totalPrice,
       time: DateTime.now(),
@@ -128,7 +137,8 @@ class BasketCubit extends Cubit<BasketState> {
     final encodedOrder = order.toJson();
 
     // set the order at the reference
-    await orderRef.set(encodedOrder);
+    await requestRef.set(encodedOrder);
+    await buyerNotification.set(encodedOrder);
 
     // emit the basket to be clear
     emit(const BasketUpdate(orderItems: [], totalPrice: 0));

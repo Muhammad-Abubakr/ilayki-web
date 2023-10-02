@@ -19,17 +19,27 @@ abstract class UserEvent {}
     2. password : String
 */
 class RegisterUserWithEmailAndPassword extends UserEvent {
-  final String displayName;
+  final String fullName;
   final String email;
   final String password;
-  final Uint8List image;
+  final String gender;
+  final String address;
+  final String phoneNumber;
+  final String city;
+  final XFile idCard;
+  final XFile xFile;
   final UserRoles role;
 
   RegisterUserWithEmailAndPassword({
-    required this.displayName,
+    required this.fullName,
     required this.email,
+    required this.gender,
+    required this.address,
+    required this.phoneNumber,
+    required this.city,
+    required this.idCard,
     required this.password,
-    required this.image,
+    required this.xFile,
     required this.role,
   });
 }
@@ -56,7 +66,13 @@ class UserPfpUpdate extends UserEvent {
   UserPfpUpdate({required this.xFile});
 }
 
-/* When the user tries to sign in with Google this event is fired 
+class UserNameUpdate extends UserEvent {
+  final String name;
+
+  UserNameUpdate({required this.name});
+}
+
+/* When the user tries to sign in with Google this event is fired
    takes no arguments
 */
 class UserSignInWithGoogle extends UserEvent {}
@@ -70,6 +86,13 @@ class UserSignInAnonymously extends UserEvent {}
    takes no arguments
  */
 class UserSignOut extends UserEvent {}
+
+/* Used for verifying the user's email is a real email */
+class EmailVerification extends UserEvent {
+  final User user;
+
+  EmailVerification(this.user);
+}
 
 /* 
   Private Event (to bloc)

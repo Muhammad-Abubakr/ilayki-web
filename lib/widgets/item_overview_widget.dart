@@ -61,7 +61,27 @@ class ItemOverview extends StatelessWidget {
             ),
 
             // item name as title
-            title: Text(item.name),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item.name),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      size: 16.spMax,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    Text(
+                      "${item.rating ?? AppLocalizations.of(context)!.noRating} (${item.ratingCount})",
+                      style: TextStyle(
+                        fontSize: 14.spMax,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
 
             // item price as subtitle
             subtitle: Text(

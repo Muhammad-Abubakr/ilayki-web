@@ -3,7 +3,31 @@
     "@language" :{
         "description" : "This is the default language of the Application."
     },
+    "fullName" :  "Full Name",
+    "@fullName" : {
+        "description": "Full Name"
+    },
+    "gender" :  "Gender",
+    "phoneNumber" : "Phone Number",
+    "address": "Address",
+    "city": "City",
+    "addAProfilePicture": "Add a Profile Picture",
+    "addYourIdCardPicture": "Add your ID Card Picture",
     "home": "Home",
+    "anEmailSentTo": "An email has been sent to",
+    "followLinkAndVerify" : "Please follow the link for verification. Otherwise, you will not have access to the application.",
+    "confirmBeforeLogging": " Please confirm your email before logging in.",
+    "somethingWentWrong": "Something went wrong! Please try again after some time.",
+    "backToLogin": "Back to Login",
+    "requests": "Requests",
+    "rateYourOrder": "Rate Your Order",
+    "rating": "Rating",
+    "noRating": "No Rating",
+    "orderType": "Order Type",
+    "orderTime": "Order Time",
+    "orderDate": "Order Date",
+    "pickATime": "Pick a Time",
+    "pickADate": "Pick a Date",
     "@home": {
         "description" : "Go to Home screen"
     },
@@ -175,7 +199,7 @@
     "@itemAddedSuccessfully" : {
         "description" : "The Item has been added to database successfully."
     },
-    "updationSuccessfull" : "Update Successful",
+    "updationSuccessfull" : "Updation Successfull",
     "@updationSuccessfull" : {
         "description" : "The thing has been updated successfully."
     },

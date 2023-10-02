@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ilayki/blocs/email_verificaton/email_verification_cubit.dart';
 import 'package:ilayki/services/firebase/auth.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -23,6 +24,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   /* linking to our service cursor `AuthService` we created under /lib/srevices/auth.dart
   this will be used to call all the intermediary service calls to FirebaseAuth */
   late final AuthService _auth;
+  /* To tell the email verification cubit that I have sent the link, and now it's up to you
+  * to handle the rest of the verification process and client queries form frontend */
+  final EmailVerificationCubit emailVerificationCubit;
 
   /* ================================ UserBloc constructor ================================ 
 
@@ -32,7 +36,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
      Above is the link to a great playlist for flutter_bloc by flutterly
    */
-  UserBloc() : super(const UserInitial(state: UserStates.signedOut)) {
+  UserBloc(this.emailVerificationCubit)
+      : super(const UserInitial(state: UserStates.signedOut)) {
     _auth = AuthService();
 
     // =============== Subscribing to Firebase User Stream ================ //
@@ -44,6 +49,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     // CLIENT
     on<UserSignInAnonymously>(_signInUserAnonHandler);
+    on<UserNameUpdate>(_userNameUpdateHandler);
+    on<EmailVerification>(_emailVerificationHandler);
     on<UserSignInWithGoogle>(_signInWithGoogle);
     on<RegisterUserWithEmailAndPassword>(_registerUserWithEmailAndPassHandler);
     on<UserSignInWithEmailAndPassword>(_signInUserWithEmailAndPassHandler);
@@ -57,10 +64,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _subscriptionHandler(
       _UserUpdateEvent event, Emitter<UserState> emit) {
     // updates the Bloc about the change in user state from the firebase subscription
-    if (kDebugMode) {
-      print(event.user);
-    }
-
     // If the user has signed out
     if (event.user == null) {
       emit(UserUpdate(
@@ -78,14 +81,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   // ========================= Event Handlers ========================== //
 
-  /*  
-  1). Sign in Anonymously 
+  /*
+  1). Sign in Anonymously
     i - This handler utilizes the intermediary service function `signInAnon` -> User?
-        we described under /lib/services/auth.dart. 
+        we described under /lib/services/auth.dart.
 
     ii - on Error emits the state update with error status and error message for use on client side.
-        handles FirebaseAuthException: 
-      * operation-not-allowed 
+        handles FirebaseAuthException:
+      * operation-not-allowed
       ? when anon sign in is not enabled in firebase
 
     returns : void
@@ -104,8 +107,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  /* 
-  2). LogOut the User 
+  /*
+  2). LogOut the User
       Logs out the current User that is signed in to our firebase auth instance
 
     i- Utilizes service function `logout` -> bool
@@ -126,7 +129,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  /* 
+  /*
     # Register User With Email And Password Handler
     - utilizes the service function `registerWithEmailAndPassword` -> User?
 
@@ -134,7 +137,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
      * email-already-in-use
      * invalid-email
      * operation-not-allowed:
-      ? Thrown if email/password accounts are not enabled. Enable 
+      ? Thrown if email/password accounts are not enabled. Enable
       ? email/password accounts in the Firebase Console, under the Auth tab.
      *  weak-password:
       ? Thrown if the password is not strong enough.
@@ -158,13 +161,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       if (user != null) {
         /* Updating the user */
-        await user.updateDisplayName(event.displayName);
+        await user.updateDisplayName(event.fullName);
 
         /* Storing the image */
         // Getting the reference
         final imageRef = storage.child('pfps/${user.uid}');
-        await imageRef.putData(event.image);
+        await imageRef.putFile(File(event.xFile.path));
         await user.updatePhotoURL(await imageRef.getDownloadURL());
+
+        final idCardRef = storage.child('ids/${user.uid}');
+        await idCardRef.putFile(File(event.idCard.path));
 
         /* Add the User to users collection in realtime database */
         late final DatabaseReference userRef;
@@ -178,30 +184,31 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         /* Create user at the usersRef */
         await userRef.set(
           my_user.User(
-            name: event.displayName,
+            fullName: event.fullName,
+            idCard: await idCardRef.getDownloadURL(),
+            gender: event.gender,
+            address: event.address,
+            city: event.city,
+            phoneNumber: event.phoneNumber,
             photoURL: await imageRef.getDownloadURL(),
             uid: user.uid,
             role: event.role,
           ).toJson(),
         );
-
+        add(EmailVerification(user));
         emit(UserUpdate(
           state: UserStates.registered,
           user: user,
         ));
       }
 
-      // Incase of error while registering on Signing in
-    } on FirebaseAuthException catch (e) {
+      // In case of error while registering on Signing in
+    } on FirebaseException catch (e) {
       emit(UserUpdate(state: UserStates.error, error: e));
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
     }
   }
 
-  /* 
+  /*
     # Signs in User With Email And Password Handler
     - utilizes the service function `signInWithEmailAndPassword` -> User?
 
@@ -233,7 +240,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  /* 
+  /*
     # User Sign-In With Google handler
 
     Handlers FirebaseAuthException:
@@ -253,7 +260,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  /* 
+  /*
     # Updates User photoURL in Firebase User instance
 
     i). Replaces the photo file in the storage path for the user
@@ -289,7 +296,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       /* Updating reference to user profile pic in the users collection in database */
       // getting the reference
-      final userRef = database.child('users/${state.user?.uid}');
+      DatabaseReference userRef =
+          database.child("users/customers/${state.user?.uid}");
+      if (!(await userRef.get()).exists) {
+        userRef = database.child('users/sellers/${state.user?.uid}');
+      }
 
       // parsing and updating the user modal
       final user =
@@ -306,6 +317,47 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // ii).
     } on FirebaseAuthException catch (error) {
       emit(UserUpdate(state: UserStates.error, error: error));
+    }
+  }
+
+  FutureOr<void> _userNameUpdateHandler(
+      UserNameUpdate event, Emitter<UserState> emit) async {
+    try {
+      /* Updating the user */
+      await state.user?.updateDisplayName(event.name);
+
+      /* Updating reference to user profile pic in the users collection in database */
+      // getting the reference
+      DatabaseReference userRef =
+          database.child("users/customers/${state.user?.uid}");
+      if (!(await userRef.get()).exists) {
+        userRef = database.child('users/sellers/${state.user?.uid}');
+      }
+
+      // parsing and updating the user modal
+      final user =
+          my_user.User.fromJson((await userRef.get()).value.toString());
+      final updatedUser = user.copyWith(fullName: event.name);
+
+      // setting the new model for the user in the database
+      userRef.set(updatedUser.toJson());
+
+      // emit the user state, that the user is updated
+      emit(UserUpdate(
+          user: FirebaseAuth.instance.currentUser, state: UserStates.updated));
+      // ii).
+    } on FirebaseAuthException catch (error) {
+      emit(UserUpdate(state: UserStates.error, error: error));
+    }
+  }
+
+  /* Called in case of user registering first time, for email verification */
+  FutureOr<void> _emailVerificationHandler(
+      EmailVerification event, Emitter<UserState> emit) async {
+    if (!event.user.emailVerified) {
+      await _auth.verifyEmail(event.user);
+      // telling the email verification cubit about the sent verification email
+      emailVerificationCubit.verificationPending();
     }
   }
 }

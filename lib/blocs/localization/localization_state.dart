@@ -21,6 +21,5 @@ class LocalizationInitial extends LocalizationState {
 
 /* Updated State */
 class LocalizationUpdate extends LocalizationState {
-  LocalizationUpdate({required SupportedLocales locale})
-      : super(locale: describeEnum(locale));
+  LocalizationUpdate({required SupportedLocales locale}) : super(locale: describeEnum(locale));
 }
