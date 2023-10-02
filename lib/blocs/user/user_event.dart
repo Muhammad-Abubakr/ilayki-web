@@ -26,8 +26,8 @@ class RegisterUserWithEmailAndPassword extends UserEvent {
   final String address;
   final String phoneNumber;
   final String city;
-  final XFile idCard;
-  final XFile xFile;
+  final Uint8List idCard;
+  final Uint8List pfp;
   final UserRoles role;
 
   RegisterUserWithEmailAndPassword({
@@ -37,9 +37,9 @@ class RegisterUserWithEmailAndPassword extends UserEvent {
     required this.address,
     required this.phoneNumber,
     required this.city,
-    required this.idCard,
     required this.password,
-    required this.xFile,
+    required this.idCard,
+    required this.pfp,
     required this.role,
   });
 }
@@ -61,9 +61,9 @@ class UserSignInWithEmailAndPassword extends UserEvent {
     1. xFile : XFile
 */
 class UserPfpUpdate extends UserEvent {
-  final XFile xFile;
+  final Uint8List image;
 
-  UserPfpUpdate({required this.xFile});
+  UserPfpUpdate({required this.image});
 }
 
 class UserNameUpdate extends UserEvent {

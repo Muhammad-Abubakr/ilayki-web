@@ -84,19 +84,13 @@ class _SplashScreenState extends State<SplashScreen> {
             break;
         }
       },
-      child: ScreenUtilInit(
-        designSize: const Size(1080, 2340),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        //* The following builder method returns the child on which we can use screen utils package
-        builder: (context, child) => Scaffold(
-          body: Center(
-            child: Text(
-              "Ilayki",
-              style: GoogleFonts.kaushanScript(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 96.spMax),
-            ),
+      child: Scaffold(
+        body: Center(
+          child: Text(
+            "Ilayki",
+            style: GoogleFonts.kaushanScript(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 96.spMax),
           ),
         ),
       ),

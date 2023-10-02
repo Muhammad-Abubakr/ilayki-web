@@ -1,12 +1,11 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ilayki/screens/auth/email_verification_screen.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../blocs/user/user_bloc.dart';
 import '../../models/user.dart';
@@ -24,10 +23,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   /* Image Picker */
-  XFile? _pfp;
-  XFile? _idCard;
-  ImageSource? _imageSource;
-  final _imagePicker = ImagePicker();
+  // XFile? _pfp;
+  // XFile? _idCard;
+  // ImageSource? _imageSource;
+  // final _imagePicker = ImagePicker();
+  Uint8List? _pfpBytes;
+  Uint8List? _idBytes;
 
   // Text Field Controllers
   City? _city;
@@ -113,6 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
 
                   /* Text fields */
+
                   /// Name
                   SizedBox(height: 172.h),
                   TextField(
@@ -227,11 +229,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(24.r)),
                         color: Theme.of(context).primaryColor.withOpacity(0.3),
-                        image: _pfp != null
+                        image: _pfpBytes != null
                             ? DecorationImage(
-                                image: FileImage(
-                                  File(_pfp!.path),
-                                ),
+                                image: Image.memory(_pfpBytes!).image,
                                 fit: BoxFit.cover,
                               )
                             : null,
@@ -240,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: 128.spMax,
                       height: 128.spMax,
                       /* Picture Update */
-                      child: _pfp == null
+                      child: _pfpBytes == null
                           ? Text(
                               AppLocalizations.of(context)!.tapHereToAddPicture,
                               textAlign: TextAlign.center,
@@ -249,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   /* Hint for Changing image after Selection */
-                  if (_pfp != null)
+                  if (_pfpBytes != null)
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 64.0.sp),
                       child: Text(
@@ -289,11 +289,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(24.r)),
                         color: Theme.of(context).primaryColor.withOpacity(0.3),
-                        image: _idCard != null
+                        image: _idBytes != null
                             ? DecorationImage(
-                                image: FileImage(
-                                  File(_idCard!.path),
-                                ),
+                                image: Image.memory(_idBytes!).image,
                                 fit: BoxFit.cover,
                               )
                             : null,
@@ -302,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: 128.spMax,
                       height: 128.spMax,
                       /* Picture Update */
-                      child: _idCard == null
+                      child: _idBytes == null
                           ? Text(
                               AppLocalizations.of(context)!.tapHereToAddPicture,
                               textAlign: TextAlign.center,
@@ -311,7 +309,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   /* Hint for Changing image after Selection */
-                  if (_idCard != null)
+                  if (_idBytes != null)
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 64.0.sp),
                       child: Text(
@@ -346,8 +344,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _addressController.text.isEmpty ||
                               _phoneNumberController.text.isEmpty ||
                               _city == null ||
-                              _idCard == null ||
-                              _pfp == null) {
+                              _idBytes == null ||
+                              _pfpBytes == null) {
                             /* else show the snackbar saying passwords dont match */
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -379,8 +377,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 address: _addressController.text.trim(),
                                 city: _city.toString(),
                                 phoneNumber: _phoneNumberController.text.trim(),
-                                xFile: _pfp!,
-                                idCard: _idCard!,
+                                pfp: _pfpBytes!,
+                                idCard: _idBytes!,
                                 role: UserRoles.customer,
                               ),
                             );
@@ -402,8 +400,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _addressController.text.isEmpty ||
                               _phoneNumberController.text.isEmpty ||
                               _city == null ||
-                              _idCard == null ||
-                              _pfp == null) {
+                              _idBytes == null ||
+                              _pfpBytes == null) {
                             /* else show the snackbar saying passwords dont match */
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -435,8 +433,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 address: _addressController.text.trim(),
                                 city: _city.toString(),
                                 phoneNumber: _phoneNumberController.text.trim(),
-                                xFile: _pfp!,
-                                idCard: _idCard!,
+                                pfp: _pfpBytes!,
+                                idCard: _idBytes!,
                                 role: UserRoles.seller,
                               ),
                             );
@@ -471,7 +469,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  /* Displays a Modal Bootm Sheet with Two Options for _imageSource required by ImagePicker in a Row  */
+  Future<void> _pickImage(String dest) async {
+    final pickedImage = await ImagePickerWeb.getImageAsBytes();
+    if (pickedImage != null) {
+      setState(() {
+        if (dest == "pfp") {
+          _pfpBytes = pickedImage;
+        } else {
+          _idBytes = pickedImage;
+        }
+      });
+    }
+  }
+  /* Displays a Modal Bootm Sheet with Two Options for _imageSource required by ImagePicker in a Row  */ /*
   Future _pickImageSource() async {
     return await showModalBottomSheet(
       constraints: BoxConstraints.tight(Size.fromHeight(256.h)),
@@ -504,9 +514,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
+*/ /* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
 without providing the _imageSource value by tapping on either of the
-two sources: Camera or Gallery */
+two sources: Camera or Gallery */ /*
   bool _validateImageSource() {
     if (_imageSource == null) {
       ScaffoldMessenger.of(context).showMaterialBanner(
@@ -528,7 +538,7 @@ two sources: Camera or Gallery */
     return true;
   }
 
-/* Shows a SnackBar that displays that No image was picked or Captured by the User */
+*/ /* Shows a SnackBar that displays that No image was picked or Captured by the User */ /*
   void _noImagePickedOrCaptured() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -541,26 +551,26 @@ two sources: Camera or Gallery */
     );
   }
 
-  /* Image Picker Utilizer */
+  */ /* Image Picker Utilizer */ /*
   void _pickImage(String dest) async {
     // Pick the Image Source
     await _pickImageSource();
 
     // Check if Image Source is Null, Cancel the Operation
     if (_validateImageSource()) {
-      /* Else Pick the Image File */
+      */ /* Else Pick the Image File */ /*
       _imagePicker.pickImage(source: _imageSource!).then((value) {
         if (value != null) {
           setState(() {
             dest == "idCard" ? _idCard = value : _pfp = value;
           });
         } else {
-          /* Show the SnackBar telling the user that no image was selected */
+          */ /* Show the SnackBar telling the user that no image was selected */ /*
           _noImagePickedOrCaptured();
         }
-        /* Set the _imageSource to be Null */
+        */ /* Set the _imageSource to be Null */ /*
         _imageSource = null;
       });
     }
-  }
+  }*/
 }

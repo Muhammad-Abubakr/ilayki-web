@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/screens/home/add_menu_item.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../blocs/items/items_bloc.dart';
 import '../../blocs/online/online_cubit.dart';
@@ -18,8 +18,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  ImageSource? _imageSource;
-  final _imagePicker = ImagePicker();
+  // ImageSource? _imageSource;
+  // final _imagePicker = ImagePicker();
   late TextEditingController _nameController;
   bool editingName = false;
 
@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           GestureDetector(
                             // Handler for picking image
-                            onTap: () => _pickImage(),
+                            onTap: () => _pickImage(context),
 
                             // Ternary Operation: image present ? show : show placeholder icon;
                             child: state.user!.photoURL == null
@@ -228,6 +228,15 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Future<void> _pickImage(BuildContext context) async {
+    final pickedImage = await ImagePickerWeb.getImageAsBytes();
+    if (pickedImage != null && context.mounted) {
+      context.read<UserBloc>().add(UserPfpUpdate(image: pickedImage));
+    }
+  }
+
+/*
+
 /* Displays a Modal Bootm Sheet with Two Options for _imageSource required by ImagePicker in a Row  */
   Future _pickImageSource() async {
     return await showModalBottomSheet(
@@ -261,9 +270,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
+*/ /* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
 without providing the _imageSource value by tapping on either of the
-two sources: Camera or Gallery */
+two sources: Camera or Gallery */ /*
   bool _validateImageSource() {
     if (_imageSource == null) {
       ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
@@ -287,7 +296,7 @@ two sources: Camera or Gallery */
     return true;
   }
 
-/* Shows a SnackBar that displays that No image was picked or Captured by the User */
+*/ /* Shows a SnackBar that displays that No image was picked or Captured by the User */ /*
   void _noImagePickedOrCaptured() {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
@@ -302,25 +311,25 @@ two sources: Camera or Gallery */
     );
   }
 
-  /* Image Picker Utilizer */
+  */ /* Image Picker Utilizer */ /*
   void _pickImage() async {
     // Pick the Image Source
     await _pickImageSource();
 
     // Check if Image Source is Null, Cancel the Operation
     if (_validateImageSource()) {
-      /* Else Pick the Image File */
+      */ /* Else Pick the Image File */ /*
       _imagePicker.pickImage(source: _imageSource!).then((value) {
         if (value != null) {
-          /* Update the User Profile Picture */
+          */ /* Update the User Profile Picture */ /*
           context.read<UserBloc>().add(UserPfpUpdate(xFile: value));
         } else {
-          /* Show the SnackBar telling the user that no image was selected */
+          */ /* Show the SnackBar telling the user that no image was selected */ /*
           _noImagePickedOrCaptured();
         }
-        /* Set the _imageSource to be Null */
+        */ /* Set the _imageSource to be Null */ /*
         _imageSource = null;
       });
     }
-  }
+  }*/
 }

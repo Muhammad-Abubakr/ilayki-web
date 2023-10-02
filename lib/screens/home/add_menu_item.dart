@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -8,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../models/item.dart';
 
@@ -25,9 +23,12 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
   final storage = FirebaseStorage.instance.ref();
 
   /* Image Picker */
+  Uint8List? _xFile;
+/*
   XFile? _xFile;
   ImageSource? _imageSource;
   final _imagePicker = ImagePicker();
+*/
 
   /* Controllers */
   final TextEditingController _itemNameController = TextEditingController();
@@ -41,10 +42,6 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
 
     /* Storing the Item */
     final itemRef = database.child('items/${user!.uid}');
-
-    /* Storing the image */
-    // Getting the reference
-    late final imageRef = storage.child('items/${user.uid}/${_xFile!.name}');
 
     return Scaffold(
       appBar: AppBar(
@@ -72,8 +69,13 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                 // if basic valids pass
                 try {
                   (() async {
+                    /* Storing the image */
+                    /// Getting the reference
+                    late final imageRef =
+                        storage.child('items/${user.uid}/${itemRef.key}');
+
                     /// for image of the item
-                    await imageRef.putFile(File(_xFile!.path));
+                    await imageRef.putData(_xFile!);
 
                     /// for item as a whole
                     /* first get a ref to set the new item */
@@ -182,8 +184,8 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                     image: _xFile != null
                         ? DecorationImage(
                             fit: BoxFit.cover,
-                            image: Image(
-                              image: FileImage(File(_xFile!.path)),
+                            image: Image.memory(
+                              _xFile!,
                               fit: BoxFit.cover,
                             ).image,
                           )
@@ -216,6 +218,19 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
       ),
     );
   }
+
+  Future<void> _pickImage() async {
+    final pickedImage = await ImagePickerWeb.getImageAsBytes();
+    if (pickedImage != null) {
+      setState(() {
+        _xFile = pickedImage;
+      });
+    }
+  }
+
+/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed
+without providing the _imageSource value by tapping on either of the
+two sources: Camera or Gallery */ /*
 
 /* Displays a Modal Bootm Sheet with Two Options for _imageSource required by ImagePicker in a Row  */
   Future _pickImageSource() async {
@@ -250,9 +265,6 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
     );
   }
 
-/* No Image Source was specified. This can happen when the Modal Bottom Sheet was dismissed 
-without providing the _imageSource value by tapping on either of the 
-two sources: Camera or Gallery */
   bool _validateImageSource() {
     if (_imageSource == null) {
       ScaffoldMessenger.of(context).showMaterialBanner(
@@ -274,7 +286,7 @@ two sources: Camera or Gallery */
     return true;
   }
 
-/* Shows a SnackBar that displays that No image was picked or Captured by the User */
+*/ /* Shows a SnackBar that displays that No image was picked or Captured by the User */ /*
   void _noImagePickedOrCaptured() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -287,26 +299,26 @@ two sources: Camera or Gallery */
     );
   }
 
-  /* Image Picker Utilizer */
+  */ /* Image Picker Utilizer */ /*
   void _pickImage() async {
     // Pick the Image Source
     await _pickImageSource();
 
     // Check if Image Source is Null, Cancel the Operation
     if (_validateImageSource()) {
-      /* Else Pick the Image File */
+      */ /* Else Pick the Image File */ /*
       _imagePicker.pickImage(source: _imageSource!).then((value) {
         if (value != null) {
           setState(() {
             _xFile = value;
           });
         } else {
-          /* Show the SnackBar telling the user that no image was selected */
+          */ /* Show the SnackBar telling the user that no image was selected */ /*
           _noImagePickedOrCaptured();
         }
-        /* Set the _imageSource to be Null */
+        */ /* Set the _imageSource to be Null */ /*
         _imageSource = null;
       });
     }
-  }
+  }*/
 }
