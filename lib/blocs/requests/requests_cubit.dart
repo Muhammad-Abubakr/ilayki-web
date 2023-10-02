@@ -16,7 +16,7 @@ class RequestsCubit extends Cubit<RequestsState> {
   /* Streams Subscription */
   late StreamSubscription _stream;
 
-  RequestsCubit() : super(const RequestsInitial([]));
+  RequestsCubit() : super(RequestsInitial(List.empty(growable: true)));
 
   /* initialize */
   void initialize() {

@@ -10,6 +10,7 @@ import 'package:ilayki/blocs/requests/requests_cubit.dart';
 import 'package:ilayki/blocs/sales/sales_cubit.dart';
 import 'package:ilayki/blocs/user/user_bloc.dart';
 
+import '../blocs/items/items_bloc.dart';
 import '../blocs/notifications/notifications_cubit.dart';
 import '../blocs/userbase/userbase_cubit.dart';
 import '../screens/drawer/orders_screen.dart';
@@ -26,7 +27,9 @@ class MainDrawer extends StatelessWidget {
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 244, 217, 185),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-      width: 0.7.sw,
+      width: MediaQuery.of(context).orientation == Orientation.landscape
+          ? 0.3.sw
+          : 0.7.sw,
 
       /* Adding a Safe Area in order to avoid notches */
       child: SafeArea(
@@ -137,7 +140,10 @@ class MainDrawer extends StatelessWidget {
 
                   /* Clear the basket */
                   context.read<BasketCubit>().clear();
-
+                  /* Fetch the Items */
+                  context
+                      .read<ItemsBloc>()
+                      .add(const DeactivateItemsListener());
                   // offline
                   context.read<OnlineCubit>().setOffline();
 
