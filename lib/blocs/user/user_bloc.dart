@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ilayki/blocs/email_verificaton/email_verification_cubit.dart';
 import 'package:ilayki/services/firebase/auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../models/user.dart' as my_user;
 
@@ -164,11 +166,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         /* Storing the image */
         // Getting the reference
         final imageRef = storage.child('pfps/${user.uid}');
-        await imageRef.putData(event.pfp);
+        await imageRef.putFile(File(event.xFile.path));
         await user.updatePhotoURL(await imageRef.getDownloadURL());
 
         final idCardRef = storage.child('ids/${user.uid}');
-        await idCardRef.putData(event.idCard);
+        await idCardRef.putFile(File(event.idCard.path));
 
         /* Add the User to users collection in realtime database */
         late final DatabaseReference userRef;
@@ -286,7 +288,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
       }
       // updating
-      final imageSnapshot = await imageRef.putData(event.image);
+      final imageSnapshot = await imageRef.putFile(File(event.xFile.path));
 
       /* Updating the user */
       await state.user
@@ -297,8 +299,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       DatabaseReference userRef =
           database.child("users/customers/${state.user?.uid}");
       if (!(await userRef.get()).exists) {
-        userRef = database
-            .child('users/sellersFile(event.xFile.path/${state.user?.uid}');
+        userRef = database.child('users/sellers/${state.user?.uid}');
       }
 
       // parsing and updating the user modal

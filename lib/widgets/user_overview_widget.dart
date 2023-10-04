@@ -35,7 +35,7 @@ class UserOverview extends StatelessWidget {
                     user.photoURL,
                     fit: BoxFit.cover,
                     width: constraints.maxWidth,
-                    height: 720.h,
+                    height: 480.h,
                   ),
                 ),
               ),

@@ -12,13 +12,7 @@ import 'package:ilayki/screens/auth/login_screen.dart';
 import 'package:ilayki/widgets/main_drawer.dart';
 
 import 'blocs/basket/basket_cubit.dart';
-import 'blocs/items/items_bloc.dart';
-import 'blocs/notifications/notifications_cubit.dart';
-import 'blocs/orders/orders_cubit.dart';
-import 'blocs/sales/sales_cubit.dart';
 import 'blocs/user/user_bloc.dart';
-import 'blocs/userchat/userchat_cubit.dart';
-import 'blocs/wares/wares_cubit.dart';
 import 'screens/home/basket_page.dart';
 import 'screens/home/home_page.dart';
 import 'screens/home/profile_page.dart';
@@ -38,7 +32,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   late LocalizationCubit cubit;
   late UserbaseCubit userbaseCubit;
   late SupportedLocales dropdownValue;
-  late OnlineCubit onlineCubit;
 
   /* Hooking the app lifecycles */
   @override
@@ -51,25 +44,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void didChangeDependencies() {
     // Localization cubit
-    cubit = context.read<LocalizationCubit>();
-    userbaseCubit = context.read<UserbaseCubit>();
-    /* Initialize the wares */
-    context.watch<WaresCubit>().intialize();
-    /* Fetch the Items */
-    context.read<ItemsBloc>().add(const ActivateItemsListener());
-    /* Initialize the online users */
-    onlineCubit = context.read<OnlineCubit>();
-    onlineCubit.setOnline();
-    /* Initialize the requests for current user */
-    context.read<RequestsCubit>().initialize();
-    /* Initialize the orders for current user */
-    context.read<OrdersCubit>().initialize();
-    /* Initialize the sales for current user */
-    context.read<SalesCubit>().initialize();
-    /* Initialize the user chats */
-    context.read<UserchatCubit>().intialize();
-    /* Initialize the user chats */
-    context.read<NotificationsCubit>().initialize();
+    cubit = context.watch<LocalizationCubit>();
+    userbaseCubit = context.watch<UserbaseCubit>();
     /* Locales Dropdown */
     dropdownValue = SupportedLocales.values.firstWhere(
       (element) => describeEnum(element) == cubit.state.locale,
@@ -81,27 +57,26 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // Localization cubit
-    userbaseCubit.dispose();
-    /* Initialize the wares */
-    context.read<WaresCubit>().dispose();
-    /* Fetch the Items */
-    context.read<ItemsBloc>().add(const ActivateItemsListener());
-    /* Initialize the online users */
-    onlineCubit = context.read<OnlineCubit>();
-    onlineCubit.setOffline();
-    /* Initialize the requests for current user */
-    context.read<RequestsCubit>().dispose();
-    /* Initialize the orders for current user */
-    context.read<OrdersCubit>().dispose();
-    /* Initialize the sales for current user */
-    context.read<SalesCubit>().dispose();
-    /* Initialize the user chats */
-    context.read<UserchatCubit>().dispose();
-    /* Initialize the user chats */
-    context.read<NotificationsCubit>().dispose();
 
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+        context.read<OnlineCubit>().setOffline();
+        break;
+      case AppLifecycleState.resumed:
+        /* resume the online status */
+        context.read<OnlineCubit>().setOnline();
+        break;
+      default:
+        break;
+    }
+
+    super.didChangeAppLifecycleState(state);
   }
 
   /* Defining currentIndex as state of the app */

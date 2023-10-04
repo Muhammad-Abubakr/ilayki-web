@@ -24,22 +24,20 @@ class EmailVerificationScreen extends StatelessWidget {
         ? Scaffold(
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.spMax),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.somethingWentWrong,
-                      textAlign: TextAlign.center,
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(LoginScreen.routeName),
-                      child: Text(AppLocalizations.of(context)!.backToLogin),
-                    )
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.somethingWentWrong,
+                    textAlign: TextAlign.center,
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context)
+                        .pushReplacementNamed(LoginScreen.routeName),
+                    child: Text(AppLocalizations.of(context)!.backToLogin),
+                  )
+                ],
               ),
             ),
           )
@@ -77,27 +75,23 @@ class EmailVerificationScreen extends StatelessWidget {
                   ),
                   body: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0.spMax),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "${AppLocalizations.of(context)!.anEmailSentTo} ${AppLocalizations.of(context)!.followLinkAndVerify}",
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 42.h),
-                          Text(
-                            AppLocalizations.of(context)!.confirmBeforeLogging,
-                            textAlign: TextAlign.center,
-                          ),
-                          TextButton(
-                              onPressed: () => Navigator.of(context)
-                                  .pushReplacementNamed(LoginScreen.routeName),
-                              child:
-                                  Text(AppLocalizations.of(context)!.signIn)),
-                        ],
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${AppLocalizations.of(context)!.anEmailSentTo} ${AppLocalizations.of(context)!.followLinkAndVerify}",
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 42.h),
+                        Text(
+                          AppLocalizations.of(context)!.confirmBeforeLogging,
+                          textAlign: TextAlign.center,
+                        ),
+                        TextButton(
+                            onPressed: () => Navigator.of(context)
+                                .pushReplacementNamed(LoginScreen.routeName),
+                            child: Text(AppLocalizations.of(context)!.signIn)),
+                      ],
                     ),
                   ),
                 ),

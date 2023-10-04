@@ -17,19 +17,16 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -52,14 +49,24 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDZcCHH4sRWoa6CdoDI-Zxe8Q5ycal1Sy0',
-    appId: '1:110227619660:web:f8fd4fc97db5507399d9e9',
-    messagingSenderId: '110227619660',
-    projectId: 'llayki-devops',
-    authDomain: 'llayki-devops.firebaseapp.com',
-    databaseURL: 'https://llayki-devops-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'llayki-devops.appspot.com',
-    measurementId: 'G-2SF549ER8F',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAjzSl-M5bOU0t4RzvLM1LkWSfVBtSTp4o',
+    appId: '1:132839856528:android:fd5c3bc8038ac67fdebb15',
+    messagingSenderId: '132839856528',
+    projectId: 'ilayki-9c3e1',
+    databaseURL: 'https://ilayki-9c3e1-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'ilayki-9c3e1.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCQyf6dCQNf9_ui_l_1ywS8F-VbVyRGvlc',
+    appId: '1:132839856528:ios:d05934668506b030debb15',
+    messagingSenderId: '132839856528',
+    projectId: 'ilayki-9c3e1',
+    databaseURL: 'https://ilayki-9c3e1-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'ilayki-9c3e1.appspot.com',
+    androidClientId: '132839856528-758h9hdmob2aj2t6onmf6t4423mel8n5.apps.googleusercontent.com',
+    iosClientId: '132839856528-19qdalekrvn03msj6kbvvdt39r5vorj9.apps.googleusercontent.com',
+    iosBundleId: 'com.example.ilayki',
   );
 }

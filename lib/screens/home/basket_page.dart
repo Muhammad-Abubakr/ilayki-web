@@ -30,152 +30,165 @@ class _BasketPageState extends State<BasketPage> {
     // userbase cubit
     final UserbaseCubit userbaseCubit = context.watch<UserbaseCubit>();
 
+    // orientation
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return basketCubit.state.orderItems.isEmpty
         ? Center(
             child: Text(
                 AppLocalizations.of(context)!.nothingToShowHereForTheMoment),
           )
         : Scaffold(
-            appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.basket),
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(450.h),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 64.sp, vertical: 64.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.delivery_dining,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Text(
-                                "${AppLocalizations.of(context)!.orderType} *",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.spMax),
-                              )
-                            ],
-                          ),
-                          DropdownButton(
-                            padding: EdgeInsets.symmetric(horizontal: 12.spMax),
-                            value: orderType,
-                            onChanged: (value) {
-                              if (value != null) {
-                                setState(() => orderType = value);
-                              }
-                            },
-                            items: OrderType.values
-                                .map((e) => DropdownMenuItem(
-                                    alignment: Alignment.center,
-                                    value: e,
-                                    child: Text(describeEnum(e))))
-                                .toList(),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 32.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.access_time_filled,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Text(
-                                "${AppLocalizations.of(context)!.orderTime} * ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.spMax),
-                              )
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () => showDialog(
-                              context: context,
-                              builder: (_) => TimePickerDialog(
-                                  initialTime: TimeOfDay.now()),
-                            ).then(
-                                (value) => setState(() => pickedTime = value)),
-                            child: Text(
-                              pickedTime != null
-                                  ? "${pickedTime!.hour < 1 ? "00" : pickedTime!.hour}:${pickedTime?.minute} ${describeEnum(pickedTime!.period)}"
-                                  : AppLocalizations.of(context)!.pickATime,
-                              textDirection: TextDirection.ltr,
-                              style: pickedTime != null
-                                  ? const TextStyle(fontWeight: FontWeight.bold)
-                                  : null,
+            appBar: isLandscape
+                ? null
+                : AppBar(
+                    title: Text(AppLocalizations.of(context)!.basket),
+                    centerTitle: true,
+                    automaticallyImplyLeading: false,
+                    bottom: PreferredSize(
+                      preferredSize: Size.fromHeight(450.h),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 64.sp),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.delivery_dining,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Text(
+                                      "${AppLocalizations.of(context)!.orderType} *",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.spMax),
+                                    )
+                                  ],
+                                ),
+                                DropdownButton(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.spMax),
+                                  value: orderType,
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      setState(() => orderType = value);
+                                    }
+                                  },
+                                  items: OrderType.values
+                                      .map((e) => DropdownMenuItem(
+                                          alignment: Alignment.center,
+                                          value: e,
+                                          child: Text(describeEnum(e))))
+                                      .toList(),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 32.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.date_range,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Text(
-                                "${AppLocalizations.of(context)!.orderDate} * ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.spMax),
-                              )
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () => showDialog(
-                              context: context,
-                              builder: (_) => DatePickerDialog(
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2023, 1),
-                                lastDate: DateTime(2023, 12),
-                              ),
-                            ).then(
-                                (value) => setState(() => pickedDate = value)),
-                            child: Text(
-                              pickedDate != null
-                                  ? pickedDate.toString().split(" ")[0]
-                                  : AppLocalizations.of(context)!.pickADate,
-                              style: pickedDate != null
-                                  ? const TextStyle(fontWeight: FontWeight.bold)
-                                  : null,
+                            SizedBox(
+                              height: 32.h,
                             ),
-                          )
-                        ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.access_time_filled,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Text(
+                                      "${AppLocalizations.of(context)!.orderTime} * ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.spMax),
+                                    )
+                                  ],
+                                ),
+                                ElevatedButton(
+                                  onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (_) => TimePickerDialog(
+                                        initialTime: TimeOfDay.now()),
+                                  ).then((value) =>
+                                      setState(() => pickedTime = value)),
+                                  child: Text(
+                                    pickedTime != null
+                                        ? "${pickedTime!.hour < 1 ? "00" : pickedTime!.hour}:${pickedTime?.minute} ${describeEnum(pickedTime!.period)}"
+                                        : AppLocalizations.of(context)!
+                                            .pickATime,
+                                    textDirection: TextDirection.ltr,
+                                    style: pickedTime != null
+                                        ? const TextStyle(
+                                            fontWeight: FontWeight.bold)
+                                        : null,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.date_range,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Text(
+                                      "${AppLocalizations.of(context)!.orderDate} * ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.spMax),
+                                    )
+                                  ],
+                                ),
+                                ElevatedButton(
+                                  onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (_) => DatePickerDialog(
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2023, 1),
+                                      lastDate: DateTime(2023, 12),
+                                    ),
+                                  ).then((value) =>
+                                      setState(() => pickedDate = value)),
+                                  child: Text(
+                                    pickedDate != null
+                                        ? pickedDate.toString().split(" ")[0]
+                                        : AppLocalizations.of(context)!
+                                            .pickADate,
+                                    style: pickedDate != null
+                                        ? const TextStyle(
+                                            fontWeight: FontWeight.bold)
+                                        : null,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
             body: Padding(
               padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 32.w),
               child: Column(
