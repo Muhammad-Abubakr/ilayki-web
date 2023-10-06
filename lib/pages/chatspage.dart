@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/chat/chat_bloc.dart';
-import '../blocs/authenticate/authenticate_bloc.dart';
-import '../blocs/userbase/userbase_bloc.dart';
 import '../../blocs/userchat/userchat_cubit.dart';
 import '../../models/message.dart';
 import '../../models/user.dart';
+import '../blocs/authenticate/authenticate_bloc.dart';
+import '../blocs/chat/chat_bloc.dart';
+import '../blocs/userbase/userbase_bloc.dart';
 import 'chatroompage.dart';
 
 class ChatsPage extends StatefulWidget {
@@ -77,32 +77,39 @@ class _ChatsPageState extends State<ChatsPage> {
                     User otherUser = others[index];
                     Message lastMessage = lastMessages[index];
 
-                    return ListTile(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => ChatroomPage(otherUser: otherUser))),
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: CircleAvatar(
-                            backgroundImage:
-                                Image.network(otherUser.pfp, fit: BoxFit.cover).image,
+                    return Card(
+                      elevation: 4,
+                      child: ListTile(
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    ChatroomPage(otherUser: otherUser))),
+                        leading: CircleAvatar(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: CircleAvatar(
+                              backgroundImage: Image.network(otherUser.pfp,
+                                      fit: BoxFit.cover)
+                                  .image,
+                            ),
                           ),
                         ),
-                      ),
-                      title: Text(
-                        otherUser.displayName,
-                      ),
-                      subtitle: Text(
-                        "${lastMessage.senderUid == currentUid ? "You" : otherUser.displayName}: ${lastMessage.content}",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Text(
-                        lastMessage.timestamp.toIso8601String(),
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
+                        title: Text(
+                          otherUser.displayName,
+                        ),
+                        subtitle: Text(
+                          "${lastMessage.senderUid == currentUid ? "You" : otherUser.displayName}: ${lastMessage.content}",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: Text(
+                          lastMessage.timestamp.toIso8601String(),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     );

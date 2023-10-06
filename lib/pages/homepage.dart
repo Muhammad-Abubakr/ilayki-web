@@ -29,48 +29,56 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     if (userbaseBloc.state is UserbasePopulate) {
-      return SingleChildScrollView(
-        child: DataTable(
-          sortAscending: sortAscending,
-          sortColumnIndex: columnSortIndex,
-          dividerThickness: 1,
-          columns: <DataColumn>[
-            DataColumn(label: const Text("ID"), onSort: onSort),
-            const DataColumn(label: Text("Profile Picture")),
-            DataColumn(label: const Text("Name"), onSort: onSort),
-            DataColumn(label: const Text("Email"), onSort: onSort),
-            const DataColumn(label: Text("Products")),
-            const DataColumn(label: Text("Message")),
-          ],
-          rows: users!
-              .map((user) => DataRow(
-                    cells: [
-                      DataCell(Text(user.uid)),
-                      DataCell(
-                        CircleAvatar(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      Image.network(user.pfp, fit: BoxFit.cover).image,
-                                ))),
-                      ),
-                      DataCell(Text(user.displayName)),
-                      DataCell(Text(user.email)),
-                      DataCell(TextButton(
-                        onPressed: () => {},
-                        child: Text("See ${user.displayName.split(' ')[0]}'s products"),
-                      )),
-                      DataCell(
-                        IconButton(
-                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => ChatroomPage(otherUser: user))),
-                            icon: const Icon(Icons.chat)),
-                      ),
-                    ],
-                  ))
-              .toList(),
+      return Card(
+        elevation: 4,
+        child: SingleChildScrollView(
+          child: DataTable(
+            sortAscending: sortAscending,
+            sortColumnIndex: columnSortIndex,
+            dividerThickness: 1,
+            columns: <DataColumn>[
+              DataColumn(label: const Text("ID"), onSort: onSort),
+              const DataColumn(label: Text("Profile Picture")),
+              DataColumn(label: const Text("Name"), onSort: onSort),
+              DataColumn(label: const Text("Email"), onSort: onSort),
+              const DataColumn(label: Text("Products")),
+              const DataColumn(label: Text("Message")),
+            ],
+            rows: users!
+                .map((user) => DataRow(
+                      cells: [
+                        DataCell(Text(user.uid)),
+                        DataCell(
+                          CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: CircleAvatar(
+                                    backgroundImage: Image.network(user.pfp,
+                                            fit: BoxFit.cover)
+                                        .image,
+                                  ))),
+                        ),
+                        DataCell(Text(user.displayName)),
+                        DataCell(Text(user.email)),
+                        DataCell(TextButton(
+                          onPressed: () => {},
+                          child: Text(
+                              "See ${user.displayName.split(' ')[0]}'s products"),
+                        )),
+                        DataCell(
+                          IconButton(
+                              onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          ChatroomPage(otherUser: user))),
+                              icon: const Icon(Icons.chat)),
+                        ),
+                      ],
+                    ))
+                .toList(),
+          ),
         ),
       );
     } else {
