@@ -1,7 +1,39 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ilayki_web/blocs/chat/chat_bloc.dart';
+import 'package:ilayki_web/blocs/userchat/userchat_cubit.dart';
+import 'package:ilayki_web/pages/registerpage.dart';
+
+import 'blocs/userbase/userbase_bloc.dart' as userbase;
+import 'blocs/authenticate/authenticate_bloc.dart' as auth;
+import 'dashboard.dart';
+import 'firebase_options.dart';
+import 'pages/loginpage.dart';
 
 void main() {
-  runApp(const MyApp());
+  (() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    runApp(
+      MultiBlocProvider(providers: [
+        BlocProvider(
+          create: (BuildContext context) => auth.AuthenticateBloc()..add(auth.InitEvent()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => userbase.UserbaseBloc()..add(userbase.InitEvent()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => ChatBloc(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => UserchatCubit()..intialize(),
+        ),
+      ], child: const MyApp()),
+    );
+  })();
 }
 
 class MyApp extends StatelessWidget {
@@ -11,59 +43,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        title: 'Ilayki',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x00618264)),
+          textTheme: GoogleFonts.robotoTextTheme(),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                )),
+          ),
+          useMaterial3: true,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        initialRoute: LoginPage.route,
+        routes: {
+          LoginPage.route: (_) => const LoginPage(),
+          RegisterPage.route: (_) => const RegisterPage(),
+          Dashboard.route: (_) => const Dashboard(),
+        });
   }
 }
