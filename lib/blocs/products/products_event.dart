@@ -16,6 +16,22 @@ class PostProduct extends ProductsEvent {
   });
 }
 
+class UpdateProduct extends ProductsEvent {
+  final String? name;
+  final String? price;
+  final String? stock;
+  final Uint8List? productImage;
+  final Product product;
+
+  UpdateProduct({
+    required this.product,
+    this.name,
+    this.price,
+    this.stock,
+    this.productImage,
+  });
+}
+
 class _Update extends ProductsEvent {
   final List<Product> products;
 

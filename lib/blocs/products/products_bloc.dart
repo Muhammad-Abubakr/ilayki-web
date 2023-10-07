@@ -19,6 +19,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   ProductsBloc() : super(ProductsInit()) {
     on<PostProduct>(_handlePostProduct);
+    on<UpdateProduct>(_handleUpdateProduct);
     on<InitEvent>(_initializer);
     on<Dispose>(_disposer);
     on<_Update>(_populate);
@@ -74,6 +75,41 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           });
         }
       });
+    } on FirebaseException catch (e) {
+      emit(ProductsError(error: e.message));
+    }
+  }
+
+  FutureOr<void> _handleUpdateProduct(
+      UpdateProduct event, Emitter<ProductsState> emit) async {
+    try {
+      emit(ProductsProcessing(products: state.products, error: state.error));
+      final userProductsRef =
+          _productsRef.child(event.product.ownerUid).child(event.product.pid);
+
+      final partial = event.product.copyWith(
+        name:
+            event.name != event.product.name ? event.name : event.product.name,
+        price: double.parse(event.price!) != event.product.price
+            ? double.parse(event.price!)
+            : event.product.price,
+        quantity: int.parse(event.stock!) != event.product.quantity
+            ? int.parse(event.stock!)
+            : event.product.quantity,
+      );
+
+      String updatedUrl = event.product.productImage;
+      if (event.productImage != null) {
+        await _imagesRef.child(event.product.pid).delete();
+        updatedUrl = await (await _imagesRef
+                .child(event.product.pid)
+                .putData(event.productImage!))
+            .ref
+            .getDownloadURL();
+      }
+
+      final updatedProduct = partial.copyWith(productImage: updatedUrl);
+      userProductsRef.set(updatedProduct.toJson());
     } on FirebaseException catch (e) {
       emit(ProductsError(error: e.message));
     }

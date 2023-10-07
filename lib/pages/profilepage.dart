@@ -18,6 +18,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool editing = false;
+  bool editingProduct = false;
+  Product? editedProduct;
   bool sortAscending = false;
   bool addProduct = false;
   int columnSortIndex = 0;
@@ -62,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildProductTable(productsBloc),
-              if (!addProduct) ...[
+              if (!addProduct && !editingProduct) ...[
                 _buildProfileEditingWidget(size, state),
               ] else ...[
                 BlocListener<ProductsBloc, ProductsState>(
@@ -87,11 +89,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         break;
                       case ProductsPopulate:
                         navigatorState.pop();
-                        setState(() => addProduct = false);
+                        setState(() {
+                          addProduct = false;
+                          editingProduct = false;
+                          editedProduct = null;
+                        });
                         break;
                     }
                   },
-                  child: _buildAddItemWidget(productsBloc, size, state),
+                  child: editingProduct
+                      ? _buildProductEditingWidget(productsBloc, size, state)
+                      : _buildAddItemWidget(productsBloc, size, state),
                 ),
               ]
             ],
@@ -171,6 +179,9 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 ElevatedButton(
                   onPressed: () => setState(() {
+                    editingProduct = false;
+                    addProduct = false;
+
                     editing = !editing;
                     _passwordController.clear();
                     _pfp = null;
@@ -224,7 +235,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   ElevatedButton.icon(
-                    onPressed: () => setState(() => addProduct = !addProduct),
+                    onPressed: () => setState(() {
+                      editing = false;
+                      editingProduct = false;
+                      addProduct = !addProduct;
+
+                      _productNameController.clear();
+                      _priceController.clear();
+                      _stockController.clear();
+                    }),
                     label: Text(addProduct ? "Cancel" : "Add Product"),
                     icon: Icon(addProduct ? Icons.cancel : Icons.add),
                   )
@@ -275,16 +294,25 @@ class _ProfilePageState extends State<ProfilePage> {
                               DataCell(Text(product.price.toString())),
                               DataCell(Text(product.quantity.toString())),
                               DataCell(
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () => {},
-                                        icon: const Icon(Icons.edit)),
-                                    const SizedBox(width: 12),
-                                    IconButton(
-                                        onPressed: () => {},
-                                        icon: const Icon(Icons.delete_forever)),
-                                  ],
+                                IconButton(
+                                  onPressed: () => setState(() {
+                                    editing = false;
+                                    addProduct = false;
+
+                                    editingProduct = !editingProduct;
+                                    editedProduct =
+                                        editingProduct ? product : null;
+
+                                    _productNameController.value =
+                                        TextEditingValue(text: product.name);
+                                    _priceController.value = TextEditingValue(
+                                        text: product.price.toString());
+                                    _stockController.value = TextEditingValue(
+                                        text: product.quantity.toString());
+                                  }),
+                                  icon: Icon(editingProduct
+                                      ? Icons.edit_off
+                                      : Icons.edit),
                                 ),
                               ),
                             ]))
@@ -376,6 +404,83 @@ class _ProfilePageState extends State<ProfilePage> {
                       productImage: _productImage!,
                     ));
                   }
+                },
+                child: const Text("Save"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildProductEditingWidget(
+      ProductsBloc productsBloc, Size size, AuthenticateState state) {
+    return Card(
+      margin: const EdgeInsets.all(16),
+      elevation: 8,
+      child: SizedBox(
+        width: max(250, size.width * 0.2),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 200,
+                height: 200,
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: _productImage != null
+                      ? Image.memory(_productImage!, fit: BoxFit.cover)
+                      : Image.network(editedProduct!.productImage,
+                          fit: BoxFit.cover),
+                ),
+              ),
+              const SizedBox(height: 48),
+              ElevatedButton(
+                onPressed: () => _pickImage("product"),
+                child: const Text("Upload a Picture"),
+              ),
+              const SizedBox(height: 48),
+              TextField(
+                controller: _productNameController,
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(
+                  label: Text("Product Name"),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _priceController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  label: Text("Price"),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _stockController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  label: Text("Stock"),
+                ),
+              ),
+              const SizedBox(height: 64),
+              ElevatedButton(
+                onPressed: () {
+                  productsBloc.add(UpdateProduct(
+                    product: editedProduct!,
+                    name: _productNameController.text.trim(),
+                    price: _priceController.text.trim(),
+                    stock: _stockController.text.trim(),
+                    productImage: _productImage,
+                  ));
                 },
                 child: const Text("Save"),
               ),

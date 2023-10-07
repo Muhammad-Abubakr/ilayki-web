@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilayki_web/blocs/authenticate/authenticate_bloc.dart';
 
-import '../models/message.dart';
-import '../widgets/chat_message.dart';
-
 import '../../blocs/chat/chat_bloc.dart';
 import '../../models/user.dart';
+import '../models/message.dart';
+import '../widgets/chat_message.dart';
 
 class ChatroomPage extends StatefulWidget {
   static const routeName = '/chat';
@@ -18,16 +17,20 @@ class ChatroomPage extends StatefulWidget {
   State<ChatroomPage> createState() => _ChatroomPageState();
 }
 
-class _ChatroomPageState extends State<ChatroomPage> with WidgetsBindingObserver {
+class _ChatroomPageState extends State<ChatroomPage>
+    with WidgetsBindingObserver {
   late String currentUser;
 
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _controller = ScrollController();
 
+  FocusNode messageNode = FocusNode();
   @override
   void didChangeDependencies() {
     currentUser = context.read<AuthenticateBloc>().state.user!.uid;
-    context.read<ChatBloc>().add(InitChatEvent(currentUser, widget.otherUser.uid));
+    context
+        .read<ChatBloc>()
+        .add(InitChatEvent(currentUser, widget.otherUser.uid));
 
     super.didChangeDependencies();
   }
@@ -53,7 +56,8 @@ class _ChatroomPageState extends State<ChatroomPage> with WidgetsBindingObserver
                     padding: const EdgeInsets.all(2.0),
                     child: CircleAvatar(
                       backgroundImage:
-                          Image.network(widget.otherUser.pfp, fit: BoxFit.cover).image,
+                          Image.network(widget.otherUser.pfp, fit: BoxFit.cover)
+                              .image,
                     ),
                   ),
                 ),
@@ -116,11 +120,30 @@ class _ChatroomPageState extends State<ChatroomPage> with WidgetsBindingObserver
                       children: [
                         Expanded(
                           child: TextField(
+                            autofocus: true,
                             controller: _messageController,
                             decoration: const InputDecoration(
                               hintText: "Message",
                               prefixIcon: Icon(Icons.edit_square),
                             ),
+                            focusNode: messageNode,
+                            onSubmitted: (text) {
+                              if (_messageController.text.isNotEmpty) {
+                                context.read<ChatBloc>().add(
+                                      SendMessageEvent(
+                                        Message(
+                                          senderUid: currentUser,
+                                          receiverUid: widget.otherUser.uid,
+                                          timestamp: DateTime.now(),
+                                          content:
+                                              _messageController.text.trim(),
+                                        ),
+                                      ),
+                                    );
+                              }
+                              _messageController.clear();
+                              messageNode.requestFocus();
+                            },
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -144,7 +167,8 @@ class _ChatroomPageState extends State<ChatroomPage> with WidgetsBindingObserver
                           },
                           style: IconButton.styleFrom(
                             minimumSize: const Size.fromRadius(32),
-                            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.inversePrimary,
                           ),
                           label: const Text("Send"),
                           icon: const Icon(Icons.send),
