@@ -6,6 +6,7 @@ class Product {
   final String name;
   final double price;
   final int quantity;
+  final String productImage;
 
   Product({
     required this.pid,
@@ -13,6 +14,7 @@ class Product {
     required this.name,
     required this.price,
     required this.quantity,
+    required this.productImage,
   });
 
   Product copyWith({
@@ -21,6 +23,7 @@ class Product {
     String? name,
     double? price,
     int? quantity,
+    String? productImage,
   }) {
     return Product(
       pid: pid ?? this.pid,
@@ -28,6 +31,7 @@ class Product {
       name: name ?? this.name,
       price: price ?? this.price,
       quantity: quantity ?? this.quantity,
+      productImage: productImage ?? this.productImage,
     );
   }
 
@@ -38,6 +42,7 @@ class Product {
       'name': name,
       'price': price,
       'quantity': quantity,
+      'productImage': productImage,
     };
   }
 
@@ -48,6 +53,7 @@ class Product {
       name: map['name'] as String,
       price: map['price'] as double,
       quantity: map['quantity'] as int,
+      productImage: map['productImage'] as String,
     );
   }
 
@@ -58,7 +64,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(pid: $pid, ownerUid: $ownerUid, name: $name, price: $price, quantity: $quantity)';
+    return 'Product(pid: $pid, ownerUid: $ownerUid, name: $name, price: $price, quantity: $quantity, productImage: $productImage)';
   }
 
   @override
@@ -69,6 +75,7 @@ class Product {
         other.ownerUid == ownerUid &&
         other.name == name &&
         other.price == price &&
+        other.productImage == productImage &&
         other.quantity == quantity;
   }
 
