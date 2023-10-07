@@ -6,13 +6,17 @@ class Order {
   final String buyerUid;
   final int quantity;
   final DateTime timestamp;
+  final String? orderRef;
+  final String? requestRef;
 
-  Order({
+  const Order({
     required this.pid,
     required this.ownerUid,
     required this.buyerUid,
     required this.quantity,
     required this.timestamp,
+    this.orderRef,
+    this.requestRef,
   });
 
   Order copyWith({
@@ -21,6 +25,8 @@ class Order {
     String? buyerUid,
     int? quantity,
     DateTime? timestamp,
+    String? orderRef,
+    String? requestRef,
   }) {
     return Order(
       pid: pid ?? this.pid,
@@ -28,6 +34,8 @@ class Order {
       buyerUid: buyerUid ?? this.buyerUid,
       quantity: quantity ?? this.quantity,
       timestamp: timestamp ?? this.timestamp,
+      orderRef: orderRef ?? this.orderRef,
+      requestRef: requestRef ?? this.requestRef,
     );
   }
 
@@ -38,6 +46,8 @@ class Order {
       'buyerUid': buyerUid,
       'quantity': quantity,
       'timestamp': timestamp.millisecondsSinceEpoch,
+      'orderRef': orderRef,
+      'requestRef': requestRef,
     };
   }
 
@@ -48,6 +58,8 @@ class Order {
       buyerUid: map['buyerUid'] as String,
       quantity: map['quantity'] as int,
       timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp'] as int),
+      orderRef: map['orderRef'] != null ? map['orderRef'] as String : null,
+      requestRef: map['requestRef'] != null ? map['requestRef'] as String : null,
     );
   }
 
@@ -58,7 +70,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(pid: $pid, ownerUid: $ownerUid, buyerUid: $buyerUid, quantity: $quantity, timestamp: $timestamp)';
+    return 'Order(pid: $pid, ownerUid: $ownerUid, buyerUid: $buyerUid, quantity: $quantity, timestamp: $timestamp, orderRef: $orderRef, requestRef: $requestRef)';
   }
 
   @override
@@ -69,7 +81,9 @@ class Order {
         other.ownerUid == ownerUid &&
         other.buyerUid == buyerUid &&
         other.quantity == quantity &&
-        other.timestamp == timestamp;
+        other.timestamp == timestamp &&
+        other.orderRef == orderRef &&
+        other.requestRef == requestRef;
   }
 
   @override
@@ -78,6 +92,8 @@ class Order {
         ownerUid.hashCode ^
         buyerUid.hashCode ^
         quantity.hashCode ^
-        timestamp.hashCode;
+        timestamp.hashCode ^
+        orderRef.hashCode ^
+        requestRef.hashCode;
   }
 }

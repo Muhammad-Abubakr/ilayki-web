@@ -2,9 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ilayki_web/blocs/basket/basket_cubit.dart';
 import 'package:ilayki_web/blocs/chat/chat_bloc.dart';
+import 'package:ilayki_web/blocs/orders/orders_cubit.dart';
 import 'package:ilayki_web/blocs/products/products_bloc.dart';
+import 'package:ilayki_web/blocs/requests/requests_cubit.dart';
 import 'package:ilayki_web/blocs/userchat/userchat_cubit.dart';
+import 'package:ilayki_web/blocs/wares/wares_cubit.dart';
 import 'package:ilayki_web/pages/registerpage.dart';
 
 import 'blocs/authenticate/authenticate_bloc.dart' as auth;
@@ -37,6 +41,19 @@ void main() {
         BlocProvider(
           create: (BuildContext context) => ProductsBloc()..add(InitEvent()),
         ),
+        BlocProvider(
+          create: (BuildContext context) => WaresCubit()..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              BasketCubit(BlocProvider.of<WaresCubit>(context))..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => OrdersCubit()..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => RequestsCubit()..initialize(),
+        ),
       ], child: const MyApp()),
     );
   })();
@@ -51,7 +68,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Ilayki',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x00618264)),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
           textTheme: GoogleFonts.robotoTextTheme(),
           inputDecorationTheme: InputDecorationTheme(
             border:

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilayki_web/blocs/userbase/userbase_bloc.dart';
@@ -40,13 +38,15 @@ class _DashboardState extends State<Dashboard> {
     final navigatorState = Navigator.of(context);
     final scaffoldMessengerState = ScaffoldMessenger.of(context);
     final textTheme = Theme.of(context).textTheme;
-    final AuthenticateBloc authBloc = BlocProvider.of<AuthenticateBloc>(context);
+    final AuthenticateBloc authBloc =
+        BlocProvider.of<AuthenticateBloc>(context);
     final UserbaseBloc userbaseBloc = BlocProvider.of<UserbaseBloc>(context);
 
     return BlocConsumer<AuthenticateBloc, AuthenticateState>(
       listener: (context, state) {
         if (state is AuthReset) {
-          navigatorState.popUntil((route) => route.settings.name == Dashboard.route);
+          navigatorState
+              .popUntil((route) => route.settings.name == Dashboard.route);
           navigatorState.popAndPushNamed(LoginPage.route);
         }
       },
@@ -75,8 +75,12 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
               actions: [
-                ElevatedButton(
-                    onPressed: () => authBloc.add(LogoutEvent()), child: const Text("Log out"))
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: ElevatedButton(
+                      onPressed: () => authBloc.add(LogoutEvent()),
+                      child: const Text("Log out")),
+                )
               ],
             ),
             body: Row(
@@ -99,11 +103,12 @@ class _DashboardState extends State<Dashboard> {
   Widget _buildNavigationRail() {
     return NavigationRail(
       extended: isExtended,
-      labelType: isExtended ? NavigationRailLabelType.none : NavigationRailLabelType.selected,
+      labelType: isExtended
+          ? NavigationRailLabelType.none
+          : NavigationRailLabelType.selected,
       selectedIndex: selectedRail,
       onDestinationSelected: (value) => setState(() {
         selectedRail = value;
-        isExtended = false;
       }),
       destinations: const <NavigationRailDestination>[
         NavigationRailDestination(

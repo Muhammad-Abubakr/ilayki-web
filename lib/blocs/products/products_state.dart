@@ -9,7 +9,9 @@ abstract class ProductsState {
 
 class ProductsInit extends ProductsState {}
 
-class ProductsProcessing extends ProductsState {}
+class ProductsProcessing extends ProductsState {
+  const ProductsProcessing({required super.products, required super.error});
+}
 
 class ProductsError extends ProductsState {
   const ProductsError({required super.error});

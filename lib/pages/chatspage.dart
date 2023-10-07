@@ -25,7 +25,7 @@ class _ChatsPageState extends State<ChatsPage> {
   late String currentUid;
 
   final List<User> others = List.empty(growable: true);
-  final List<Message> lastMessages = List.empty(growable: true);
+  List<Message> lastMessages = List.empty(growable: true);
 
   User getOther(String ref) {
     List<String> splitted = ref.split('+');
@@ -50,11 +50,12 @@ class _ChatsPageState extends State<ChatsPage> {
     }
 
     () async {
+      List<Message> container = List.empty(growable: true);
       for (var user in others) {
-        lastMessages.add(await getLastMessage(user.uid));
+        container.add(await getLastMessage(user.uid));
       }
 
-      setState(() {});
+      setState(() => lastMessages = container);
     }();
 
     super.didChangeDependencies();
@@ -72,13 +73,13 @@ class _ChatsPageState extends State<ChatsPage> {
                   child: CircularProgressIndicator(),
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.all(8),
                   itemBuilder: (context, index) {
                     User otherUser = others[index];
                     Message lastMessage = lastMessages[index];
 
                     return Card(
-                      elevation: 4,
+                      elevation: 2,
                       child: ListTile(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
