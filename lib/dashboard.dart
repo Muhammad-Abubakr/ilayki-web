@@ -48,10 +48,17 @@ class _DashboardState extends State<Dashboard> {
           navigatorState
               .popUntil((route) => route.settings.name == Dashboard.route);
           navigatorState.popAndPushNamed(LoginPage.route);
+        } else if (state is AuthUpdate) {
+          scaffoldMessengerState.showSnackBar(const SnackBar(
+            content: Text(
+              "Profile has been updated",
+              textAlign: TextAlign.center,
+            ),
+          ));
         }
       },
       builder: (context, state) {
-        if (state is AuthSuccessful) {
+        if (state is AuthSuccessful || state is AuthUpdate) {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(

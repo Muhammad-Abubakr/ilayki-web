@@ -28,3 +28,17 @@ class RegisterEvent extends AuthenticateEvent {
     required this.pfp,
   });
 }
+
+class UpdateEvent extends AuthenticateEvent {
+  final String? displayName;
+  final String? email;
+  final String? password;
+  final Uint8List? pfp;
+
+  UpdateEvent({
+    this.displayName,
+    this.email,
+    this.password,
+    this.pfp,
+  });
+}

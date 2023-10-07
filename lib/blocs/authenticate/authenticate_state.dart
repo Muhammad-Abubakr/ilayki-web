@@ -24,9 +24,15 @@ class AuthSuccessful extends AuthenticateState {
   AuthSuccessful({super.user});
 }
 
-class AuthInit extends AuthenticateState {}
+class AuthUpdate extends AuthenticateState {
+  AuthUpdate({super.user});
+}
 
-class AuthProcessing extends AuthenticateState {}
+class AuthProcessing extends AuthenticateState {
+  AuthProcessing({required super.user});
+}
+
+class AuthInit extends AuthenticateState {}
 
 class AuthRegistered extends AuthenticateState {}
 

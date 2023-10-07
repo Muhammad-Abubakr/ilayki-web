@@ -179,7 +179,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 if (editing)
                   ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () => authenticateBloc.add(UpdateEvent(
+                      pfp: _pfp,
+                      email: _emailController.text.trim(),
+                      displayName: _nameController.text.trim(),
+                      password: _passwordController.text.trim(),
+                    )),
                     child: const Text("Save"),
                   ),
               ]),

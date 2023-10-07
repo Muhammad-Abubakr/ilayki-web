@@ -37,6 +37,7 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
     on<LogoutEvent>(_logout);
     on<DeleteEvent>(_delete);
     on<RegisterEvent>(_register);
+    on<UpdateEvent>(_update);
   }
 
   void _init(InitEvent event, Emitter<AuthenticateState> emit) async {
@@ -58,7 +59,7 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
   FutureOr<void> _login(
       LoginEvent event, Emitter<AuthenticateState> emit) async {
     try {
-      emit(AuthProcessing());
+      emit(AuthProcessing(user: state.user));
       final UserCredential credentials = await _auth.signInWithEmailAndPassword(
           email: event.email, password: event.password);
       emit(AuthSuccessful(user: credentials.user));
@@ -73,7 +74,7 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
   FutureOr<void> _logout(
       LogoutEvent event, Emitter<AuthenticateState> emit) async {
     try {
-      emit(AuthProcessing());
+      emit(AuthProcessing(user: state.user));
       await _auth.signOut();
       emit(AuthReset());
     } on FirebaseAuthException catch (e) {
@@ -87,7 +88,7 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
   FutureOr<void> _delete(
       DeleteEvent event, Emitter<AuthenticateState> emit) async {
     try {
-      emit(AuthProcessing());
+      emit(AuthProcessing(user: state.user));
 
       /// Products Images
       final products = _waresCubit.getProductsForUser(_auth.currentUser!.uid);
@@ -145,7 +146,7 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
   FutureOr<void> _register(
       RegisterEvent event, Emitter<AuthenticateState> emit) async {
     try {
-      emit(AuthProcessing());
+      emit(AuthProcessing(user: state.user));
       final UserCredential credential =
           await _auth.createUserWithEmailAndPassword(
               email: event.email, password: event.password);
@@ -169,6 +170,45 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
 
         emit(AuthRegistered());
       }
+    } on FirebaseAuthException catch (e) {
+      emit(AuthError(error: e));
+    } on FirebaseException catch (e) {
+      emit(DatabaseException(exception: e));
+    }
+  }
+
+  FutureOr<void> _update(
+      UpdateEvent event, Emitter<AuthenticateState> emit) async {
+    try {
+      emit(AuthProcessing(user: state.user));
+      String? pfpUrl;
+
+      if (event.displayName != null &&
+          event.displayName != state.user!.displayName) {
+        await state.user!.updateDisplayName(event.displayName);
+      }
+      if (event.email != null && event.email != state.user!.email) {
+        await state.user!.updateEmail(event.email!);
+      }
+      if (event.password != null && event.password!.isNotEmpty) {
+        await state.user!.updatePassword(event.password!);
+      }
+      if (event.pfp != null) {
+        final userPfpRef = _pfpsRef.child(state.user!.uid);
+        pfpUrl =
+            await (await userPfpRef.putData(event.pfp!)).ref.getDownloadURL();
+        await state.user!.updatePhotoURL(pfpUrl);
+      }
+
+      final updatedUser = modal.User(
+        displayName: event.displayName ?? state.user!.displayName!,
+        email: event.email ?? state.user!.email!,
+        pfp: pfpUrl ?? state.user!.photoURL!,
+        uid: state.user!.uid,
+      );
+
+      await _usersRef.child(updatedUser.uid).set(updatedUser.toJson());
+      emit(AuthUpdate(user: FirebaseAuth.instance.currentUser));
     } on FirebaseAuthException catch (e) {
       emit(AuthError(error: e));
     } on FirebaseException catch (e) {
