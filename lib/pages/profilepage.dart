@@ -201,30 +201,35 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildProductTable(ProductsBloc productsBloc) {
     return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "My Products",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                ElevatedButton.icon(
-                  onPressed: () => setState(() => addProduct = !addProduct),
-                  label: Text(addProduct ? "Cancel" : "Add Product"),
-                  icon: Icon(addProduct ? Icons.cancel : Icons.add),
-                )
-              ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "My Products",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () => setState(() => addProduct = !addProduct),
+                    label: Text(addProduct ? "Cancel" : "Add Product"),
+                    icon: Icon(addProduct ? Icons.cancel : Icons.add),
+                  )
+                ],
+              ),
             ),
-          ),
-          Card(
-            elevation: 4,
-            child: SingleChildScrollView(
+            Card(
+              elevation: 4,
               child: DataTable(
+                headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+                dataRowMinHeight: 100,
+                dataRowMaxHeight: 100,
                 sortAscending: sortAscending,
                 sortColumnIndex: columnSortIndex,
                 dividerThickness: 1,
@@ -236,7 +241,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   DataColumn(label: const Text("Stock"), onSort: onSort),
                   const DataColumn(label: Text("Actions")),
                 ],
-                rows: productsBloc.state.runtimeType == ProductsPopulate
+                rows: productsBloc.state.runtimeType == ProductsPopulate ||
+                        productsBloc.state.runtimeType == ProductsProcessing
                     ? products!
                         .map((product) => DataRow(cells: [
                               DataCell(Text(product.pid)),
@@ -255,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
                                       child: Image.network(product.productImage,
-                                          fit: BoxFit.fill)),
+                                          fit: BoxFit.cover)),
                                 ),
                               ),
                               DataCell(Text(product.name)),
@@ -279,8 +285,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     : const <DataRow>[],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

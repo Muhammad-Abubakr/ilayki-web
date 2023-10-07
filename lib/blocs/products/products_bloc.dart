@@ -27,7 +27,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   FutureOr<void> _handlePostProduct(
       PostProduct event, Emitter<ProductsState> emit) async {
     try {
-      emit(ProductsProcessing());
+      emit(ProductsProcessing(products: state.products, error: state.error));
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         var userProductsRef = _productsRef.child(user.uid);

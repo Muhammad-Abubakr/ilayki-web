@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilayki_web/pages/chatroompage.dart';
+import 'package:ilayki_web/pages/productspage.dart';
 
 import '../blocs/userbase/userbase_bloc.dart';
 import '../models/user.dart';
@@ -28,11 +29,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     if (userbaseBloc.state is UserbasePopulate) {
-      return Card(
-        elevation: 4,
-        child: SingleChildScrollView(
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
+        child: Card(
+          elevation: 4,
           child: DataTable(
+            headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
             sortAscending: sortAscending,
             sortColumnIndex: columnSortIndex,
             dividerThickness: 1,
@@ -63,7 +68,9 @@ class _HomePageState extends State<HomePage> {
                         DataCell(Text(user.displayName)),
                         DataCell(Text(user.email)),
                         DataCell(TextButton(
-                          onPressed: () => {},
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => ProductsPage(uid: user.uid))),
                           child: Text(
                               "See ${user.displayName.split(' ')[0]}'s products"),
                         )),
