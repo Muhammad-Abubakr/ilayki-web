@@ -91,9 +91,20 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           );
+        } else if (state is AuthError || state is DatabaseException) {
+          return Scaffold(
+            body: Center(
+              child: Text(
+                "${state.error ?? state.exception}",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         }
       },

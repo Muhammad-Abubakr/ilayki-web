@@ -2,15 +2,11 @@ part of 'authenticate_bloc.dart';
 
 abstract class AuthenticateState {
   final User? user;
-  final AuthCredential? authCredential;
-  final AdditionalUserInfo? additionalUserInfo;
   final FirebaseAuthException? error;
   final FirebaseException? exception;
 
   AuthenticateState({
     this.user,
-    this.authCredential,
-    this.additionalUserInfo,
     this.error,
     this.exception,
   });

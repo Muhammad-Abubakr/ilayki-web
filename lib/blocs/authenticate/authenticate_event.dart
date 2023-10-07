@@ -6,6 +6,8 @@ class InitEvent extends AuthenticateEvent {}
 
 class LogoutEvent extends AuthenticateEvent {}
 
+class DeleteEvent extends AuthenticateEvent {}
+
 class LoginEvent extends AuthenticateEvent {
   final String email;
   final String password;

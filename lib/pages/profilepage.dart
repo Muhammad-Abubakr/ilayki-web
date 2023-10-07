@@ -23,6 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   int columnSortIndex = 0;
 
   late ProductsBloc productsBloc;
+  late AuthenticateBloc authenticateBloc;
   List<Product>? products;
 
   Uint8List? _pfp;
@@ -38,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void didChangeDependencies() {
     productsBloc = BlocProvider.of<ProductsBloc>(context, listen: true);
+    authenticateBloc = BlocProvider.of<AuthenticateBloc>(context);
     products = productsBloc.state.products;
 
     super.didChangeDependencies();
@@ -188,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundColor: Colors.redAccent,
                     foregroundColor: Colors.white,
                   ),
-                  onPressed: () => {},
+                  onPressed: () => authenticateBloc.add(DeleteEvent()),
                   child: const Text("Purge User"),
                 ),
               ],

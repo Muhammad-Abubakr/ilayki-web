@@ -25,8 +25,24 @@ void main() {
     runApp(
       MultiBlocProvider(providers: [
         BlocProvider(
-          create: (BuildContext context) =>
-              auth.AuthenticateBloc()..add(auth.InitEvent()),
+          create: (BuildContext context) => WaresCubit()..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => UserchatCubit()..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => OrdersCubit()..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => RequestsCubit()..initialize(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => auth.AuthenticateBloc(
+            BlocProvider.of<WaresCubit>(context),
+            BlocProvider.of<UserchatCubit>(context),
+            BlocProvider.of<OrdersCubit>(context),
+            BlocProvider.of<RequestsCubit>(context),
+          )..add(auth.InitEvent()),
         ),
         BlocProvider(
           create: (BuildContext context) =>
@@ -36,23 +52,11 @@ void main() {
           create: (BuildContext context) => ChatBloc(),
         ),
         BlocProvider(
-          create: (BuildContext context) => UserchatCubit()..initialize(),
-        ),
-        BlocProvider(
           create: (BuildContext context) => ProductsBloc()..add(InitEvent()),
-        ),
-        BlocProvider(
-          create: (BuildContext context) => WaresCubit()..initialize(),
         ),
         BlocProvider(
           create: (BuildContext context) =>
               BasketCubit(BlocProvider.of<WaresCubit>(context))..initialize(),
-        ),
-        BlocProvider(
-          create: (BuildContext context) => OrdersCubit()..initialize(),
-        ),
-        BlocProvider(
-          create: (BuildContext context) => RequestsCubit()..initialize(),
         ),
       ], child: const MyApp()),
     );

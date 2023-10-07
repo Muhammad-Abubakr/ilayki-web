@@ -15,28 +15,31 @@ class RequestsCubit extends Cubit<RequestsState> {
   RequestsCubit() : super(RequestsInit());
 
   void initialize() {
-    _requestsStream = _requests.onValue.listen((event) async {
-      final myUID = FirebaseAuth.instance.currentUser?.uid;
-      final List<Order> allRequests = List.empty(growable: true);
-      final data = event.snapshot.value as Map<dynamic, dynamic>?;
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        _requestsStream = _requests.onValue.listen((event) async {
+          final List<Order> allRequests = List.empty(growable: true);
+          final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
-      if (data != null) {
-        for (var key in data.keys) {
-          if (key == myUID) {
-            final requestsRef = _requests.child(key);
-            final data =
-                (await requestsRef.get()).value as Map<dynamic, dynamic>?;
+          if (data != null) {
+            for (var key in data.keys) {
+              if (key == user.uid) {
+                final requestsRef = _requests.child(key);
+                final data =
+                    (await requestsRef.get()).value as Map<dynamic, dynamic>?;
 
-            if (data != null) {
-              for (var request in data.values) {
-                final parsedRequest = Order.fromJson(request.toString());
-                allRequests.add(parsedRequest);
+                if (data != null) {
+                  for (var request in data.values) {
+                    final parsedRequest = Order.fromJson(request.toString());
+                    allRequests.add(parsedRequest);
+                  }
+                }
               }
             }
           }
-        }
+          emit(RequestsPopulate(requests: allRequests));
+        });
       }
-      emit(RequestsPopulate(requests: allRequests));
     });
   }
 

@@ -15,28 +15,31 @@ class OrdersCubit extends Cubit<OrdersState> {
   OrdersCubit() : super(OrdersInit());
 
   void initialize() {
-    _ordersStream = _orders.onValue.listen((event) async {
-      final myUID = FirebaseAuth.instance.currentUser?.uid;
-      final List<Order> allOrders = List.empty(growable: true);
-      final data = event.snapshot.value as Map<dynamic, dynamic>?;
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        _ordersStream = _orders.onValue.listen((event) async {
+          final List<Order> allOrders = List.empty(growable: true);
+          final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
-      if (data != null) {
-        for (var key in data.keys) {
-          if (key == myUID) {
-            final ordersRef = _orders.child(key);
-            final data =
-                (await ordersRef.get()).value as Map<dynamic, dynamic>?;
+          if (data != null) {
+            for (var key in data.keys) {
+              if (key == user.uid) {
+                final ordersRef = _orders.child(key);
+                final data =
+                    (await ordersRef.get()).value as Map<dynamic, dynamic>?;
 
-            if (data != null) {
-              for (var order in data.values) {
-                final parsedOrder = Order.fromJson(order.toString());
-                allOrders.add(parsedOrder);
+                if (data != null) {
+                  for (var order in data.values) {
+                    final parsedOrder = Order.fromJson(order.toString());
+                    allOrders.add(parsedOrder);
+                  }
+                }
               }
             }
           }
-        }
+          emit(OrdersPopulate(orders: allOrders));
+        });
       }
-      emit(OrdersPopulate(orders: allOrders));
     });
   }
 
