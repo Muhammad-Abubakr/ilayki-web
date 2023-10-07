@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
 part 'userchat_state.dart';
 
 class UserchatCubit extends Cubit<UserchatState> {
@@ -12,7 +13,7 @@ class UserchatCubit extends Cubit<UserchatState> {
   UserchatCubit() : super(UserchatInit());
 
   /* Initialize the cubit */
-  void intialize() async {
+  void initialize() async {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
         _chatsStream = _chatsRef.onValue.listen((event) {
