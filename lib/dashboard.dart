@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ilayki_web/blocs/userbase/userbase_bloc.dart';
 import 'package:ilayki_web/pages/cartpage.dart';
 import 'package:ilayki_web/pages/chatspage.dart';
 import 'package:ilayki_web/pages/homepage.dart';
@@ -37,16 +36,12 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final navigatorState = Navigator.of(context);
     final scaffoldMessengerState = ScaffoldMessenger.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final AuthenticateBloc authBloc =
-        BlocProvider.of<AuthenticateBloc>(context);
-    final UserbaseBloc userbaseBloc = BlocProvider.of<UserbaseBloc>(context);
+    final AuthenticateBloc authBloc = BlocProvider.of<AuthenticateBloc>(context);
 
     return BlocConsumer<AuthenticateBloc, AuthenticateState>(
       listener: (context, state) {
         if (state is AuthReset) {
-          navigatorState
-              .popUntil((route) => route.settings.name == Dashboard.route);
+          navigatorState.popUntil((route) => route.settings.name == Dashboard.route);
           navigatorState.popAndPushNamed(LoginPage.route);
         } else if (state is AuthUpdate) {
           scaffoldMessengerState.showSnackBar(const SnackBar(
@@ -121,9 +116,7 @@ class _DashboardState extends State<Dashboard> {
   Widget _buildNavigationRail() {
     return NavigationRail(
       extended: isExtended,
-      labelType: isExtended
-          ? NavigationRailLabelType.none
-          : NavigationRailLabelType.selected,
+      labelType: isExtended ? NavigationRailLabelType.none : NavigationRailLabelType.selected,
       selectedIndex: selectedRail,
       onDestinationSelected: (value) => setState(() {
         selectedRail = value;

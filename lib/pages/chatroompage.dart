@@ -20,6 +20,7 @@ class ChatroomPage extends StatefulWidget {
 class _ChatroomPageState extends State<ChatroomPage>
     with WidgetsBindingObserver {
   late String currentUser;
+  late ChatBloc chatBloc;
 
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _controller = ScrollController();
@@ -28,17 +29,17 @@ class _ChatroomPageState extends State<ChatroomPage>
   @override
   void didChangeDependencies() {
     currentUser = context.read<AuthenticateBloc>().state.user!.uid;
-    context
-        .read<ChatBloc>()
-        .add(InitChatEvent(currentUser, widget.otherUser.uid));
+    chatBloc = context.read<ChatBloc>();
+
+    chatBloc.add(InitChatEvent(currentUser, widget.otherUser.uid));
 
     super.didChangeDependencies();
   }
 
   @override
-  void deactivate() {
-    context.read<ChatBloc>().add(const DisposeChat());
-    super.deactivate();
+  void dispose() {
+    chatBloc.add(const DisposeChat());
+    super.dispose();
   }
 
   @override

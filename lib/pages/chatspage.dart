@@ -81,6 +81,7 @@ class _ChatsPageState extends State<ChatsPage> {
                     return Card(
                       elevation: 2,
                       child: ListTile(
+                        key: Key(refs[index]),
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (_) =>
