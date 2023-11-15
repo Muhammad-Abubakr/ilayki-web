@@ -2,4 +2,6 @@ version: '3'
 services:
   web:
     image: abubakrsiddique/ilayki_web
-    
+    container_name: ilayki_web
+    ports:
+      - "8080:5000"
