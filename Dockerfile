@@ -11,7 +11,7 @@ COPY . /app
 WORKDIR /app
 
 # Record the exposed port
-EXPOSE 5000
+EXPOSE 8080
 
 # make server startup script executable and start the web server
 RUN chown -R $(id -u):$(id -g) /app

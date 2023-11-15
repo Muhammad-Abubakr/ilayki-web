@@ -4,4 +4,4 @@ services:
     image: abubakrsiddique/ilayki_web
     container_name: ilayki_web
     ports:
-      - "8080:5000"
+      - "8080:8080"
