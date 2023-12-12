@@ -5,6 +5,12 @@ RUN apt-get update
 RUN apt-get install -y curl git wget unzip libgconf-2-4 gdb libstdc++6 libglu1-mesa fonts-droid-fallback lib32stdc++6 python3
 RUN apt-get clean 
 
+# Install Python and pip
+RUN apt-get install -y python3 python3-pip
+
+# Install Selenium and other dependencies
+RUN pip3 install selenium
+
 #Copy files to container and build
 RUN mkdir /app/
 COPY . /app/
@@ -33,5 +39,4 @@ EXPOSE 8080
 
 # change to build dir and run server
 RUN cd build/web
-RUN python -m http.server 8080
-
+CMD ["python3", "-m", "http.server", "8080"]

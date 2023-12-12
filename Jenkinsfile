@@ -9,5 +9,11 @@ pipeline {
                 sh "flutter build web"
             }
         }
+
+        stage("test") {
+            steps {
+                sh "python test/tests.py" 
+            }
+        }
     }
 }
